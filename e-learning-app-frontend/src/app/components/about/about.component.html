@@ -1,29 +1,47 @@
+<head>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  />
+</head>
+
 <section class="about-section">
-  <img src="elearning-illustration.jpg" alt="Learning" class="hero-img" />
-
   <div class="container">
-    <section class="faq-section">
-      <div class="container">
-        <div class="faq-item">
-          <div class="question">Ce este BacInfoLearn?</div>
-          <div class="answer">
-            BacInfoLearn este platforma ideală pentru cei care se pregătesc
-            pentru examenul de Bacalaureat la informatică. Oferim lecții
-            structurate, exemple practice și teste interactive pentru fiecare
-            capitol important.
-          </div>
-        </div>
+    <div class="image-container">
+      <img src="fd.jpg" alt="Learning" />
+    </div>
 
-        <div class="faq-item">
-          <div class="question">Cum funcționează platforma?</div>
-          <div class="answer">
-            Platforma îți permite să accesezi lecții online, să rezolvi teste și
-            să îți urmărești progresul în timp real, pentru a te pregăti
-            eficient pentru examenul de Bacalaureat.
-          </div>
+    <div class="text-container">
+      <h6>Despre noi</h6>
+
+      <!-- Loop prin întrebările din componentă -->
+      <div *ngFor="let item of faqItems; let i = index" class="faq-item">
+        <div class="question">
+          {{ item.question }}
+        </div>
+        <!-- Afișează întotdeauna răspunsurile -->
+        <div class="answer">
+          {{ item.answer }}
         </div>
       </div>
-    </section>
+
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <!-- Secțiune pentru butonul de autentificare cu mesaj -->
+    <div class="auth-section">
+      <p class="auth-message">Alătură-te și învață!</p>
+      <button class="btn" (click)="goToLogin()">Începe acum!</button>
+    </div>
 
     <div class="benefits">
       <div class="benefit">
@@ -42,7 +60,5 @@
         <p>Urmărește progresul tău și îmbunătățește rezultatele.</p>
       </div>
     </div>
-
-    <button class="btn" (click)="goToLogin()">Autentificare</button>
   </div>
 </section>

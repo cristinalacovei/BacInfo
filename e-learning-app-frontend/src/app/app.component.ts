@@ -59,6 +59,12 @@ export class AppComponent implements OnInit {
     }
   }
 
+  navigateToLogin(): void {
+    this.router.navigate(['/login']).catch((err) => {
+      console.error('Failed to navigate to login page:', err);
+    });
+  }
+
   navigateToProfile(): void {
     if (this.isLoggedIn) {
       this.router.navigate(['/profile']).catch((err) => {

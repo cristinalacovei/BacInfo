@@ -1,109 +1,157 @@
 @import "../../styles/colors.scss";
 
-/* Stiluri globale */
-* {
+html,
+body {
+  height: 100%;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden; /* Evită derularea pe orizontală */
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
-  color: #333;
+  overflow-y: auto; /* Permite derularea pe verticală */
+}
+.about-section {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  background-image: url("../../../../public/coding.png");
+  background-size: cover; /* Imaginea va acoperi întreaga secțiune */
+  background-position: center;
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-/* Secțiunea FAQ */
-.faq-section {
-  padding: 50px 20px;
-  text-align: center;
+/* Overlay transparent pe fundal */
+.about-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Culoare semi-transparentă (negru cu opacitate de 50%) */
+  z-index: 1; /* Pune overlay-ul deasupra imaginii de fundal */
+}
+
+.about-section > * {
+  position: relative;
+  z-index: 2; /* Pune conținutul deasupra overlay-ului */
 }
 
 .container {
-  max-width: 800px;
-  margin: 0 auto;
+  display: flex;
+  align-items: flex-start; /* Aliniază elementele la începutul containerului */
+  gap: 40px;
+  max-width: 1000px;
+  flex-wrap: wrap;
+  justify-content: center; /* Center pe orizontală în container */
+  flex-direction: row;
 }
 
-/* Stil pentru întrebări */
+/* Imaginea */
+.image-container img {
+  width: 300px;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.image-container img:hover {
+  transform: scale(1.05);
+}
+
+/* Secțiunea text */
+.text-container {
+  max-width: 500px;
+  background-color: #333; /* Fundal gri închis */
+  padding: 20px; /* Adaugă padding pentru a da spațiu textului */
+  border-radius: 8px; /* Colțuri rotunjite */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Umbră ușoară pentru a evidenția secțiunea */
+}
+
+/* Titlu */
+.text-container h6 {
+  font-size: 18px;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+/* Întrebări și răspunsuri */
+.faq-item {
+  margin-bottom: 20px;
+}
+
 .question {
-  background: linear-gradient(
-    135deg,
-    #6a1b9a,
-    #8e24aa
-  ); /* Gradient pentru fundal */
+  background: linear-gradient(135deg, #6a1b9a, #8e24aa);
   color: white;
-  padding: 20px;
+  padding: 15px;
   border-radius: 8px;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: bold;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Umbră pentru întrebări */
-  margin-bottom: 20px; /* Spațiu între întrebare și răspuns */
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 .question:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Umbră mai mare la hover */
-  transform: scale(1.05); /* Ușoară mărire a întrebării la hover */
+  background: linear-gradient(135deg, #8e24aa, #a833c7);
 }
 
-/* Stil pentru răspunsuri */
 .answer {
-  font-size: 20px;
-  line-height: 1.6;
-  color: #333;
-  background-color: #f9f9f9;
-  padding: 20px;
+  background: #1e1e2e;
+  padding: 15px;
   border-radius: 8px;
-  text-align: left;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Umbră pentru răspunsuri */
-  opacity: 0;
-  animation: fadeIn 1s ease-out forwards;
-  margin-top: 10px;
+  font-size: 16px;
+  color: #ccc;
+  margin-top: 5px;
 }
 
-.answer:hover {
-  background-color: #f1f1f1; /* Culoare mai deschisă la hover */
+.faq-item.active .answer {
+  display: block; /* Apare doar când e activ */
 }
 
-/* Animație pentru apariția răspunsului */
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Stil pentru iconițele sociale */
+.social-icons {
+  margin-top: 20px;
 }
 
-/* Stil pentru elementele FAQ (întrebarea + răspunsul) */
-.faq-item {
-  margin-bottom: 30px;
+.social-icons a {
+  display: inline-block;
+  margin-right: 15px;
+  font-size: 24px;
+  color: white;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: #ffffff;
+  transform: scale(1.2);
 }
 
 /* Responsivitate */
 @media (max-width: 768px) {
-  .question {
-    font-size: 22px;
-    padding: 15px;
+  .container {
+    flex-direction: column;
+    text-align: center;
   }
 
-  .answer {
-    font-size: 18px;
-    padding: 15px;
+  .image-container img {
+    width: 250px;
   }
-}
 
-.about-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; /* Centrare pe mijloc */
-  text-align: center; /* Centrare text */
-  max-width: 80%;
-  margin: 0 auto; /* Centrare pe orizontală */
+  .text-container {
+    max-width: 100%;
+  }
 }
 
 .benefits {
@@ -130,30 +178,42 @@ body {
   margin-bottom: 10px;
 }
 
+/* Secțiunea pentru mesajul de autentificare */
+.auth-section {
+  position: absolute; /* Permite poziționarea absolută față de părinte */
+  text-align: center; /* Centrează textul pe orizontală */
+  background-color: #292945; /* Fundal pentru secțiune */
+  padding: 20px; /* Spațiu interior pentru un aspect mai plăcut */
+  border-radius: 8px; /* Colțuri rotunjite pentru uniformitate */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Umbră ușoară pentru a evidenția secțiunea */
+  width: 300px; /* Lățime fixă pentru secțiune */
+  top: 200px; /* Poziționează mai jos față de partea de sus */
+  left: -10px; /* Plasează secțiunea la marginea stângă a containerului */
+}
+
+/* Mesajul de autentificare */
+.auth-message {
+  font-size: 18px;
+  color: white;
+  margin-bottom: 15px; /* Spațiu între text și buton */
+  font-weight: bold;
+  text-transform: uppercase; /* Dacă vrei un mesaj mai vizibil */
+}
+
 /* Stil pentru butonul de autentificare */
 .btn {
-  background: $color-secondary;
+  background: #8e24aa; /* Culoarea ta secundară */
   color: white;
   padding: 12px 24px;
   font-size: 16px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  margin-top: 30px;
   transition: 0.3s;
+  align-self: center; /* Centrează butonul pe orizontală */
 }
 
 .btn:hover {
-  background: darken($color-secondary, 10%);
+  background: darken(#8e24aa, 10%);
   transform: scale(1.05);
-}
-.hero-img {
-  width: 100%;
-  max-width: 800px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.hero-img:hover {
-  transform: scale(1.1); /* Zoom ușor la hover */
-  opacity: 0.9; /* Ușoară schimbare a opacității */
 }

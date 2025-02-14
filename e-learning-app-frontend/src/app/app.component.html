@@ -11,8 +11,15 @@
       <h1>BacInfoLearn</h1>
     </div>
 
+    <div class="nav-links">
+      <!-- Link către lecții -->
+      <a routerLink="/home" class="nav-link" aria-label="Lectii"
+        >Lecții si Teste</a
+      >
+    </div>
+
     <div>
-      <!-- Buton Logout -->
+      <!-- Buton Logout (afisat doar daca utilizatorul este logat) -->
       <button
         *ngIf="isLoggedIn"
         (click)="logout()"
@@ -20,6 +27,16 @@
         aria-label="Logout"
       >
         Logout
+      </button>
+
+      <!-- Buton Autentificare (afisat doar daca utilizatorul nu este logat) -->
+      <button
+        *ngIf="!isLoggedIn"
+        (click)="navigateToLogin()"
+        class="login-button"
+        aria-label="Login"
+      >
+        Autentificare
       </button>
     </div>
   </nav>

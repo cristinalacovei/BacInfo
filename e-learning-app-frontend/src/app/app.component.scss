@@ -85,8 +85,7 @@
 }
 
 .nav-actions .login-button,
-.nav-actions .logout-button,
-.nav-actions .products-link {
+.nav-actions .logout-button {
   background-color: #3498db;
   color: white;
   border: none;
@@ -102,7 +101,7 @@
   background-color: #2980b9;
 }
 
-.logout-button,
+.login-button .logout-button,
 .products-link {
   width: 130px;
   height: 40px;
@@ -122,7 +121,8 @@
   background: transparent; /* Fundal transparent */
 }
 
-a.logout-button {
+a.logout-button,
+a.login-button {
   display: inline-block; /* Comportament de buton */
   text-align: center;
   text-decoration: none; /* Elimină sublinierea implicită */
@@ -137,6 +137,8 @@ a.logout-button {
   box-shadow: none;
 }
 
+.login-button::before,
+.login-button::after,
 .logout-button:before,
 .logout-button:after,
 .products-link:before,
@@ -153,6 +155,7 @@ a.logout-button {
   transition: 400ms ease all;
 }
 
+.login-button::after,
 .logout-button:after,
 .products-link:after {
   right: inherit;
@@ -161,10 +164,10 @@ a.logout-button {
   bottom: 0;
 }
 
+.login-button::before,
+.login-button::after,
 .logout-button:hover:before,
-.logout-button:hover:after,
-.products-link:hover:before,
-.products-link:hover:after {
+.logout-button:hover:after {
   width: 100%; /* Bordura devine completă */
   transition: 800ms ease all;
 }
@@ -175,66 +178,6 @@ a.logout-button {
   box-shadow: 0 4px 8px rgba(40, 1, 48, 0.6); /* Umbre pentru feedback */
 }
 
-.products-link {
-  width: 130px;
-  height: 40px;
-  line-height: 42px;
-  padding: 0;
-  border: none;
-  background: rgb(255, 27, 0);
-  background: linear-gradient(0deg, rgb(83, 48, 83) 10%, rgb(44, 2, 81) 90%);
-  color: #fff; /* Text alb */
-  border-radius: 8px; /* Colțuri rotunjite */
-  cursor: pointer;
-  font-size: 16px;
-  position: relative;
-  transition: 400ms ease all; /* Tranziții uniforme */
-  text-align: center;
-  display: inline-block;
-  text-decoration: none; /* Elimină sublinierea */
-}
-
-.products-link:hover {
-  color: #cd09f0; /* Schimbare culoare text */
-  background: transparent; /* Fundal transparent */
-  box-shadow: none;
-}
-
-.products-link:before,
-.products-link:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 2px;
-  width: 0;
-  background: #2c0335; /* Bordură animată */
-  box-shadow: -1px -1px 5px 0px #fff, 7px 7px 20px 0px #0003,
-    4px 4px 5px 0px #0002;
-  transition: 400ms ease all;
-}
-
-.products-link:after {
-  right: inherit;
-  top: inherit;
-  left: 0;
-  bottom: 0;
-}
-
-.products-link:hover:before,
-.products-link:hover:after {
-  width: 100%; /* Bordura devine completă */
-  transition: 800ms ease all;
-}
-
-.products-link:active {
-  transform: scale(0.95); /* Micșorare ușoară la click */
-  box-shadow: 0 4px 8px rgba(40, 37, 40, 0.6); /* Umbre pentru feedback */
-}
-
-.has-badge[data-count="0"]:after {
-  display: none; /* Hide badge when count is 0 */
-}
 .nav-links a,
 .nav-actions .login-button,
 .nav-actions .logout-button {
@@ -269,72 +212,71 @@ a.logout-button {
   transform: scale(1.05);
 }
 
-.has-badge {
-  position: relative;
-  display: inline-block;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.has-badge:active {
-  transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
-  background-color: rgba(72, 8, 82, 0.9); // Fundal mov strălucitor
-}
-
-.has-badge[data-count]:hover {
-  box-shadow: 0 6px 10px rgba(255, 255, 255, 0.8);
-  transform: scale(1.05);
-}
-
-.nav-button {
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  background-color: #6c0b6f; /* Mov */
-  color: white; /* Text alb */
-  border-radius: 50%; /* Formă rotundă */
+.login-button {
+  width: 150px; /* Dimensiune buton */
+  height: 45px;
+  line-height: 45px;
+  padding: 0;
+  border: none;
+  color: #fff; /* Text alb */
+  border-radius: 10px; /* Colțuri rotunjite */
   cursor: pointer;
-  font-size: 1.5em; /* Dimensiune icon */
+  font-size: 18px;
+  font-family: "Poppins", sans-serif;
+  position: relative;
+  transition: 0.3s ease all; /* Tranziție lină pentru efecte */
   text-align: center;
-  line-height: 40px; /* Centrare verticală */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: inline-block;
+  text-decoration: none; /* Elimină sublinierea */
+  background: linear-gradient(
+    135deg,
+    #6c0b6f,
+    #480852
+  ); /* Gradient închis și deschis */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Umbră subtile */
 
   &:hover {
-    transform: scale(1.1); /* Mărire pe hover */
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
-      0 0 20px rgba(108, 11, 111, 0.5); /* Glow mov */
+    background: linear-gradient(
+      135deg,
+      #5a0d5e,
+      #3b083e
+    ); /* Culoare la hover */
+    transform: scale(1.05); /* Mărire ușoară */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Umbra mai intensă */
+  }
+
+  &:focus {
+    outline: none; /* Elimină conturul implicit */
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 0 0 4px rgba(0, 0, 0, 0.3); /* Glow la focus */
   }
 
   &:active {
     transform: scale(0.95); /* Micșorare la click */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); /* Umbre mai intense */
-    background-color: #5a0d5e; /* Mov închis */
+    box-shadow: 0 4px 8px rgba(40, 1, 48, 0.6); /* Umbre mai intense */
   }
-}
 
-.has-badge[data-count]:after {
-  position: absolute;
-  right: 8%;
-  top: 5%;
-  content: attr(data-count);
-  font-size: 40%;
-  padding: 0.4em;
-  border-radius: 50%;
-  line-height: 1em;
-  color: white;
-  background: rgba(255, 0, 0, 0.9);
-  text-align: center;
-  min-width: 1em;
-  transition: transform 0.3s ease;
-}
+  ::before,
+  ::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background: #fff; /* Bordură animată */
+    transition: 0.4s ease all;
+  }
 
-.navbar .fa-stack {
-  margin: 0 10px;
-  cursor: pointer;
-  color: #fff;
-}
+  ::before {
+    left: 0;
+  }
 
-.navbar .fa-stack:hover {
-  color: #ccc;
+  ::after {
+    right: 0;
+  }
+
+  &:hover::before,
+  &:hover::after {
+    width: 100%; /* Extinderea bordurii pe hover */
+  }
 }
