@@ -1,0 +1,340 @@
+@import "../app/styles/colors.scss";
+
+.font-primary {
+  font-family: "Poppins", sans-serif; /* Fontul utilizat */
+  font-weight: bold; /* Asigură stilul bold */
+  letter-spacing: 0.5px; /* Opțional pentru îmbunătățirea aspectului */
+}
+
+.profile-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-primary;
+  color: white; /* Culoare text/icon */
+  border: none;
+  border-radius: 50%; /* Formă rotundă */
+  width: 40px; /* Dimensiune buton */
+  height: 40px;
+  font-size: 1.5em; /* Dimensiune icon */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Umbre subtile */
+
+  &:hover {
+    background-color: $color-primary-dark; /* Culoare pe hover */
+    transform: scale(1.1); /* Mărire ușoară pe hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Umbră mai intensă pe hover */
+  }
+
+  &:focus {
+    outline: none; /* Elimină conturul implicit */
+    background-color: $color-primary;
+    transform: scale(1.1); /* Mărire ușoară la focus */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 4px rgba(0, 0, 0, 0.3); /* Glow */
+  }
+
+  &:active {
+    transform: scale(0.95); /* Micșorare la click */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); /* Umbre mai intense la click */
+    background-color: darken(
+      $color-primary,
+      10%
+    ); /* Culoare mai închisă la click */
+  }
+}
+
+.navbar {
+  font-family: "Poppins";
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px; /* Spațiu pe margini */
+  background: linear-gradient(135deg, #7c0c8e, #000000); /* Fundal gradient */
+  color: rgb(215, 121, 255);
+  height: 60px;
+}
+
+.logo {
+  display: flex; /* Layout pe orizontală */
+  align-items: center; /* Aliniere verticală centrată */
+  gap: 12px; /* Spațiu între butonul de profil și titlu */
+  flex: 1; /* Asigură spațiere adecvată pentru partea stângă */
+}
+
+.logo h1 {
+  margin: 0; /* Elimină marginea implicită */
+  font-size: 1.5rem; /* Ajustează dimensiunea fontului */
+  color: white; /* Culoare albă pentru text */
+  font-weight: bold; /* Stil bold */
+}
+
+.centered-links {
+  flex: 1; /* Centrare pe mijloc */
+  display: flex;
+  justify-content: center;
+}
+
+.nav-links {
+  flex: 1; /* Elemente din partea dreaptă */
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px; /* Spațiu între elemente */
+}
+
+.nav-actions .login-button,
+.nav-actions .logout-button,
+.nav-actions .products-link {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.nav-actions .login-button:hover,
+.nav-actions .logout-button:hover {
+  background-color: #2980b9;
+}
+
+.logout-button,
+.products-link {
+  width: 130px;
+  height: 40px;
+  line-height: 42px;
+  padding: 0;
+  border: none;
+  color: #fff; /* Text alb */
+  border-radius: 8px; /* Colțuri rotunjite */
+  cursor: pointer;
+  font-size: 18px;
+  font-family: "Poppins", sans-serif;
+  position: relative;
+  transition: 400ms ease all; /* Tranziții uniforme */
+  text-align: center;
+  display: inline-block;
+  text-decoration: none; /* Elimină sublinierea */
+  background: transparent; /* Fundal transparent */
+}
+
+a.logout-button {
+  display: inline-block; /* Comportament de buton */
+  text-align: center;
+  text-decoration: none; /* Elimină sublinierea implicită */
+  border: none; /* Elimină orice bordură implicită */
+  padding: 0; /* Asigură consistență cu `button` */
+}
+
+.logout-button:hover,
+.products-link:hover {
+  color: #ffffff; /* Schimbare culoare text */
+  background: transparent; /* Fundal transparent */
+  box-shadow: none;
+}
+
+.logout-button:before,
+.logout-button:after,
+.products-link:before,
+.products-link:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 2px;
+  width: 0;
+  background: #2c0335; /* Bordură animată */
+  box-shadow: -1px -1px 5px 0px #fff, 7px 7px 20px 0px #0003,
+    4px 4px 5px 0px #0002;
+  transition: 400ms ease all;
+}
+
+.logout-button:after,
+.products-link:after {
+  right: inherit;
+  top: inherit;
+  left: 0;
+  bottom: 0;
+}
+
+.logout-button:hover:before,
+.logout-button:hover:after,
+.products-link:hover:before,
+.products-link:hover:after {
+  width: 100%; /* Bordura devine completă */
+  transition: 800ms ease all;
+}
+
+.logout-button:active,
+.products-link:active {
+  transform: scale(0.95); /* Micșorare ușoară la click */
+  box-shadow: 0 4px 8px rgba(40, 1, 48, 0.6); /* Umbre pentru feedback */
+}
+
+.products-link {
+  width: 130px;
+  height: 40px;
+  line-height: 42px;
+  padding: 0;
+  border: none;
+  background: rgb(255, 27, 0);
+  background: linear-gradient(0deg, rgb(83, 48, 83) 10%, rgb(44, 2, 81) 90%);
+  color: #fff; /* Text alb */
+  border-radius: 8px; /* Colțuri rotunjite */
+  cursor: pointer;
+  font-size: 16px;
+  position: relative;
+  transition: 400ms ease all; /* Tranziții uniforme */
+  text-align: center;
+  display: inline-block;
+  text-decoration: none; /* Elimină sublinierea */
+}
+
+.products-link:hover {
+  color: #cd09f0; /* Schimbare culoare text */
+  background: transparent; /* Fundal transparent */
+  box-shadow: none;
+}
+
+.products-link:before,
+.products-link:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 2px;
+  width: 0;
+  background: #2c0335; /* Bordură animată */
+  box-shadow: -1px -1px 5px 0px #fff, 7px 7px 20px 0px #0003,
+    4px 4px 5px 0px #0002;
+  transition: 400ms ease all;
+}
+
+.products-link:after {
+  right: inherit;
+  top: inherit;
+  left: 0;
+  bottom: 0;
+}
+
+.products-link:hover:before,
+.products-link:hover:after {
+  width: 100%; /* Bordura devine completă */
+  transition: 800ms ease all;
+}
+
+.products-link:active {
+  transform: scale(0.95); /* Micșorare ușoară la click */
+  box-shadow: 0 4px 8px rgba(40, 37, 40, 0.6); /* Umbre pentru feedback */
+}
+
+.has-badge[data-count="0"]:after {
+  display: none; /* Hide badge when count is 0 */
+}
+.nav-links a,
+.nav-actions .login-button,
+.nav-actions .logout-button {
+  color: white; /* Text alb */
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s ease, transform 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  background: transparent; /* Fundal transparent */
+}
+
+.nav-links a.active,
+.nav-actions .logout-button:hover {
+  background: linear-gradient(135deg, #6c0b6f, #480852); // Mov mai deschis
+  transform: scale(1.05); // Mărire ușoară pe hover
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.4); // Umbră subtilă
+}
+
+.nav-actions .logout-button:active {
+  background: linear-gradient(135deg, #8c0d8a, #480852); // Mov intens la click
+  transform: scale(1.1); // Evidențiere mai mare la click
+  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.6);
+}
+
+.nav-links a:hover {
+  background: linear-gradient(135deg, #5a0d5e, #3b083e); // Gradient mai intens
+  transform: scale(1.05);
+}
+
+.has-badge {
+  position: relative;
+  display: inline-block;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.has-badge:active {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
+  background-color: rgba(72, 8, 82, 0.9); // Fundal mov strălucitor
+}
+
+.has-badge[data-count]:hover {
+  box-shadow: 0 6px 10px rgba(255, 255, 255, 0.8);
+  transform: scale(1.05);
+}
+
+.nav-button {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background-color: #6c0b6f; /* Mov */
+  color: white; /* Text alb */
+  border-radius: 50%; /* Formă rotundă */
+  cursor: pointer;
+  font-size: 1.5em; /* Dimensiune icon */
+  text-align: center;
+  line-height: 40px; /* Centrare verticală */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1); /* Mărire pe hover */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
+      0 0 20px rgba(108, 11, 111, 0.5); /* Glow mov */
+  }
+
+  &:active {
+    transform: scale(0.95); /* Micșorare la click */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); /* Umbre mai intense */
+    background-color: #5a0d5e; /* Mov închis */
+  }
+}
+
+.has-badge[data-count]:after {
+  position: absolute;
+  right: 8%;
+  top: 5%;
+  content: attr(data-count);
+  font-size: 40%;
+  padding: 0.4em;
+  border-radius: 50%;
+  line-height: 1em;
+  color: white;
+  background: rgba(255, 0, 0, 0.9);
+  text-align: center;
+  min-width: 1em;
+  transition: transform 0.3s ease;
+}
+
+.navbar .fa-stack {
+  margin: 0 10px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.navbar .fa-stack:hover {
+  color: #ccc;
+}

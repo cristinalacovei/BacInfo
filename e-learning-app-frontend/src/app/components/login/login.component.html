@@ -1,0 +1,163 @@
+<section>
+  <div class="container">
+    <div class="row full-screen align-items-center">
+      <!-- Left Section (Despre Platformă) -->
+
+      <!-- Right Section (Login) -->
+      <div class="right">
+        <div class="form" *ngIf="!isLoggedIn; else logoutTemplate">
+          <div class="text-center">
+            <h6><span>Autentificare</span> <span>Înregistrare</span></h6>
+            <input type="checkbox" class="checkbox" id="reg-log" />
+            <label for="reg-log"></label>
+            <div class="card-3d-wrap">
+              <div class="card-3d-wrapper">
+                <!-- Log In Card -->
+                <div class="card-front">
+                  <div class="center-wrap">
+                    <h4 class="heading">Autentificare</h4>
+                    <form [formGroup]="loginForm" (ngSubmit)="login()">
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-style"
+                          placeholder="Nume utilizator"
+                          formControlName="username"
+                        />
+                        <i class="input-icon material-icons">person</i>
+                        <span
+                          *ngIf="
+                            usernameControl?.invalid && usernameControl?.touched
+                          "
+                          class="validation-message"
+                        >
+                          Numele de utilizator este obligatoriu și trebuie să
+                          aibă cel puțin 3 caractere.
+                        </span>
+                      </div>
+
+                      <div class="form-group">
+                        <input
+                          type="password"
+                          class="form-style"
+                          placeholder="Parolă"
+                          formControlName="password"
+                        />
+                        <i class="input-icon material-icons">lock</i>
+                        <span
+                          *ngIf="password?.invalid && password?.touched"
+                          class="validation-message"
+                        >
+                          Parola este obligatorie și trebuie să aibă cel puțin 6
+                          caractere.
+                        </span>
+                      </div>
+
+                      <button
+                        type="submit"
+                        class="btn"
+                        [disabled]="loginForm.invalid"
+                      >
+                        Autentificare
+                      </button>
+                    </form>
+                  </div>
+                </div>
+                <!-- Sign Up Card -->
+                <div class="card-back">
+                  <div class="center-wrap">
+                    <h4 class="heading">Înregistrare</h4>
+                    <form [formGroup]="signupForm" (ngSubmit)="signup()">
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-style"
+                          placeholder="Prenume"
+                          formControlName="firstName"
+                        />
+                        <i class="input-icon material-icons">person</i>
+                      </div>
+
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-style"
+                          placeholder="Nume"
+                          formControlName="lastName"
+                        />
+                        <i class="input-icon material-icons">person</i>
+                      </div>
+
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          class="form-style"
+                          placeholder="Nume utilizator"
+                          formControlName="username"
+                          autocomplete="off"
+                        />
+                        <i class="input-icon material-icons">perm_identity</i>
+                        <span
+                          *ngIf="signupUsername?.hasError('usernameTaken')"
+                          class="error"
+                        >
+                          Numele de utilizator este deja folosit.
+                        </span>
+                        <span
+                          *ngIf="signupUsername?.valid && signupUsername?.dirty"
+                          class="success"
+                        >
+                          Numele de utilizator este disponibil! ✅
+                        </span>
+                      </div>
+
+                      <div class="form-group">
+                        <input
+                          type="email"
+                          class="form-style"
+                          placeholder="Adresă de email"
+                          formControlName="emailAddress"
+                          autocomplete="off"
+                        />
+                        <i class="input-icon material-icons">alternate_email</i>
+                      </div>
+
+                      <div class="form-group">
+                        <input
+                          type="password"
+                          class="form-style"
+                          placeholder="Parolă"
+                          formControlName="password"
+                          autocomplete="off"
+                        />
+                        <i class="input-icon material-icons">lock</i>
+                      </div>
+
+                      <button
+                        type="submit"
+                        class="btn"
+                        [disabled]="signupForm.invalid"
+                      >
+                        Înregistrare
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Logout Template -->
+        <ng-template #logoutTemplate>
+          <div class="form">
+            <div class="text-center">
+              <h4>Bine ai revenit, {{ username }}!</h4>
+              <button class="btn" (click)="logout()">Deconectare</button>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</section>

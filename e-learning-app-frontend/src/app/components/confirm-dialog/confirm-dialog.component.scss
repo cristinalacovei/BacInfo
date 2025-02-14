@@ -1,0 +1,108 @@
+.confirm-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  background: linear-gradient(
+    135deg,
+    #1e1e1e,
+    #3d003d
+  ); /* Negru spre mov închis */
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7); /* Umbre subtile */
+  color: #ffffff; /* Text alb */
+}
+
+.dialog-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #cd09f0; /* Mov intens */
+  margin-bottom: 16px;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: "Roboto", sans-serif;
+}
+
+.dialog-content p {
+  font-size: 16px;
+  color: #eaeaea; /* Text gri deschis */
+  text-align: center;
+  margin: 16px 0;
+  font-family: "Roboto", sans-serif;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+button {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: "Roboto", sans-serif;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); /* Umbre pentru butoane */
+}
+
+button.cancel-button {
+  background: linear-gradient(135deg, #3d003d, #6a006a); /* Mov închis */
+  color: #ffffff; /* Alb pentru text */
+}
+
+button.cancel-button:hover {
+  background: #a300a3; /* Mov deschis pe hover */
+  box-shadow: 0 4px 10px rgba(160, 0, 160, 0.5); /* Umbre pe hover */
+  transform: scale(1.05); /* Mică mărire */
+}
+
+button.confirm-button {
+  background: linear-gradient(
+    135deg,
+    #4caf50,
+    #2e7d32
+  ); /* Verde pentru confirmare */
+  color: #ffffff; /* Alb pentru text */
+}
+
+button.confirm-button:hover {
+  background: #66bb6a; /* Verde deschis pe hover */
+  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.5); /* Umbre pe hover */
+  transform: scale(1.05); /* Mică mărire */
+}
+
+button:active {
+  transform: scale(0.95); /* Micșorare pe click */
+}
+
+button:disabled {
+  background: #757575; /* Gri pentru starea dezactivată */
+  cursor: not-allowed;
+  box-shadow: none;
+}
+button.ok-button {
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button.ok-button:hover {
+  background: #66bb6a;
+  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.5);
+  transform: scale(1.05);
+}
+
+button.ok-button:active {
+  transform: scale(0.95);
+}

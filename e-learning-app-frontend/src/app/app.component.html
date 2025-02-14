@@ -1,0 +1,34 @@
+<header>
+  <nav class="navbar" aria-label="Main Navigation">
+    <div class="logo">
+      <button
+        class="profile-button"
+        (click)="navigateToProfile()"
+        aria-label="Profile"
+      >
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <h1>BacInfoLearn</h1>
+    </div>
+
+    <div>
+      <!-- Buton Logout -->
+      <button
+        *ngIf="isLoggedIn"
+        (click)="logout()"
+        class="logout-button"
+        aria-label="Logout"
+      >
+        Logout
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main role="main" aria-labelledby="main-content-title">
+  <router-outlet></router-outlet>
+</main>
+
+<footer role="contentinfo">
+  <p>© {{ currentYear }} BacInfoLearn. All Rights Reserved.</p>
+</footer>

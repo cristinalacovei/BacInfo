@@ -1,0 +1,30 @@
+$color-accent: #c29500;
+$color-light: #e4c580;
+$color-bg: #200101;
+$color-card-bg: #000787;
+$color-text-light: #ffffff;
+$color-shadow: rgba(0, 0, 0, 0.5);
+$color-shadow-light: rgba(0, 0, 0, 0.7);
+$color-shadow-image: rgba(0, 0, 0, 0.6);
+$color-shadow-hover: rgba(0, 0, 0, 0.6);
+$color-button-bg: #e0b31e;
+$color-button-bg-hover: #e7b019;
+
+// _colors.scss
+$color-primary-dark: #15001c;
+$color-primary: #290232;
+$color-secondary: #b11be7;
+$color-white: #ffffff;
+$color-white-smoke: #f5f5f5;
+$color-black: #000000;
+$color-dark: #1e0924;
+$color-success: #4caf50;
+$color-error: #f44336;
+
+:root {
+  --mainColor: #{$color-secondary};
+  --white: #{$color-white};
+  --whiteSmoke: #{$color-white-smoke};
+  --black: #{$color-black};
+  --shadow: 0 4px 8px rgba(177, 27, 231, 0.3);
+}

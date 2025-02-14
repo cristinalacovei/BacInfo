@@ -1,0 +1,159 @@
+@import "../../styles/colors.scss";
+
+/* Stiluri globale */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+/* Secțiunea FAQ */
+.faq-section {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Stil pentru întrebări */
+.question {
+  background: linear-gradient(
+    135deg,
+    #6a1b9a,
+    #8e24aa
+  ); /* Gradient pentru fundal */
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Umbră pentru întrebări */
+  margin-bottom: 20px; /* Spațiu între întrebare și răspuns */
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.question:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Umbră mai mare la hover */
+  transform: scale(1.05); /* Ușoară mărire a întrebării la hover */
+}
+
+/* Stil pentru răspunsuri */
+.answer {
+  font-size: 20px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: left;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Umbră pentru răspunsuri */
+  opacity: 0;
+  animation: fadeIn 1s ease-out forwards;
+  margin-top: 10px;
+}
+
+.answer:hover {
+  background-color: #f1f1f1; /* Culoare mai deschisă la hover */
+}
+
+/* Animație pentru apariția răspunsului */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stil pentru elementele FAQ (întrebarea + răspunsul) */
+.faq-item {
+  margin-bottom: 30px;
+}
+
+/* Responsivitate */
+@media (max-width: 768px) {
+  .question {
+    font-size: 22px;
+    padding: 15px;
+  }
+
+  .answer {
+    font-size: 18px;
+    padding: 15px;
+  }
+}
+
+.about-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Centrare pe mijloc */
+  text-align: center; /* Centrare text */
+  max-width: 80%;
+  margin: 0 auto; /* Centrare pe orizontală */
+}
+
+.benefits {
+  display: flex;
+  justify-content: center; /* Centrare pe mijloc */
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.benefit {
+  background: #292945;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  color: white;
+  width: 280px; /* Puțin mai mare pentru aspect mai echilibrat */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ușor efect de umbră */
+}
+
+.benefit i {
+  font-size: 40px;
+  color: $color-secondary;
+  margin-bottom: 10px;
+}
+
+/* Stil pentru butonul de autentificare */
+.btn {
+  background: $color-secondary;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 30px;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: darken($color-secondary, 10%);
+  transform: scale(1.05);
+}
+.hero-img {
+  width: 100%;
+  max-width: 800px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.hero-img:hover {
+  transform: scale(1.1); /* Zoom ușor la hover */
+  opacity: 0.9; /* Ușoară schimbare a opacității */
+}
