@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpClientModule } from '@angular/common/http';
@@ -23,6 +24,8 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth'; // Import Fir
 import { environment } from '../app/environments/environment';
 import { AuthService } from './services/auth.service';
 import { AboutComponent } from './components/about/about.component';
+import { LectiiComponent } from './components/lectii/lectii.component';
+import { AuthRedirectComponent } from './components/auth-redirect/auth-redirect.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +34,8 @@ import { AboutComponent } from './components/about/about.component';
     ConfirmDialogComponent,
     HomeComponent,
     AboutComponent,
+    LectiiComponent,
+    AuthRedirectComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,6 +52,7 @@ import { AboutComponent } from './components/about/about.component';
     MatFormFieldModule,
     AngularFireModule.initializeApp(environment.firebaseConfig), // Initialize Firebase
     AngularFireAuthModule, // Add AngularFireAuthModule to the imports
+    MatCardModule,
   ],
   providers: [
     AuthService,

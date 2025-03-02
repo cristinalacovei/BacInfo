@@ -1,5 +1,6 @@
 package e_learning_app.util;
 
+import e_learning_app.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -20,6 +21,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 import java.util.function.Function;
 
 @Component
@@ -105,5 +107,14 @@ public class JwtUtil {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+    public String generateTokenForOAuth2User(User user) {
+        return Jwts.builder()
+                .setSubject(user.getUsername())
+                .claim("authorities", List.of("ROLE_" + user.getUserRole()))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
+                .signWith(privateKey, SignatureAlgorithm.RS256)
+                .compact();
     }
 }

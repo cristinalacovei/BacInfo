@@ -47,6 +47,43 @@ ul {
   min-height: 100vh; /* Asigură-te că secțiunea are o înălțime suficientă */
 }
 
+.google-login-container {
+  display: flex;
+  flex-direction: row; /* Elemente pe orizontală */
+  align-items: center; /* Centrare verticală */
+  gap: 8px; /* Spațiu între text și icon */
+  margin-top: 10px; /* Ajustare poziție */
+  margin-left: 60px;
+}
+
+.google-text {
+  font-size: 14px;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap; /* Evită trecerea la linie nouă */
+}
+.google-signin-btn {
+  background-image: url("../../../../public/google.png"); /* Cale corectă */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px; /* Dimensiunea icon-ului */
+  height: 35px;
+  border-radius: 50%;
+  transition: transform 0.2s ease-in-out;
+}
+
+.google-signin-btn:hover {
+  transform: scale(1.1);
+}
+
 .section::before {
   content: "";
   position: absolute;

@@ -72,6 +72,10 @@ export class LoginComponent implements OnInit {
       );
   }
 
+  loginWithGoogle() {
+    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+  }
+
   signup(): void {
     if (this.signupForm.invalid) {
       return;

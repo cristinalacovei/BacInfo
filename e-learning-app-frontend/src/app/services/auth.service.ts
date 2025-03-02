@@ -10,11 +10,15 @@ import { User } from '../types/user.types';
 export class AuthService {
   private readonly baseUrl = environment.apiUrl;
 
+  // 🔥 Corectăm inițializarea isLoggedInSubject
+  private isLoggedInSubject = new BehaviorSubject<boolean>(this.checkToken());
+  isLoggedIn$ = this.isLoggedInSubject.asObservable(); // UI ascultă schimbările
+
   constructor(private http: HttpClient) {}
 
-  private isLoggedInSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
-
-  private currentUserSubject = new BehaviorSubject<any>(null);
+  private checkToken(): boolean {
+    return !!localStorage.getItem('token');
+  }
 
   signup(userData: Partial<User>): Observable<any> {
     return this.http.post(`${this.baseUrl}/api/users`, userData);
@@ -32,6 +36,7 @@ export class AuthService {
         tap((token: string) => {
           localStorage.setItem('token', token);
           localStorage.setItem('username', username);
+          this.isLoggedInSubject.next(true); // 🔥 UI-ul se va actualiza automat
         })
       );
   }
@@ -44,14 +49,19 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
+  setToken(token: string) {
+    localStorage.setItem('token', token);
+    this.isLoggedInSubject.next(true); // 🔥 UI-ul se actualizează fără refresh
+  }
+
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
-    this.isLoggedInSubject.next(false);
+    this.isLoggedInSubject.next(false); // 🔥 UI-ul va reacționa instant la deconectare
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    return this.isLoggedInSubject.value; // ✅ Se bazează pe BehaviorSubject
   }
 
   getIsLoggedIn(): Observable<boolean> {

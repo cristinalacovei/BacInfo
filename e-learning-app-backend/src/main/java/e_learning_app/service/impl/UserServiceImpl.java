@@ -19,6 +19,22 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    public User findByEmailOrCreate(String email, String firstName, String lastName) {
+        return userRepository.findByEmailAddress(email)
+                .orElseGet(() -> {
+                    User newUser = User.builder()
+                            .emailAddress(email)
+                            .firstName(firstName)
+                            .lastName(lastName)
+                            .username(email)
+                            .password(passwordEncoder.encode("")) // Empty password for OAuth users
+                            .userRole("USER")
+                            .build();
+                    return userRepository.save(newUser);
+                });
+    }
+
+    @Override
     public User getUserById(UUID id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + id));

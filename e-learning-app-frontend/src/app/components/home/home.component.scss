@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to bottom, #4a148c, #000);
+}
+
+.container {
+  position: relative;
+  background-image: url("../../../../public/coding.png");
+  background-size: cover;
+  background-position: center;
+  min-width: none;
+  max-width: 2000px;
+  min-height: 100vh; /* Asigură-te că secțiunea are o înălțime suficientă */
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Overlay negru semi-transparent */
+  z-index: 1; /* Pune overlay-ul sub conținut */
+}
+
+.container > * {
+  position: relative;
+  z-index: 2; /* Pune conținutul deasupra overlay-ului */
+}
+
+.card-wrapper {
+  display: flex;
+  gap: 20px;
+}
+
+.custom-card {
+  width: 300px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-radius: 15px;
+  padding: 20px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.custom-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+}

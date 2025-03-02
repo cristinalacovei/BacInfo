@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/auth")
@@ -46,4 +48,15 @@ public class AuthController {
             return ResponseEntity.status(500).body("Authentication error occurred");
         }
     }
+
+    @PostMapping("/google")
+    public ResponseEntity<String> authenticateWithGoogle(@RequestBody Map<String, String> body) {
+        String token = body.get("token");
+        if (token == null || token.isEmpty()) {
+            return ResponseEntity.badRequest().body("Token missing");
+        }
+
+        return ResponseEntity.ok(token);
+    }
+
 }
