@@ -54,6 +54,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/check-email").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
