@@ -39,5 +39,11 @@ public class LessonContentController {
         lessonContentService.deleteLessonContent(id);
         return ResponseEntity.noContent().build();
     }
+    @PutMapping("/lesson/{lessonId}")
+    public ResponseEntity<Void> updateLessonContent(@PathVariable UUID lessonId, @RequestBody List<LessonContent> contents) {
+        lessonContentService.updateLessonContents(lessonId, contents);
+        return ResponseEntity.ok().build();
+    }
+
 }
 

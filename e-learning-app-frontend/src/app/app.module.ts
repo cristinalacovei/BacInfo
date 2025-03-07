@@ -26,6 +26,7 @@ import { AuthService } from './services/auth.service';
 import { AboutComponent } from './components/about/about.component';
 import { LectiiComponent } from './components/lectii/lectii.component';
 import { AuthRedirectComponent } from './components/auth-redirect/auth-redirect.component';
+import { LectieComponent } from './components/lectie/lectie.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { AuthRedirectComponent } from './components/auth-redirect/auth-redirect.
     AboutComponent,
     LectiiComponent,
     AuthRedirectComponent,
+    LectieComponent,
   ],
   imports: [
     BrowserModule,

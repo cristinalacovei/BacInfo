@@ -1,0 +1,13 @@
+<div class="container">
+  <h1>Lista Lecțiilor</h1>
+  <div *ngFor="let an of ani">
+    <button (click)="selecteazaAn(an.nivel)" class="btn btn-primary">
+      {{ an.nume }}
+    </button>
+    <ul *ngIf="anSelectat === an.nivel">
+      <li *ngFor="let lectie of lectiiPerAn[an.nume]">
+        <a [routerLink]="['/lectie', lectie.id]">{{ lectie.title }}</a>
+      </li>
+    </ul>
+  </div>
+</div>

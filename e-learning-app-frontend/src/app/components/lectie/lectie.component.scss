@@ -1,0 +1,35 @@
+.container {
+  max-width: 800px;
+  margin: auto;
+}
+
+.card {
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+.scheme-container {
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f8f9fa;
+}
+
+.embed-responsive {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.text-primary {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.text-muted {
+  font-size: 1rem;
+}

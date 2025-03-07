@@ -54,6 +54,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/check-email").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
+                        .requestMatchers("/api/lessons").permitAll()
+                        .requestMatchers("/api/lessons/class/").permitAll()
+                        .requestMatchers("/api/lesson-content").permitAll()
 
                         .anyRequest().authenticated()
                 )
