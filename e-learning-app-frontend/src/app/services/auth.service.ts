@@ -98,4 +98,20 @@ export class AuthService {
       params: { email },
     });
   }
+
+  forgotPassword(email: string): Observable<string> {
+    return this.http.post<string>(
+      `${this.baseUrl}/api/auth/forgot-password`,
+      { email },
+      { responseType: 'text' as 'json' }
+    );
+  }
+
+  resetPassword(token: string, newPassword: string): Observable<string> {
+    return this.http.post<string>(
+      `${this.baseUrl}/api/auth/reset-password`,
+      { token, newPassword },
+      { responseType: 'text' as 'json' }
+    );
+  }
 }

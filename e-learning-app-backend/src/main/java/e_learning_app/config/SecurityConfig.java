@@ -49,14 +49,19 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/token").permitAll()
+                        .requestMatchers("/api/auth/forgot-password").permitAll()
+                        .requestMatchers("/api/auth/reset-password").permitAll()
                         .requestMatchers("/api/users").permitAll()
                         .requestMatchers("/api/users/check-username").permitAll()
                         .requestMatchers("/api/users/check-email").permitAll()
+                        .requestMatchers("/api/users/username/").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
                         .requestMatchers("/api/lessons").permitAll()
                         .requestMatchers("/api/lessons/class/").permitAll()
                         .requestMatchers("/api/lesson-content").permitAll()
+                        .requestMatchers("/test-email").permitAll()
+
 
                         .anyRequest().authenticated()
                 )

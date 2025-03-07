@@ -147,3 +147,11 @@ INSERT INTO answer (id, question_id, answer_text, is_correct) VALUES
 
 INSERT INTO answer (id, question_id, answer_text, is_correct) VALUES
     (uuid_generate_v4(), (SELECT id FROM question WHERE question_text = 'Ce este o variabilă?'), 'Un operator matematic', false);
+
+
+CREATE TABLE password_reset_token (
+                                      id UUID PRIMARY KEY,
+                                      token VARCHAR(255) NOT NULL UNIQUE,
+                                      user_id UUID NOT NULL,
+                                      expiry_date TIMESTAMP NOT NULL
+);

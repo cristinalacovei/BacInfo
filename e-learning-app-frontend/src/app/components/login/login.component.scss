@@ -619,3 +619,20 @@ input[type="checkbox"] {
   color: green;
   font-size: 12px;
 }
+.forgot-password a {
+  color: #fec0fa;
+  text-decoration: none; /* Elimină sublinierea implicită */
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.forgot-password a:hover {
+  color: #ffa3f9; /* Culoare mai închisă la hover */
+  text-decoration: underline; /* Adaugă sublinierea când treci cu mouse-ul */
+  text-decoration-color: #f62ccd; /* Culoare a sublinierii pentru un efect mai plăcut */
+}
+
+.forgot-password a:active {
+  color: #003366; /* Culoare mai închisă când este apăsat */
+}

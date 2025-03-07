@@ -27,6 +27,8 @@ import { AboutComponent } from './components/about/about.component';
 import { LectiiComponent } from './components/lectii/lectii.component';
 import { AuthRedirectComponent } from './components/auth-redirect/auth-redirect.component';
 import { LectieComponent } from './components/lectie/lectie.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { LectieComponent } from './components/lectie/lectie.component';
     LectiiComponent,
     AuthRedirectComponent,
     LectieComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,

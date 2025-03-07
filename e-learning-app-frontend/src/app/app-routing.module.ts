@@ -6,6 +6,8 @@ import { AboutComponent } from './components/about/about.component';
 import { LectiiComponent } from './components/lectii/lectii.component';
 import { AuthRedirectComponent } from './components/auth-redirect/auth-redirect.component';
 import { LectieComponent } from './components/lectie/lectie.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 const routes: Routes = [
   { path: '', component: AboutComponent },
@@ -14,6 +16,8 @@ const routes: Routes = [
   { path: 'lectii', component: LectiiComponent },
   { path: 'lectie/:id', component: LectieComponent },
   { path: 'oauth2/redirect', component: AuthRedirectComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
 ];
 
 @NgModule({
