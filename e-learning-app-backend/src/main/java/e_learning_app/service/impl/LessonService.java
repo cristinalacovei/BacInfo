@@ -1,4 +1,5 @@
 package e_learning_app.service.impl;
+
 import e_learning_app.model.Lesson;
 import e_learning_app.repository.LessonRepository;
 import org.springframework.stereotype.Service;
@@ -33,5 +34,14 @@ public class LessonService {
 
     public void deleteLesson(UUID id) {
         lessonRepository.deleteById(id);
+    }
+
+    public Optional<Lesson> updateLesson(UUID id, Lesson updatedLesson) {
+        return lessonRepository.findById(id).map(existingLesson -> {
+            existingLesson.setTitle(updatedLesson.getTitle());
+            existingLesson.setDescription(updatedLesson.getDescription());
+            existingLesson.setContent(updatedLesson.getContent());
+            return lessonRepository.save(existingLesson);
+        });
     }
 }

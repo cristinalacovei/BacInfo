@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatOptionModule } from '@angular/material/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -29,6 +31,11 @@ import { AuthRedirectComponent } from './components/auth-redirect/auth-redirect.
 import { LectieComponent } from './components/lectie/lectie.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { EditorComponent } from './components/editor/editor.component';
+import { QuillModule } from 'ngx-quill';
+import { CreateTestDialogComponent } from './components/create-test-dialog/create-test-dialog.component';
+import { CreateQuestionsComponent } from './components/create-questions/create-questions.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +49,10 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
     LectieComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    ProfileComponent,
+    EditorComponent,
+    CreateTestDialogComponent,
+    CreateQuestionsComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +70,9 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
     AngularFireModule.initializeApp(environment.firebaseConfig), // Initialize Firebase
     AngularFireAuthModule, // Add AngularFireAuthModule to the imports
     MatCardModule,
+    AngularEditorModule,
+    QuillModule.forRoot(),
+    MatOptionModule,
   ],
   providers: [
     AuthService,

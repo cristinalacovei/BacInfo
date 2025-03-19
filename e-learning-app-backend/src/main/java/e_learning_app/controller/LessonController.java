@@ -44,5 +44,10 @@ public class LessonController {
         lessonService.deleteLesson(id);
         return ResponseEntity.noContent().build();
     }
-}
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Lesson> updateLesson(@PathVariable UUID id, @RequestBody Lesson updatedLesson) {
+        Optional<Lesson> updated = lessonService.updateLesson(id, updatedLesson);
+        return updated.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+}

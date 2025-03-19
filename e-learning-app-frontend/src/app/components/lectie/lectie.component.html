@@ -1,89 +1,49 @@
 <div class="container mt-4">
   <div *ngIf="lectie">
     <div class="card shadow-lg p-4">
-      <h1
-        class="text-center text-primary"
-        contenteditable="true"
-        (input)="updateTitle($event)"
-      >
+      <h1 class="text-center text-primary">
         {{ lectie.title }}
       </h1>
-      <p
-        class="text-muted text-center"
-        contenteditable="true"
-        (input)="updateDescription($event)"
-      >
+      <p class="text-muted text-center">
         {{ lectie.description }}
       </p>
-    </div>
 
-    <div class="text-center mt-4">
-      <button class="btn btn-warning" (click)="toggleEditMode()">
-        Editează Lecția
+      <button mat-raised-button color="accent" (click)="toggleEditMode()">
+        {{ isEditing ? "Anulează" : "Editează lecția" }}
       </button>
-    </div>
 
-    <div class="mt-4">
-      <h2 class="text-secondary">Conținutul Lecției</h2>
-
-      <div
-        *ngFor="let content of lessonContents; let i = index"
-        class="card mb-3 shadow-sm"
-      >
-        <div class="card-body">
-          <!-- Editare text inline -->
-          <p
-            *ngIf="content.contentType === 'TEXT'"
-            contenteditable="true"
-            (input)="updateTextContent($event, i)"
-          >
-            {{ content.textContent }}
-          </p>
-
-          <!-- Editare URL imagine -->
-          <img
-            *ngIf="content.contentType === 'IMAGE'"
-            [src]="content.contentUrl"
-            alt="Imagine lecție"
-            class="img-fluid rounded"
-          />
-          <input
-            *ngIf="editMode && content.contentType === 'IMAGE'"
-            type="text"
-            [(ngModel)]="content.contentUrl"
-            (input)="updateContentUrl(i)"
-          />
-
-          <!-- Editare URL video -->
-          <div
-            class="embed-responsive embed-responsive-16by9"
-            *ngIf="content.contentType === 'VIDEO'"
-          >
-            <iframe
-              class="embed-responsive-item"
-              [src]="content.contentUrl"
-              allowfullscreen
-            ></iframe>
-          </div>
-          <input
-            *ngIf="editMode && content.contentType === 'VIDEO'"
-            type="text"
-            [(ngModel)]="content.contentUrl"
-            (input)="updateContentUrl(i)"
-          />
-
-          <button class="btn btn-danger mt-2" (click)="deleteContent(i)">
-            Șterge
-          </button>
+      <div class="lesson-content mt-4">
+        <!-- Mod de vizualizare -->
+        <div *ngIf="!isEditing">
+          <div [innerHTML]="lectie.content"></div>
         </div>
-      </div>
 
-      <button class="btn btn-success" (click)="addContent()">
-        Adaugă Conținut
-      </button>
-      <button class="btn btn-primary" (click)="saveChanges()">
-        Salvează Modificările
-      </button>
+        <!-- Mod de editare -->
+        <form *ngIf="isEditing" [formGroup]="lessonForm">
+          <mat-form-field appearance="outline">
+            <mat-label>Titlul lecției</mat-label>
+            <input matInput formControlName="title" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Descrierea lecției</mat-label>
+            <input matInput formControlName="description" />
+          </mat-form-field>
+
+          <div class="form-group">
+            <label>Conținutul lecției</label>
+            <quill-editor
+              formControlName="content"
+              [modules]="editorConfig"
+              placeholder="Scrieți conținutul lecției..."
+            ></quill-editor>
+          </div>
+
+          <button mat-raised-button color="primary" (click)="saveLesson()">
+            Salvează modificările
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </div>

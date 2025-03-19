@@ -19,8 +19,11 @@ public class Lesson extends BaseEntity {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String content;
+
     @Column(name = "class_level", nullable = false)
-    private int classLevel; // 9, 10, 11, 12
+    private int classLevel; // Nivelul clasei: 9, 10, 11, 12
 
     @OneToOne
     @JoinColumn(name = "test_id")

@@ -12,6 +12,7 @@ interface Lesson {
   id: string;
   title: string;
   description: string;
+  content?: string;
   classLevel: number;
 }
 
@@ -50,5 +51,9 @@ export class LectiiService {
       `${this.lessonContentUrl}/lesson/${lessonId}`,
       contents
     );
+  }
+
+  updateLectie(lesson: Lesson): Observable<Lesson> {
+    return this.http.put<Lesson>(`${this.apiUrl}/${lesson.id}`, lesson);
   }
 }
