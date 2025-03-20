@@ -1,35 +1,91 @@
+/* Fundal general al paginii */
+body,
 .container {
-  max-width: 800px;
-  margin: auto;
+  background: linear-gradient(135deg, #0d0d0d, #1a1a1a); /* Gradient negru */
+  color: #ffffff; /* Text alb */
+  justify-content: center;
 }
 
+/* Card pentru lecție */
 .card {
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 15px;
+  background: #ffffff; /* Negru semi-transparent */
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 5px 15px rgba(154, 15, 191, 0.3); /* Umbră mov */
+  justify-content: center;
 }
 
-.img-fluid {
-  max-width: 100%;
-  height: auto;
-}
-
-.scheme-container {
-  border: 1px solid #ddd;
-  padding: 10px;
-  background-color: #f8f9fa;
-}
-
-.embed-responsive {
-  border-radius: 10px;
-  overflow: hidden;
-}
-
+/* Titlul lecției */
 .text-primary {
   font-size: 1.8rem;
   font-weight: bold;
+  color: #9a0fbf !important; /* Mov */
+  text-align: center;
+  text-shadow: 2px 2px 5px rgba(154, 15, 191, 0.5); /* Umbră mov subtilă */
 }
 
-.text-muted {
-  font-size: 1rem;
+/* Fundal conținut lecție */
+.lesson-content {
+  background: #ffffff; /* Gri închis semi-transparent */
+  padding: 20px;
+  border-radius: 10px;
+  justify-content: center;
+}
+
+/* Butonul "Editează lecția" */
+button {
+  background-color: #6a0dad;
+  color: white;
+  font-weight: bold;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  transition: 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: #9a0fbf;
+  transform: scale(1.05);
+}
+
+/* Fundal paginare */
+.pagination-controls {
+  background: rgba(195, 195, 195, 0.8);
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  color: #ffffff;
+}
+/* Stilizare formular editare */
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+/* Lățime completă pentru inputuri */
+.full-width {
+  width: 100%;
+}
+
+/* Casetă mai mare pentru descriere */
+.larger-textarea textarea {
+  min-height: 100px !important;
+}
+
+/* Text mai închis pentru lizibilitate */
+mat-form-field input,
+mat-form-field textarea {
+  color: #222 !important; /* Negru închis */
+  font-weight: bold;
+}
+
+/* Bordură mai vizibilă */
+mat-form-field {
+  border: 1px solid #6a0dad !important; /* Mov */
+  border-radius: 5px;
+  padding: 5px;
 }

@@ -42,6 +42,9 @@ export class LectiiService {
       `${this.lessonContentUrl}/lesson/${lessonId}`
     );
   }
+  stergeLectie(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 
   updateLessonContent(
     lessonId: string,

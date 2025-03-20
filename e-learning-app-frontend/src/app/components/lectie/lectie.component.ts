@@ -21,6 +21,8 @@ export class LectieComponent implements OnInit {
   lectie: Lesson | null = null;
   isEditing = false;
   lessonForm!: FormGroup;
+  pagini: string[] = [];
+  paginaCurenta = 0;
 
   editorConfig = {
     toolbar: [
@@ -50,6 +52,9 @@ export class LectieComponent implements OnInit {
     if (lectieId) {
       this.lectiiService.getLectieById(lectieId).subscribe((data) => {
         this.lectie = data;
+        this.pagini = this.lectie?.content
+          ? this.lectie.content.split('&lt;!-- PAGE BREAK --&gt;')
+          : [];
 
         // Inițializează formularul cu datele lecției
         this.lessonForm = this.fb.group({
@@ -83,6 +88,17 @@ export class LectieComponent implements OnInit {
         this.lectie = updatedLesson;
         this.isEditing = false;
       });
+    }
+  }
+  paginaAnterioara() {
+    if (this.paginaCurenta > 0) {
+      this.paginaCurenta--;
+    }
+  }
+
+  paginaUrmatoare() {
+    if (this.paginaCurenta < this.pagini.length - 1) {
+      this.paginaCurenta++;
     }
   }
 }

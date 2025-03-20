@@ -82,3 +82,55 @@ img {
   border-radius: 10px;
   margin-top: 10px;
 }
+/* Container pentru carduri */
+.lectii-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Centrează cardurile */
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Stilizare uniformă a cardurilor */
+.lectie-card {
+  width: 360px; /* Dimensiune fixă pentru uniformitate */
+  height: 230px; /* Aceeași înălțime pentru toate cardurile */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Asigură distribuția corectă */
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background: rgb(54, 53, 53);
+  text-align: center;
+}
+
+/* Conținutul cardului trebuie să aibă o înălțime fixă */
+.card-content {
+  flex-grow: 1; /* Ocupă spațiul disponibil */
+  overflow: hidden; /* Previne depășirea conținutului */
+}
+
+/* Butoanele sunt fixate în partea de jos a cardului */
+.card-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: auto; /* Asigură că butoanele sunt mereu jos */
+}
+
+/* Stil butoane */
+button {
+  background: #6200ea;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  margin: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:disabled {
+  background: gray;
+  cursor: not-allowed;
+}

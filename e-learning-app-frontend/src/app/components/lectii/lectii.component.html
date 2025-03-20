@@ -1,13 +1,40 @@
 <div class="container">
   <h1>Lista Lecțiilor</h1>
+  <!-- Buton pentru adăugare lecție -->
+  <button mat-raised-button color="primary" (click)="adaugaLectie()">
+    Adaugă Lecție
+  </button>
+
   <div *ngFor="let an of ani">
     <button (click)="selecteazaAn(an.nivel)" class="btn btn-primary">
       {{ an.nume }}
     </button>
-    <ul *ngIf="anSelectat === an.nivel">
-      <li *ngFor="let lectie of lectiiPerAn[an.nume]">
-        <a [routerLink]="['/lectie', lectie.id]">{{ lectie.title }}</a>
-      </li>
-    </ul>
+
+    <div *ngIf="anSelectat === an.nivel" class="lectii-container">
+      <mat-card *ngFor="let lectie of lectiiPerAn[an.nume]" class="lectie-card">
+        <mat-card-header>
+          <mat-card-title>{{ lectie.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="card-content">
+          <p>{{ lectie.description }}</p>
+        </mat-card-content>
+        <mat-card-actions class="card-actions">
+          <button
+            mat-button
+            color="primary"
+            [routerLink]="['/lectie', lectie.id]"
+          >
+            Vizualizează Lecția
+          </button>
+          <button
+            mat-button
+            color="warn"
+            (click)="stergeLectie(lectie.id, an.nume)"
+          >
+            Șterge Lecția
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
   </div>
 </div>

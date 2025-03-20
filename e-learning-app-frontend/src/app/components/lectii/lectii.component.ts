@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LectiiService } from '../../services/lectii.service';
+import { Router } from '@angular/router';
 
 interface Lesson {
   id: string;
@@ -24,7 +25,7 @@ export class LectiiComponent implements OnInit {
   lectiiPerAn: { [key: string]: Lesson[] } = {};
   anSelectat: number | null = null;
 
-  constructor(private lectiiService: LectiiService) {}
+  constructor(private lectiiService: LectiiService, private router: Router) {}
 
   ngOnInit(): void {
     this.ani.forEach((an) => {
@@ -36,5 +37,18 @@ export class LectiiComponent implements OnInit {
 
   selecteazaAn(nivel: number) {
     this.anSelectat = this.anSelectat === nivel ? null : nivel;
+  }
+
+  stergeLectie(id: string, anNume: string) {
+    if (confirm('Sigur vrei să ștergi această lecție?')) {
+      this.lectiiService.stergeLectie(id).subscribe(() => {
+        this.lectiiPerAn[anNume] = this.lectiiPerAn[anNume].filter(
+          (lectie) => lectie.id !== id
+        );
+      });
+    }
+  }
+  adaugaLectie() {
+    this.router.navigate(['/editor']);
   }
 }
