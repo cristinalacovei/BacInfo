@@ -1,6 +1,7 @@
 package e_learning_app.controller;
 
 import e_learning_app.model.Lesson;
+import e_learning_app.model.TestEntity;
 import e_learning_app.service.impl.LessonService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,4 +51,14 @@ public class LessonController {
         Optional<Lesson> updated = lessonService.updateLesson(id, updatedLesson);
         return updated.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/{lessonId}/test")
+    public ResponseEntity<TestEntity> getTestForLesson(@PathVariable UUID lessonId) {
+        return lessonService.getTestByLessonId(lessonId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+
+
 }

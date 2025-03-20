@@ -33,6 +33,15 @@
             Pagina Următoare ➡
           </button>
         </div>
+        <!-- Buton pentru a începe testul -->
+        <div
+          *ngIf="paginaCurenta === pagini.length - 1"
+          class="text-center mt-4"
+        >
+          <button mat-raised-button color="primary" (click)="startTest()">
+            Începe Testul
+          </button>
+        </div>
 
         <!-- Mod de vizualizare cu paginare -->
         <div *ngIf="!isEditing">

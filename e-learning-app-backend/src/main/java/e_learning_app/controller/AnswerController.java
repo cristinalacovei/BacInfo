@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,5 +40,13 @@ public class AnswerController {
         answerService.deleteAnswer(id);
         return ResponseEntity.noContent().build();
     }
+    @PostMapping("/validate-score")
+    public ResponseEntity<Map<String, Object>> validateAnswersWithScore(@RequestBody List<UUID> selectedAnswerIds) {
+        Map<String, Object> result = answerService.validateAnswersWithScore(selectedAnswerIds);
+        return ResponseEntity.ok(result);
+    }
+
+
+
 }
 

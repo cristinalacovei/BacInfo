@@ -1,0 +1,88 @@
+<div class="test-container" *ngIf="test">
+  <div class="question-card" *ngIf="test.questions.length > 0">
+    <h2>{{ test.questions[currentQuestionIndex].questionText }}</h2>
+
+    <!-- Afișează răspunsurile -->
+    <div class="answers">
+      <div *ngFor="let answer of test.questions[currentQuestionIndex].answers">
+        <label
+          [ngClass]="{
+            'correct-answer': isCorrectAnswer(answer),
+            'incorrect-answer': isIncorrectlySelected(answer),
+            'selected-answer': !showResults && isAnswerSelected(answer)
+          }"
+        >
+          <input
+            *ngIf="
+              test.questions[currentQuestionIndex].questionType ===
+              'SINGLE_CHOICE'
+            "
+            type="radio"
+            name="answer"
+            [(ngModel)]="test.questions[currentQuestionIndex].selectedAnswer"
+            [value]="answer.id"
+            [disabled]="showResults"
+          />
+          <input
+            *ngIf="
+              test.questions[currentQuestionIndex].questionType ===
+              'MULTIPLE_CHOICE'
+            "
+            type="checkbox"
+            [(ngModel)]="answer.isSelected"
+            [disabled]="showResults"
+          />
+          {{ answer.answerText }}
+        </label>
+      </div>
+    </div>
+
+    <!-- Butoane pentru navigare -->
+    <div class="button-group">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="prevQuestion()"
+        [disabled]="currentQuestionIndex === 0"
+      >
+        Înapoi
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="nextQuestion()"
+        [disabled]="currentQuestionIndex === test.questions.length - 1"
+      >
+        Următoarea
+      </button>
+    </div>
+
+    <!-- Buton de trimitere -->
+    <button
+      mat-raised-button
+      color="warn"
+      (click)="submitTest()"
+      *ngIf="currentQuestionIndex === test.questions.length - 1"
+    >
+      Trimite testul
+    </button>
+
+    <div *ngIf="score !== null && totalQuestions !== null">
+      <h3>Scorul tău: {{ score }}/{{ totalQuestions }} întrebări corecte!</h3>
+    </div>
+
+    <!-- ✅ Buton pentru a vizualiza răspunsurile corecte -->
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="toggleResults()"
+      *ngIf="score !== null"
+    >
+      {{
+        showResults
+          ? "Ascunde răspunsurile corecte"
+          : "Vizualizează răspunsurile corecte"
+      }}
+    </button>
+  </div>
+</div>

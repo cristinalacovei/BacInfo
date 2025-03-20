@@ -4,17 +4,18 @@ import e_learning_app.service.impl.TestService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+
 
 @RestController
 @RequestMapping("/api/tests")
 public class TestController {
     private final TestService testService;
 
+
     public TestController(TestService testService) {
         this.testService = testService;
+
     }
 
     @GetMapping
@@ -43,4 +44,5 @@ public class TestController {
         testService.deleteTest(id);
         return ResponseEntity.noContent().build();
     }
+
 }

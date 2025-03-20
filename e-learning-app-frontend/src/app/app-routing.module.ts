@@ -11,6 +11,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { ProfileComponent } from './components/profile/profile.component';
 import { EditorComponent } from './components/editor/editor.component';
 import { CreateQuestionsComponent } from './components/create-questions/create-questions.component';
+import { TestComponent } from './components/test/test.component';
 
 const routes: Routes = [
   { path: '', component: AboutComponent },
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'editor', component: EditorComponent },
   { path: 'create-questions/:testId', component: CreateQuestionsComponent },
+  { path: 'test/:id', component: TestComponent },
 ];
 
 @NgModule({

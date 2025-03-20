@@ -1,5 +1,6 @@
 package e_learning_app.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -18,5 +19,11 @@ public class TestEntity extends BaseEntity {
     private int classLevel; // Test pentru un an de studiu
 
     @OneToMany(mappedBy = "test", cascade = CascadeType.ALL)
+    @JsonManagedReference // ✅ Evită serializarea infinită
     private List<Question> questions;
+
+    @OneToOne
+    @JoinColumn(name = "lesson_id", referencedColumnName = "id")
+    private Lesson lesson;
+
 }

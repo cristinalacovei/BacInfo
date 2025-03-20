@@ -1,5 +1,7 @@
 package e_learning_app.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -21,9 +23,11 @@ public class Question extends BaseEntity {
     private String questionType; // SINGLE_CHOICE, MULTIPLE_CHOICE
 
     @ManyToOne
-    @JoinColumn(name = "test_id", nullable = false)
+    @JoinColumn(name = "test_id", referencedColumnName = "id")
+    @JsonBackReference // ✅ Evită serializarea infinită
     private TestEntity test;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    @JsonManagedReference // ✅ Asigură relația corectă cu `Answer`
     private List<Answer> answers;
 }

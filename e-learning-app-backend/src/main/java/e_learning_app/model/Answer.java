@@ -1,5 +1,6 @@
 package e_learning_app.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -21,6 +22,7 @@ public class Answer extends BaseEntity {
     private boolean isCorrect;
 
     @ManyToOne
-    @JoinColumn(name = "question_id", nullable = false)
+    @JoinColumn(name = "question_id", referencedColumnName = "id")
+    @JsonBackReference // ✅ Evită recursivitatea între `Question` și `Answer`
     private Question question;
 }

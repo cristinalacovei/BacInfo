@@ -14,6 +14,25 @@ interface Lesson {
   description: string;
   content?: string;
   classLevel: number;
+  testId?: string;
+}
+interface TestEntity {
+  id: string;
+  classLevel: number;
+  questions?: Question[];
+}
+
+interface Question {
+  id: string;
+  questionText: string;
+  questionType: 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE';
+  answers?: Answer[];
+}
+
+interface Answer {
+  id: string;
+  answerText: string;
+  isCorrect: boolean;
 }
 
 @Injectable({
@@ -58,5 +77,10 @@ export class LectiiService {
 
   updateLectie(lesson: Lesson): Observable<Lesson> {
     return this.http.put<Lesson>(`${this.apiUrl}/${lesson.id}`, lesson);
+  }
+
+  getLessonTest(lesson: Lesson): Observable<TestEntity> {
+    console.log('Requesting test for lesson:', lesson);
+    return this.http.get<TestEntity>(`${this.apiUrl}/${lesson.id}/test`);
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LectiiService } from '../../services/lectii.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -23,6 +23,7 @@ export class LectieComponent implements OnInit {
   lessonForm!: FormGroup;
   pagini: string[] = [];
   paginaCurenta = 0;
+  testId: string | null = null;
 
   editorConfig = {
     toolbar: [
@@ -44,7 +45,8 @@ export class LectieComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private lectiiService: LectiiService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -56,6 +58,12 @@ export class LectieComponent implements OnInit {
           ? this.lectie.content.split('&lt;!-- PAGE BREAK --&gt;')
           : [];
 
+        // Obține testul asociat lecției
+        this.lectiiService.getLessonTest(this.lectie).subscribe((test) => {
+          if (test) {
+            this.testId = test.id;
+          }
+        });
         // Inițializează formularul cu datele lecției
         this.lessonForm = this.fb.group({
           title: [this.lectie?.title || ''],
@@ -99,6 +107,14 @@ export class LectieComponent implements OnInit {
   paginaUrmatoare() {
     if (this.paginaCurenta < this.pagini.length - 1) {
       this.paginaCurenta++;
+    }
+  }
+  startTest() {
+    console.log('Navigating to test with ID:', this.testId);
+    if (this.testId) {
+      this.router.navigate([`/test/${this.testId}`]);
+    } else {
+      console.error('Test ID is null or undefined!');
     }
   }
 }
