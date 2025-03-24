@@ -22,4 +22,8 @@ export class TestService {
   submitTest(testId: string, userAnswers: any[]): Observable<any> {
     return this.http.post(`/api/tests/${testId}/submit`, userAnswers);
   }
+
+  updateTest(test: TestEntity): Observable<TestEntity> {
+    return this.http.put<TestEntity>(`${this.apiUrl}/${test.id}`, test);
+  }
 }

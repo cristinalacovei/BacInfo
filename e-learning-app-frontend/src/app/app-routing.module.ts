@@ -9,7 +9,7 @@ import { LectieComponent } from './components/lectie/lectie.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { EditorComponent } from './components/editor/editor.component';
+import { EditorComponent } from './components/add-lectie/editor.component';
 import { CreateQuestionsComponent } from './components/create-questions/create-questions.component';
 import { TestComponent } from './components/test/test.component';
 

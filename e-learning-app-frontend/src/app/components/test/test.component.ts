@@ -2,6 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TestService } from '../../services/test.service';
 import { AnswerService } from '../../services/answer.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 interface Answer {
   id: string;
@@ -47,11 +49,13 @@ export class TestComponent implements OnInit {
   showResults: boolean = false; // ✅ Variabilă pentru a afișa răspunsurile corecte
   correctAnswersSet: Set<string> = new Set(); // ✅ Adăugat pentru stocare ID-uri corecte
   incorrectAnswersSet: Set<string> = new Set(); // ✅ Adăugat pentru stocare ID-uri greșite
+  progressValue: number = 0;
 
   constructor(
     private route: ActivatedRoute,
     @Inject(TestService) private testService: TestService,
-    @Inject(AnswerService) private answerService: AnswerService
+    @Inject(AnswerService) private answerService: AnswerService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -71,6 +75,23 @@ export class TestComponent implements OnInit {
     if (this.currentQuestionIndex < (this.test?.questions.length || 0) - 1) {
       this.currentQuestionIndex++;
     }
+    this.updateProgress();
+  }
+
+  updateProgress(): void {
+    if (!this.test) return;
+
+    const total = this.test.questions.length;
+    const completate = this.test.questions.filter((question) => {
+      if (question.questionType === 'SINGLE_CHOICE') {
+        return !!question.selectedAnswer;
+      } else if (question.questionType === 'MULTIPLE_CHOICE') {
+        return question.answers.some((a) => a.isSelected);
+      }
+      return false;
+    }).length;
+
+    this.progressValue = (completate / total) * 100;
   }
 
   prevQuestion(): void {
@@ -81,6 +102,20 @@ export class TestComponent implements OnInit {
 
   submitTest(): void {
     if (!this.test) return;
+
+    const incompleteQuestions = this.test.questions.some((question) => {
+      if (question.questionType === 'SINGLE_CHOICE') {
+        return !question.selectedAnswer;
+      } else if (question.questionType === 'MULTIPLE_CHOICE') {
+        return !question.answers.some((a) => a.isSelected);
+      }
+      return true; // fallback
+    });
+
+    if (incompleteQuestions) {
+      this.showIncompleteDialog(); // 🧨 se deschide dialogul elegant
+      return;
+    }
 
     const selectedAnswerIds: string[] = [];
     this.test.questions.forEach((question) => {
@@ -107,7 +142,6 @@ export class TestComponent implements OnInit {
         this.score = result.correctAnswers;
         this.totalQuestions = result.totalQuestions;
 
-        // 🟢 Stocăm ID-urile răspunsurilor corecte și greșite
         this.correctAnswersSet = new Set(result.correctAnswerIds);
         this.incorrectAnswersSet = new Set(result.incorrectAnswerIds);
 
@@ -124,6 +158,18 @@ export class TestComponent implements OnInit {
   toggleResults(): void {
     this.showResults = !this.showResults;
     console.log(`🔍 Vizualizare rezultate: ${this.showResults}`);
+  }
+
+  showIncompleteDialog(): void {
+    this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Test incomplet',
+        message:
+          '⚠️ Trebuie să răspunzi la toate întrebările înainte de a trimite testul!',
+        singleButton: true,
+      },
+    });
   }
 
   isAnswerSelected(answer: Answer): boolean {
@@ -145,5 +191,17 @@ export class TestComponent implements OnInit {
 
   isIncorrectlySelected(answer: Answer): boolean {
     return this.showResults && this.incorrectAnswersSet.has(answer.id);
+  }
+
+  testComplet(): boolean {
+    if (!this.test) return false;
+    return this.test.questions.every((question) => {
+      if (question.questionType === 'SINGLE_CHOICE') {
+        return !!question.selectedAnswer;
+      } else if (question.questionType === 'MULTIPLE_CHOICE') {
+        return question.answers.some((a) => a.isSelected);
+      }
+      return false;
+    });
   }
 }

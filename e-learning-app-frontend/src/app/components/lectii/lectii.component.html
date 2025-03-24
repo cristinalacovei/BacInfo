@@ -1,7 +1,12 @@
 <div class="container">
   <h1>Lista Lecțiilor</h1>
   <!-- Buton pentru adăugare lecție -->
-  <button mat-raised-button color="primary" (click)="adaugaLectie()">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="adaugaLectie()"
+    *ngIf="isAdmin"
+  >
     Adaugă Lecție
   </button>
 
@@ -30,6 +35,7 @@
             mat-button
             color="warn"
             (click)="stergeLectie(lectie.id, an.nume)"
+            *ngIf="isAdmin"
           >
             Șterge Lecția
           </button>

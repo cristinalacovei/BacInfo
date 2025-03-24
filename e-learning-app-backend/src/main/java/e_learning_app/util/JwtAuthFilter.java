@@ -49,25 +49,36 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         try {
             String jwt = parseJwt(request);
             if (jwt != null) {
-                String username = jwtUtil.extractUsername(jwt);
+                // 👀 Nou: dacă tokenul e de la Google, nu-l mai validăm cu cheia noastră
+                if (isGoogleToken(jwt)) {
+                    log.info("Google token detected, skipping validation and trusting Spring Security's OAuth.");
+                    // Lăsăm Spring Security să se ocupe de autentificare
+                } else {
+                    String username = jwtUtil.extractUsername(jwt);
 
-                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-                    if (jwtUtil.validateToken(jwt)) {
-                        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                                userDetails, null, userDetails.getAuthorities());
-                        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        if (jwtUtil.validateToken(jwt)) {
+                            UsernamePasswordAuthenticationToken authToken =
+                                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                        SecurityContextHolder.getContext().setAuthentication(authToken);
-
+                            SecurityContextHolder.getContext().setAuthentication(authToken);
+                        }
                     }
-
                 }
             }
         } catch (Exception e) {
+            log.error("JWT filter failed: {}", e.getMessage());
         }
 
         filterChain.doFilter(request, response);
     }
+    private boolean isGoogleToken(String token) {
+        
+        return token.split("\\.").length == 3 && token.length() > 1000; // simplu și eficient, doar pt detectare brută
+    }
+
+
 }

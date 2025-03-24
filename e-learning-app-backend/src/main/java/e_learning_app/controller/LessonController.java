@@ -4,6 +4,7 @@ import e_learning_app.model.Lesson;
 import e_learning_app.model.TestEntity;
 import e_learning_app.service.impl.LessonService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,16 +37,20 @@ public class LessonController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Lesson> createLesson(@RequestBody Lesson lesson) {
         return ResponseEntity.ok(lessonService.createLesson(lesson));
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteLesson(@PathVariable UUID id) {
         lessonService.deleteLesson(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Lesson> updateLesson(@PathVariable UUID id, @RequestBody Lesson updatedLesson) {
         Optional<Lesson> updated = lessonService.updateLesson(id, updatedLesson);

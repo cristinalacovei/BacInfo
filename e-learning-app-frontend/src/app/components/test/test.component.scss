@@ -179,3 +179,33 @@ button[color="warn"]:hover {
   border: 2px solid blue !important;
   font-weight: bold !important;
 }
+
+mat-progress-bar {
+  margin: 10px 0;
+  height: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #6200ea;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between; // 🟢 Înapoi la stânga, Următoarea la dreapta
+  width: 100%;
+  margin-top: 15px;
+}
+
+.submit-container {
+  display: flex;
+  justify-content: center; // 🟡 Buton centrat frumos
+  margin-top: 15px;
+}
+
+/* Stilizare butoane inactive */
+.disabled-button {
+  background-color: #ccc !important;
+  color: #666 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  opacity: 0.7;
+  pointer-events: none; // ✅ Dezactivează hover/click
+}

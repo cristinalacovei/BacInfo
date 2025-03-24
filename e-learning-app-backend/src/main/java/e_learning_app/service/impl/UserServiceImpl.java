@@ -71,4 +71,21 @@ public class UserServiceImpl implements UserService {
         return !userRepository.existsByEmailAddress(email);
     }
 
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmailAddress(email)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
+    }
+    @Override
+    public User setUsername(String username, String email) {
+        if (!isUsernameAvailable(username)) {
+            throw new IllegalArgumentException("Username already taken");
+        }
+
+        User user = getUserByEmail(email); // metoda ta existentă
+        user.setUsername(username);
+        return userRepository.save(user);
+    }
+
+
 }

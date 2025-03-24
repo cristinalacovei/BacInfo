@@ -1,0 +1,81 @@
+/* Fundal general al editorului */
+.editor-container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  background: #ffffff; /* Fundal alb */
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4); /* Umbră mov */
+  color: #000000; /* Text negru */
+  text-align: center;
+}
+
+/* Inputuri și textarea */
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #ffffff; /* Alb */
+  border: 1px solid #6a0dad; /* Mov */
+  border-radius: 5px;
+  color: #000000; /* Text negru */
+  font-size: 16px;
+}
+
+/* Placeholder negru pentru input-uri și textarea */
+input::placeholder,
+textarea::placeholder {
+  color: #666666 !important; /* Gri închis */
+  opacity: 0.8;
+}
+
+/* Editorul Quill */
+quill-editor {
+  background-color: #ffffff; /* Alb */
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid #6a0dad; /* Mov */
+}
+
+/* Placeholder negru pentru Quill Editor */
+.ql-editor::before {
+  color: #666666 !important; /* Placeholder gri închis */
+  opacity: 0.7;
+}
+
+/* Dropdown select stilizat */
+select {
+  appearance: none;
+  background-color: #ffffff; /* Alb */
+  color: #000000; /* Text negru */
+  border: 1px solid #6a0dad; /* Mov */
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+/* Când un element este selectat, să fie mov */
+select:focus,
+select option:checked {
+  background-color: #6a0dad !important;
+  color: #ffffff !important;
+}
+
+/* Buton stilizat */
+button {
+  background-color: #6a0dad !important;
+  color: white;
+  font-weight: bold;
+  padding: 12px 20px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 8px;
+  transition: 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: #9a0fbf !important;
+  transform: scale(1.05);
+}

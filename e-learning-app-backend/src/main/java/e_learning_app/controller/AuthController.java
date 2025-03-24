@@ -1,6 +1,10 @@
 package e_learning_app.controller;
 
 import e_learning_app.dto.LoginRequestDTO;
+import e_learning_app.dto.UserDTO;
+import e_learning_app.mapper.UserMapper;
+import e_learning_app.model.User;
+import e_learning_app.service.UserService;
 import e_learning_app.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,11 +13,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Map;
 
 @Slf4j
@@ -23,7 +25,8 @@ import java.util.Map;
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-
+    private final UserService userService;
+    private final UserMapper userMapper;
     @PostMapping("/token")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO) {
         try {
@@ -58,5 +61,12 @@ public class AuthController {
 
         return ResponseEntity.ok(token);
     }
+
+    @GetMapping("/email")
+    public ResponseEntity<UserDTO> getUserFromToken(Principal principal) {
+        User user = userService.getUserByEmail(principal.getName());
+        return ResponseEntity.ok(userMapper.toDto(user));
+    }
+
 
 }

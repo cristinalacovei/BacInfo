@@ -14,6 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
@@ -32,11 +33,12 @@ import { LectieComponent } from './components/lectie/lectie.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { EditorComponent } from './components/editor/editor.component';
+import { EditorComponent } from './components/add-lectie/editor.component';
 import { QuillModule } from 'ngx-quill';
 import { CreateTestDialogComponent } from './components/create-test-dialog/create-test-dialog.component';
 import { CreateQuestionsComponent } from './components/create-questions/create-questions.component';
 import { TestComponent } from './components/test/test.component';
+import { TestEditComponent } from './components/test-edit/test-edit.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,7 @@ import { TestComponent } from './components/test/test.component';
     CreateTestDialogComponent,
     CreateQuestionsComponent,
     TestComponent,
+    TestEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,6 +78,7 @@ import { TestComponent } from './components/test/test.component';
     AngularEditorModule,
     QuillModule.forRoot(),
     MatOptionModule,
+    MatProgressBarModule,
   ],
   providers: [
     AuthService,

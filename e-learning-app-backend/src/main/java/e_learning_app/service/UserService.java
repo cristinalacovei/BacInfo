@@ -15,5 +15,8 @@ public interface UserService {
     boolean isUsernameAvailable(String username);
     boolean isEmailAvailable(String email);
     User findByEmailOrCreate(String email, String firstName, String lastName);
+    User getUserByEmail(String email);
+    User setUsername(String username, String email);
+
 }
 

@@ -77,16 +77,36 @@ export class AuthService {
     return this.http.get<User>(userDetailsEndpoint);
   }
 
-  getCurrentUser(): Observable<User> {
+  getCurrentUser(): Observable<User | null> {
     const username = this.getUsername();
 
     if (!username) {
-      throw new Error('User not logged in');
+      return new Observable((observer) => {
+        this.http
+          .get<User>(`${this.baseUrl}/api/auth/email`) // <--- vezi notă mai jos
+          .subscribe({
+            next: (user) => {
+              if (!user.username) {
+                observer.next(null);
+              } else {
+                localStorage.setItem('username', user.username); // cache
+                observer.next(user);
+              }
+              observer.complete();
+            },
+            error: () => {
+              observer.next(null);
+              observer.complete();
+            },
+          });
+      });
     }
+
     return this.http.get<User>(
       `${this.baseUrl}/api/users/username/${username}`
     );
   }
+
   checkUsername(username: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.baseUrl}/api/users/check-username`, {
       params: { username },
@@ -112,6 +132,15 @@ export class AuthService {
       `${this.baseUrl}/api/auth/reset-password`,
       { token, newPassword },
       { responseType: 'text' as 'json' }
+    );
+  }
+  setUsername(username: string): Observable<void> {
+    return this.http.post<void>(
+      `${this.baseUrl}/api/users/set-username`,
+      null,
+      {
+        params: { username },
+      }
     );
   }
 }

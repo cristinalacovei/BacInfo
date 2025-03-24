@@ -35,4 +35,11 @@ public class TestService {
     public void deleteTest(UUID id) {
         testRepository.deleteById(id);
     }
+
+    public Optional<TestEntity> updateTest(UUID id, TestEntity updatedTest) {
+        return testRepository.findById(id).map(existingTest -> {
+            existingTest.setQuestions(updatedTest.getQuestions()); // ✅ Actualizează întrebările
+            return testRepository.save(existingTest);
+        });
+    }
 }

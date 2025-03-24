@@ -51,10 +51,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/token").permitAll()
                         .requestMatchers("/api/auth/forgot-password").permitAll()
                         .requestMatchers("/api/auth/reset-password").permitAll()
+                        .requestMatchers("/api/auth/email").permitAll()
                         .requestMatchers("/api/users").permitAll()
                         .requestMatchers("/api/users/check-username").permitAll()
                         .requestMatchers("/api/users/check-email").permitAll()
                         .requestMatchers("/api/users/username/").permitAll()
+                        .requestMatchers("/api/users/set-username/").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
                         .requestMatchers("/api/lessons").permitAll()
@@ -71,11 +73,15 @@ public class SecurityConfig {
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(oAuth2LoginSuccessHandler)
+
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+
+
 
         return http.build();
     }

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { LectiiService } from '../../services/lectii.service';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatCard } from '@angular/material/card';
+import { AuthService } from '../../services/auth.service';
 
 interface Lesson {
   id: string;
@@ -24,10 +28,16 @@ export class LectiiComponent implements OnInit {
   ];
   lectiiPerAn: { [key: string]: Lesson[] } = {};
   anSelectat: number | null = null;
+  isAdmin: boolean = false;
 
-  constructor(private lectiiService: LectiiService, private router: Router) {}
+  constructor(
+    private lectiiService: LectiiService,
+    private router: Router,
+    private dialog: MatDialog,
+    private authService: AuthService
+  ) {}
 
-  ngOnInit(): void {
+  private incarcaLectiile(): void {
     this.ani.forEach((an) => {
       this.lectiiService.getLectiiByClass(an.nivel).subscribe((data) => {
         this.lectiiPerAn[an.nume] = data;
@@ -35,19 +45,44 @@ export class LectiiComponent implements OnInit {
     });
   }
 
+  ngOnInit(): void {
+    this.authService.getCurrentUser().subscribe(
+      (user) => {
+        this.isAdmin = user?.userRole === 'ADMIN' || false; // 🔥 Evită crash-ul cu `?.`
+        this.incarcaLectiile();
+      },
+      (error) => {
+        console.error('Eroare la obținerea userului:', error);
+        this.isAdmin = false; // Dacă apare o eroare, nu crăpăm
+        this.incarcaLectiile();
+      }
+    );
+  }
+
   selecteazaAn(nivel: number) {
     this.anSelectat = this.anSelectat === nivel ? null : nivel;
   }
 
   stergeLectie(id: string, anNume: string) {
-    if (confirm('Sigur vrei să ștergi această lecție?')) {
-      this.lectiiService.stergeLectie(id).subscribe(() => {
-        this.lectiiPerAn[anNume] = this.lectiiPerAn[anNume].filter(
-          (lectie) => lectie.id !== id
-        );
-      });
-    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: {
+        title: 'Confirmare ștergere',
+        message: 'Ești sigur că vrei să ștergi această lecție?',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.lectiiService.stergeLectie(id).subscribe(() => {
+          this.lectiiPerAn[anNume] = this.lectiiPerAn[anNume].filter(
+            (lectie) => lectie.id !== id
+          );
+        });
+      }
+    });
   }
+
   adaugaLectie() {
     this.router.navigate(['/editor']);
   }

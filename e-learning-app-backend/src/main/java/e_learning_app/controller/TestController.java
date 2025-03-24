@@ -45,4 +45,12 @@ public class TestController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<TestEntity> updateTest(@PathVariable UUID id, @RequestBody TestEntity updatedTest) {
+        return testService.updateTest(id, updatedTest)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+
 }

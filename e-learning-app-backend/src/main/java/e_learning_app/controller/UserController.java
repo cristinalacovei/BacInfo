@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
+
 
     // Get user by ID
     @GetMapping("/{id}")
@@ -65,6 +67,19 @@ public class UserController {
         boolean isAvailable = userService.isEmailAvailable(email);
         return ResponseEntity.ok(isAvailable);
     }
+
+    @PostMapping("/set-username")
+    public ResponseEntity<?> setUsername(@RequestParam String username, Principal principal) {
+        try {
+            userService.setUsername(username, principal.getName());
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
+
+
+
 
     @RestControllerAdvice
     public class GlobalExceptionHandler {

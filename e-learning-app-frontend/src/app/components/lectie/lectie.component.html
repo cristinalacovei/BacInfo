@@ -49,10 +49,10 @@
         </div>
 
         <!-- Butoane de navigare jos (doar când NU este în editare) -->
+        <!-- ✅ Butoane de paginare poziționate mai bine -->
         <div class="pagination-controls" *ngIf="!isEditing">
           <button
             mat-button
-            color="secondary"
             (click)="paginaAnterioara()"
             [disabled]="paginaCurenta === 0"
           >
@@ -61,7 +61,6 @@
           <span>Pagina {{ paginaCurenta + 1 }} / {{ pagini.length }}</span>
           <button
             mat-button
-            color="secondary"
             (click)="paginaUrmatoare()"
             [disabled]="paginaCurenta === pagini.length - 1"
           >
@@ -69,15 +68,13 @@
           </button>
         </div>
 
-        <!-- Form pentru editare -->
+        <!-- ✅ Buton de salvare în formular -->
         <form *ngIf="isEditing" [formGroup]="lessonForm" class="edit-form">
-          <!-- Titlul lecției -->
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Titlul lecției</mat-label>
             <input matInput formControlName="title" />
           </mat-form-field>
 
-          <!-- Descrierea lecției -->
           <mat-form-field
             appearance="outline"
             class="full-width larger-textarea"
@@ -86,7 +83,6 @@
             <textarea matInput formControlName="description"></textarea>
           </mat-form-field>
 
-          <!-- Conținutul lecției -->
           <div class="form-group">
             <label>Conținutul lecției</label>
             <quill-editor
@@ -96,10 +92,11 @@
             ></quill-editor>
           </div>
 
-          <!-- Buton pentru salvare -->
-          <button mat-raised-button color="primary" (click)="saveLesson()">
-            Salvează modificările
-          </button>
+          <div class="centered-buttons">
+            <button mat-raised-button color="primary" (click)="saveLesson()">
+              Salvează Modificările
+            </button>
+          </div>
         </form>
       </div>
     </div>
