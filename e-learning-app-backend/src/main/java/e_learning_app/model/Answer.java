@@ -1,6 +1,7 @@
 package e_learning_app.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -19,6 +20,7 @@ public class Answer extends BaseEntity {
     private String answerText;
 
     @Column(name = "is_correct", nullable = false)
+    @JsonProperty("isCorrect") // 👈 asta ajută Jackson să-l recunoască din JSON
     private boolean isCorrect;
 
     @ManyToOne

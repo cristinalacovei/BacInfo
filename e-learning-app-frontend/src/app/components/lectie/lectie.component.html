@@ -8,9 +8,29 @@
         {{ lectie.description }}
       </p>
 
-      <button mat-raised-button color="accent" (click)="toggleEditMode()">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="toggleEditMode()"
+        *ngIf="isAdmin"
+      >
         {{ isEditing ? "Anulează" : "Editează lecția" }}
       </button>
+
+      <div class="text-center mt-4" *ngIf="isAdmin">
+        <ng-container *ngIf="!testId; else dejaExistaTest">
+          <button
+            mat-raised-button
+            color="accent"
+            [routerLink]="['/adauga-test', lectie.id]"
+          >
+            ➕ Adaugă Test pentru această lecție
+          </button>
+        </ng-container>
+        <ng-template #dejaExistaTest>
+          <p class="text-muted">✅ Această lecție are deja un test asociat.</p>
+        </ng-template>
+      </div>
 
       <div class="lesson-content mt-4">
         <!-- Butoane de navigare sus (doar când NU este în editare) -->

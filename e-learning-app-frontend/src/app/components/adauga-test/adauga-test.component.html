@@ -1,0 +1,102 @@
+<div class="test-container">
+  <h2 class="test-title">📝 Creează Testul pentru Lecție</h2>
+
+  <form [formGroup]="testForm" (ngSubmit)="submitTest()">
+    <div formArrayName="questions" class="question-list">
+      <div
+        *ngFor="let question of questions.controls; let i = index"
+        [formGroupName]="i"
+        class="question-card"
+      >
+        <!-- Întrebarea și tipul -->
+        <mat-form-field appearance="fill">
+          <mat-label>Întrebarea</mat-label>
+          <input
+            matInput
+            formControlName="questionText"
+            placeholder="Ex: Care este complexitatea?"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Tip întrebare</mat-label>
+          <mat-select formControlName="questionType">
+            <mat-option value="SINGLE_CHOICE">Răspuns unic</mat-option>
+            <mat-option value="MULTIPLE_CHOICE">Răspunsuri multiple</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- ✅ Mutăm answersContainer în afara *ngIf -->
+        <div class="answers-container">
+          <div [formArrayName]="'answers'">
+            <!-- SINGLE CHOICE -->
+            <ng-container
+              *ngIf="question.get('questionType')?.value === 'SINGLE_CHOICE'"
+            >
+              <mat-radio-group
+                [value]="getSelectedIndex(question)"
+                (change)="selectSingleAnswer(i, $event.value)"
+                class="radio-group"
+              >
+                <div
+                  *ngFor="let answer of getAnswersControls(i); let j = index"
+                  [formGroupName]="j"
+                  class="answer-row"
+                >
+                  <mat-radio-button [value]="j"></mat-radio-button>
+                  <mat-form-field appearance="outline" class="answer-input">
+                    <mat-label>Răspuns {{ j + 1 }}</mat-label>
+                    <input matInput formControlName="answerText" />
+                  </mat-form-field>
+                </div>
+              </mat-radio-group>
+            </ng-container>
+
+            <!-- MULTIPLE CHOICE -->
+            <ng-container
+              *ngIf="question.get('questionType')?.value === 'MULTIPLE_CHOICE'"
+            >
+              <div
+                *ngFor="let answer of getAnswersControls(i); let j = index"
+                [formGroupName]="j"
+                class="answer-row"
+              >
+                <mat-form-field appearance="outline" class="answer-input">
+                  <mat-label>Răspuns {{ j + 1 }}</mat-label>
+                  <input matInput formControlName="answerText" />
+                </mat-form-field>
+                <mat-checkbox formControlName="isCorrect">
+                  Corect
+                </mat-checkbox>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+        <button
+          mat-stroked-button
+          color="accent"
+          (click)="adaugaRaspuns(i)"
+          type="button"
+        >
+          ➕ Răspuns
+        </button>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button
+        mat-stroked-button
+        color="accent"
+        (click)="adaugaIntrebare()"
+        type="button"
+      >
+        ➕ Întrebare
+      </button>
+
+      <button mat-raised-button color="primary" type="submit">
+        💾 Salvează Test
+      </button>
+    </div>
+  </form>
+</div>

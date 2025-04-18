@@ -35,9 +35,11 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { ProfileComponent } from './components/profile/profile.component';
 import { EditorComponent } from './components/add-lectie/editor.component';
 import { QuillModule } from 'ngx-quill';
-import { CreateTestDialogComponent } from './components/create-test-dialog/create-test-dialog.component';
-import { CreateQuestionsComponent } from './components/create-questions/create-questions.component';
 import { TestComponent } from './components/test/test.component';
+import { AdaugaTestComponent } from './components/adauga-test/adauga-test.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -53,9 +55,8 @@ import { TestComponent } from './components/test/test.component';
     ResetPasswordComponent,
     ProfileComponent,
     EditorComponent,
-    CreateTestDialogComponent,
-    CreateQuestionsComponent,
     TestComponent,
+    AdaugaTestComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,6 +78,9 @@ import { TestComponent } from './components/test/test.component';
     QuillModule.forRoot(),
     MatOptionModule,
     MatProgressBarModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatCheckboxModule,
   ],
   providers: [
     AuthService,
