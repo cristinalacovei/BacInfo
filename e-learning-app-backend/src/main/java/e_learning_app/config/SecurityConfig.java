@@ -69,6 +69,8 @@ public class SecurityConfig {
                         .requestMatchers("api/lessons/{lessonId}").permitAll()
                         .requestMatchers("api/progress").permitAll()
                         .requestMatchers("api/tests/{id}/lesson-id").permitAll()
+                        .requestMatchers("/api/questions/**").permitAll()
+                        .requestMatchers("/api/answers/**").permitAll()
 
 
 

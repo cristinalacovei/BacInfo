@@ -107,3 +107,17 @@ button[mat-stroked-button] {
   border-radius: 25px;
   padding: 8px 20px;
 }
+.snackbar-error {
+  background-color: #f44336; // roșu intens
+  color: #fff;
+  font-weight: 500;
+  font-size: 15px;
+  border-radius: 8px;
+}
+.snackbar-success {
+  background-color: #4caf50; // verde
+  color: #fff;
+  font-weight: 500;
+  font-size: 15px;
+  border-radius: 8px;
+}

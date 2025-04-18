@@ -48,4 +48,7 @@ export class TestService {
   createTest(test: NewTestPayload): Observable<TestEntity> {
     return this.http.post<TestEntity>(this.apiUrl, test);
   }
+  deleteTest(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

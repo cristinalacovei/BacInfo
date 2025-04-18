@@ -29,6 +29,22 @@
         </ng-container>
         <ng-template #dejaExistaTest>
           <p class="text-muted">✅ Această lecție are deja un test asociat.</p>
+          <button
+            mat-raised-button
+            color="primary"
+            [routerLink]="['/editeaza-test', testId]"
+          >
+            ✏️ Editează Testul
+          </button>
+
+          <button
+            mat-raised-button
+            color="warn"
+            class="ml-2"
+            (click)="confirmaStergereTest()"
+          >
+            🗑️ Șterge Testul
+          </button>
         </ng-template>
       </div>
 

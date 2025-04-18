@@ -15,7 +15,14 @@
             matInput
             formControlName="questionText"
             placeholder="Ex: Care este complexitatea?"
-          />
+          /><mat-error
+            *ngIf="
+              question.get('questionText')?.invalid &&
+              question.get('questionText')?.touched
+            "
+          >
+            Introdu un text pentru întrebare
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">

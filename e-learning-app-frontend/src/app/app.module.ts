@@ -40,6 +40,7 @@ import { AdaugaTestComponent } from './components/adauga-test/adauga-test.compon
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { EditeazaTestComponent } from './components/editeaza-test/editeaza-test.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     EditorComponent,
     TestComponent,
     AdaugaTestComponent,
+    EditeazaTestComponent,
   ],
   imports: [
     BrowserModule,

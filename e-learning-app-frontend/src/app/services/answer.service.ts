@@ -33,6 +33,18 @@ export class AnswerService {
     );
   }
 
+  getAnswerById(id: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
+
+  createAnswer(answer: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, answer);
+  }
+
+  deleteAnswer(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
   getAnswersByQuestionId(questionId: string): Observable<Answer[]> {
     return this.http.get<Answer[]>(`${this.apiUrl}/question/${questionId}`);
   }

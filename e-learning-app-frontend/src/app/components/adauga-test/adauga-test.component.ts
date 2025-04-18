@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { TestService } from '../../services/test.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-adauga-test',
@@ -17,15 +18,16 @@ export class AdaugaTestComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private testService: TestService
+    private testService: TestService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
     this.lessonId = this.route.snapshot.paramMap.get('lessonId') || '';
 
     this.testForm = this.fb.group({
-      classLevel: [''],
-      questions: this.fb.array([]),
+      classLevel: [9],
+      questions: this.fb.array([], Validators.minLength(1)),
     });
 
     this.adaugaIntrebare(); // default
@@ -57,12 +59,21 @@ export class AdaugaTestComponent implements OnInit {
   adaugaIntrebare() {
     this.questions.push(
       this.fb.group({
-        questionText: [''],
+        questionText: ['', Validators.required],
         questionType: ['SINGLE_CHOICE'],
-        answers: this.fb.array([
-          this.fb.group({ answerText: [''], isCorrect: [false] }),
-          this.fb.group({ answerText: [''], isCorrect: [false] }),
-        ]),
+        answers: this.fb.array(
+          [
+            this.fb.group({
+              answerText: ['', Validators.required],
+              isCorrect: [false],
+            }),
+            this.fb.group({
+              answerText: ['', Validators.required],
+              isCorrect: [false],
+            }),
+          ],
+          Validators.minLength(2)
+        ),
       })
     );
   }
@@ -74,21 +85,83 @@ export class AdaugaTestComponent implements OnInit {
     answers.push(this.fb.group({ answerText: [''], isCorrect: [false] }));
   }
 
+  markFormTouched() {
+    this.testForm.markAllAsTouched();
+    this.questions.controls.forEach((questionGroup) => {
+      questionGroup.get('questionText')?.markAsTouched();
+      const answers = questionGroup.get('answers') as FormArray;
+      answers.controls.forEach((answerGroup) =>
+        answerGroup.get('answerText')?.markAsTouched()
+      );
+    });
+  }
+
   submitTest() {
+    if (this.testForm.invalid || this.questions.length === 0) {
+      this.snackBar.open(
+        '❌ Completează toate întrebările și răspunsurile înainte de salvare.',
+        'Închide',
+        {
+          duration: 4000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          panelClass: ['snackbar-error'],
+        }
+      );
+      this.markFormTouched();
+      return;
+    }
+
+    const questions = this.testForm.value.questions;
+    for (let i = 0; i < questions.length; i++) {
+      const q = questions[i];
+      const hasCorrect = q.answers.some((a: any) => a.isCorrect);
+      if (!hasCorrect) {
+        this.snackBar.open(
+          `❌ Adaugă cel puțin un răspuns corect la întrebarea ${i + 1}.`,
+          'Închide',
+          {
+            duration: 4000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            panelClass: ['snackbar-error'],
+          }
+        );
+        return;
+      }
+    }
+
     const test = {
-      classLevel: 9,
+      classLevel: this.testForm.value.classLevel,
       lesson: { id: this.lessonId },
-      questions: this.testForm.value.questions,
+      questions: questions,
     };
 
     this.testService.createTest(test).subscribe({
       next: () => {
-        alert('Test adăugat cu succes!');
-        this.router.navigate([`/lectie/${this.lessonId}`]);
+        this.snackBar
+          .open('✅ Testul a fost adăugat cu succes!', 'Închide', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            panelClass: ['snackbar-success'],
+          })
+          .afterDismissed()
+          .subscribe(() => {
+            this.router.navigate([`/lectie/${this.lessonId}`]);
+          });
       },
-      error: (err) => {
-        console.error(err);
-        alert('Eroare la salvarea testului');
+      error: () => {
+        this.snackBar.open(
+          '❌ Eroare la salvarea testului. Încearcă din nou.',
+          'Închide',
+          {
+            duration: 4000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            panelClass: ['snackbar-error'],
+          }
+        );
       },
     });
   }

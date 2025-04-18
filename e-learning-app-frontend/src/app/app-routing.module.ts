@@ -12,6 +12,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { EditorComponent } from './components/add-lectie/editor.component';
 import { TestComponent } from './components/test/test.component';
 import { AdaugaTestComponent } from './components/adauga-test/adauga-test.component';
+import { EditeazaTestComponent } from './components/editeaza-test/editeaza-test.component';
 
 const routes: Routes = [
   { path: '', component: AboutComponent },
@@ -26,6 +27,10 @@ const routes: Routes = [
   { path: 'editor', component: EditorComponent },
   { path: 'test/:id', component: TestComponent },
   { path: 'adauga-test/:lessonId', component: AdaugaTestComponent },
+  {
+    path: 'editeaza-test/:testId',
+    component: EditeazaTestComponent,
+  },
 ];
 
 @NgModule({

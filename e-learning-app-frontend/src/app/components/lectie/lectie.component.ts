@@ -3,6 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LectiiService } from '../../services/lectii.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TestService } from '../../services/test.service';
 
 interface Lesson {
   id: string;
@@ -48,8 +52,11 @@ export class LectieComponent implements OnInit {
     private route: ActivatedRoute,
     private lectiiService: LectiiService,
     private authService: AuthService,
+    private testService: TestService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -129,5 +136,36 @@ export class LectieComponent implements OnInit {
     } else {
       console.error('Test ID is null or undefined!');
     }
+  }
+
+  confirmaStergereTest(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Confirmare ștergere',
+        message: 'Ești sigur că vrei să ștergi testul asociat acestei lecții?',
+        singleButton: false,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((confirmat) => {
+      if (confirmat && this.testId) {
+        this.testService.deleteTest(this.testId).subscribe({
+          next: () => {
+            this.snackBar.open('✅ Testul a fost șters cu succes!', '', {
+              duration: 3000,
+              panelClass: 'snackbar-success',
+            });
+            this.testId = ''; // eliminăm vizual testul
+          },
+          error: () => {
+            this.snackBar.open('❌ Eroare la ștergerea testului.', '', {
+              duration: 3000,
+              panelClass: 'snackbar-error',
+            });
+          },
+        });
+      }
+    });
   }
 }
