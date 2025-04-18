@@ -38,7 +38,6 @@ import { QuillModule } from 'ngx-quill';
 import { CreateTestDialogComponent } from './components/create-test-dialog/create-test-dialog.component';
 import { CreateQuestionsComponent } from './components/create-questions/create-questions.component';
 import { TestComponent } from './components/test/test.component';
-import { TestEditComponent } from './components/test-edit/test-edit.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +56,6 @@ import { TestEditComponent } from './components/test-edit/test-edit.component';
     CreateTestDialogComponent,
     CreateQuestionsComponent,
     TestComponent,
-    TestEditComponent,
   ],
   imports: [
     BrowserModule,

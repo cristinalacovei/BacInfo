@@ -4,6 +4,9 @@ import { TestService } from '../../services/test.service';
 import { AnswerService } from '../../services/answer.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { ProgressService } from '../../services/progress.service';
+import { AuthService } from '../../services/auth.service';
+import { LectiiService } from '../../services/lectii.service';
 
 interface Answer {
   id: string;
@@ -24,6 +27,15 @@ interface TestEntity {
   id: string;
   classLevel: number;
   questions: Question[];
+  lesson?: Lesson; // ✅ Adăugat pentru a obține lecția asociată
+}
+
+interface Lesson {
+  id: string;
+  title: string;
+  description: string;
+  content?: string;
+  classLevel: number;
 }
 
 // ✅ Actualizat conform backend-ului
@@ -55,6 +67,9 @@ export class TestComponent implements OnInit {
     private route: ActivatedRoute,
     @Inject(TestService) private testService: TestService,
     @Inject(AnswerService) private answerService: AnswerService,
+    private progressService: ProgressService,
+    private authService: AuthService,
+    private lectiiService: LectiiService,
     private dialog: MatDialog
   ) {}
 
@@ -113,7 +128,7 @@ export class TestComponent implements OnInit {
     });
 
     if (incompleteQuestions) {
-      this.showIncompleteDialog(); // 🧨 se deschide dialogul elegant
+      this.showIncompleteDialog();
       return;
     }
 
@@ -142,6 +157,10 @@ export class TestComponent implements OnInit {
         this.score = result.correctAnswers;
         this.totalQuestions = result.totalQuestions;
 
+        const scorePercentage = Math.round(
+          (result.correctAnswers / result.totalQuestions) * 100
+        );
+
         this.correctAnswersSet = new Set(result.correctAnswerIds);
         this.incorrectAnswersSet = new Set(result.incorrectAnswerIds);
 
@@ -152,6 +171,34 @@ export class TestComponent implements OnInit {
         console.log('❌ Răspunsuri greșite:', this.incorrectAnswersSet);
 
         this.showResults = true;
+
+        this.authService.getCurrentUser().subscribe((user) => {
+          if (!user || !user.id) {
+            console.error('❌ Nu am putut obține userId-ul.');
+            return;
+          }
+
+          const lessonId = this.test?.lesson?.id;
+
+          if (!lessonId) {
+            console.warn('⚠️ Lesson ID este null sau undefined în test!');
+          }
+
+          this.progressService
+            .saveProgress({
+              userId: user.id,
+              testId: this.test!.id,
+              lessonId: lessonId,
+              score: scorePercentage, // ✅ scor în procente salvat în DB!
+              completedAt: new Date().toISOString(),
+            })
+            .subscribe(() => {
+              console.log(
+                '✅ Progres salvat cu score (procent):',
+                scorePercentage
+              );
+            });
+        });
       });
   }
 

@@ -42,4 +42,10 @@ public class TestService {
             return testRepository.save(existingTest);
         });
     }
+    public UUID getLessonIdByTestId(UUID testId) {
+        return testRepository.findById(testId)
+                .map(test -> test.getLesson().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Test not found or lesson is null"));
+    }
+
 }

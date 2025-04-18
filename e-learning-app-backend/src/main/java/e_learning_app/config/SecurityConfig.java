@@ -52,6 +52,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/forgot-password").permitAll()
                         .requestMatchers("/api/auth/reset-password").permitAll()
                         .requestMatchers("/api/auth/email").permitAll()
+                        .requestMatchers("/api/auth/me").permitAll()
                         .requestMatchers("/api/users").permitAll()
                         .requestMatchers("/api/users/check-username").permitAll()
                         .requestMatchers("/api/users/check-email").permitAll()
@@ -66,6 +67,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/tests").permitAll()
                         .requestMatchers("api/lessons/{lessonId}/test").permitAll()
                         .requestMatchers("api/lessons/{lessonId}").permitAll()
+                        .requestMatchers("api/progress").permitAll()
+                        .requestMatchers("api/tests/{id}/lesson-id").permitAll()
+
 
 
 

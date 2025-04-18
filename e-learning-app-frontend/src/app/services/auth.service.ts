@@ -77,34 +77,8 @@ export class AuthService {
     return this.http.get<User>(userDetailsEndpoint);
   }
 
-  getCurrentUser(): Observable<User | null> {
-    const username = this.getUsername();
-
-    if (!username) {
-      return new Observable((observer) => {
-        this.http
-          .get<User>(`${this.baseUrl}/api/auth/email`) // <--- vezi notă mai jos
-          .subscribe({
-            next: (user) => {
-              if (!user.username) {
-                observer.next(null);
-              } else {
-                localStorage.setItem('username', user.username); // cache
-                observer.next(user);
-              }
-              observer.complete();
-            },
-            error: () => {
-              observer.next(null);
-              observer.complete();
-            },
-          });
-      });
-    }
-
-    return this.http.get<User>(
-      `${this.baseUrl}/api/users/username/${username}`
-    );
+  getCurrentUser(): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/api/users/me`);
   }
 
   checkUsername(username: string): Observable<boolean> {

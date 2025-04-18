@@ -51,6 +51,12 @@ public class TestController {
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+    @GetMapping("/{id}/lesson-id")
+    public ResponseEntity<UUID> getLessonIdByTestId(@PathVariable UUID id) {
+        UUID lessonId = testService.getLessonIdByTestId(id);
+        return ResponseEntity.ok(lessonId);
+    }
+
 
 
 }

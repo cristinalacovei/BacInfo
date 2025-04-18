@@ -6,6 +6,15 @@ interface TestEntity {
   id: string;
   classLevel: number;
   questions: any[];
+  lesson: Lesson;
+}
+
+interface Lesson {
+  id: string;
+  title: string;
+  description: string;
+  content?: string;
+  classLevel: number;
 }
 
 @Injectable({
@@ -25,5 +34,9 @@ export class TestService {
 
   updateTest(test: TestEntity): Observable<TestEntity> {
     return this.http.put<TestEntity>(`${this.apiUrl}/${test.id}`, test);
+  }
+
+  getLessonIdByTestId(testId: string): Observable<string> {
+    return this.http.get<string>(`${this.apiUrl}/${testId}/lesson-id`);
   }
 }

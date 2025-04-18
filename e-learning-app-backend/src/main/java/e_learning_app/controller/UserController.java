@@ -7,6 +7,7 @@ import e_learning_app.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -76,6 +77,14 @@ public class UserController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
+
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserDTO> getCurrentUser(Authentication authentication) {
+        String username = authentication.getName(); // obținut din JWT
+        User user = userService.getUserByUsername(username); // ✅ aceasta EXISTĂ
+        return ResponseEntity.ok(userMapper.toDto(user));
     }
 
 

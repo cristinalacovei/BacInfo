@@ -71,7 +71,6 @@ export class AppComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.authService.logout();
-        this.cartItemCount = 0;
         this.router.navigate(['']);
       }
     });
