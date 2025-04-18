@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LectiiService } from '../../services/lectii.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 interface Lesson {
   id: string;
@@ -24,6 +25,7 @@ export class LectieComponent implements OnInit {
   pagini: string[] = [];
   paginaCurenta = 0;
   testId: string | null = null;
+  isAdmin: boolean = false;
 
   editorConfig = {
     toolbar: [
@@ -45,11 +47,22 @@ export class LectieComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private lectiiService: LectiiService,
+    private authService: AuthService,
     private fb: FormBuilder,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.authService.getCurrentUser().subscribe(
+      (user) => {
+        this.isAdmin = user?.userRole === 'ADMIN';
+      },
+      (err) => {
+        console.error('Eroare la verificarea rolului:', err);
+        this.isAdmin = false;
+      }
+    );
+
     const lectieId = this.route.snapshot.paramMap.get('id');
     if (lectieId) {
       this.lectiiService.getLectieById(lectieId).subscribe((data) => {

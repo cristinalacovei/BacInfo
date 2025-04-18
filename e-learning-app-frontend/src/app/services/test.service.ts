@@ -9,6 +9,12 @@ interface TestEntity {
   lesson: Lesson;
 }
 
+interface NewTestPayload {
+  classLevel: number;
+  lesson: { id: string };
+  questions: any[];
+}
+
 interface Lesson {
   id: string;
   title: string;
@@ -38,5 +44,8 @@ export class TestService {
 
   getLessonIdByTestId(testId: string): Observable<string> {
     return this.http.get<string>(`${this.apiUrl}/${testId}/lesson-id`);
+  }
+  createTest(test: NewTestPayload): Observable<TestEntity> {
+    return this.http.post<TestEntity>(this.apiUrl, test);
   }
 }
