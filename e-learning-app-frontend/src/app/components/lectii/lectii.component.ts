@@ -29,6 +29,8 @@ export class LectiiComponent implements OnInit {
   lectiiPerAn: { [key: string]: Lesson[] } = {};
   anSelectat: number | null = null;
   isAdmin: boolean = false;
+  progressMap = new Map<string, { score: number; completedAt: string }>();
+  userId: string | null = null;
 
   constructor(
     private lectiiService: LectiiService,
@@ -40,7 +42,12 @@ export class LectiiComponent implements OnInit {
   private incarcaLectiile(): void {
     this.ani.forEach((an) => {
       this.lectiiService.getLectiiByClass(an.nivel).subscribe((data) => {
-        this.lectiiPerAn[an.nume] = data;
+        const sorted = data.sort((a, b) => {
+          const prefixA = this.romanToNumber(a.title);
+          const prefixB = this.romanToNumber(b.title);
+          return prefixA - prefixB;
+        });
+        this.lectiiPerAn[an.nume] = sorted;
       });
     });
   }
@@ -48,15 +55,46 @@ export class LectiiComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getCurrentUser().subscribe(
       (user) => {
-        this.isAdmin = user?.userRole === 'ADMIN' || false; // 🔥 Evită crash-ul cu `?.`
+        this.isAdmin = user?.userRole === 'ADMIN' || false;
+        this.userId = user?.id;
         this.incarcaLectiile();
+
+        if (this.userId) {
+          this.lectiiService
+            .getLatestProgress(this.userId)
+            .subscribe((progresses) => {
+              for (const p of progresses) {
+                this.progressMap.set(p.lessonId, {
+                  score: p.score,
+                  completedAt: p.completedAt,
+                });
+              }
+            });
+        }
       },
       (error) => {
         console.error('Eroare la obținerea userului:', error);
-        this.isAdmin = false; // Dacă apare o eroare, nu crăpăm
+        this.isAdmin = false;
         this.incarcaLectiile();
       }
     );
+  }
+
+  private romanToNumber(roman: string): number {
+    const map: { [key: string]: number } = {
+      I: 1,
+      II: 2,
+      III: 3,
+      IV: 4,
+      V: 5,
+      VI: 6,
+      VII: 7,
+      VIII: 8,
+      IX: 9,
+      X: 10,
+    };
+    const match = roman.trim().match(/^[IVXLCDM]+/);
+    return match ? map[match[0]] || 999 : 999;
   }
 
   selecteazaAn(nivel: number) {

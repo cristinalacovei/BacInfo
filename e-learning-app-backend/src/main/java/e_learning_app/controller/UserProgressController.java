@@ -6,12 +6,11 @@ import e_learning_app.model.UserProgress;
 import e_learning_app.service.impl.UserProgressService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.UUID;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/progress")
@@ -33,5 +32,10 @@ public class UserProgressController {
         }
     }
 
+    @GetMapping("/latest-score")
+    public ResponseEntity<List<UserProgressDTO>> getLatestProgressForUser(@RequestParam UUID userId) {
+        List<UserProgressDTO> progresses = userProgressService.getLatestProgressPerLesson(userId);
+        return ResponseEntity.ok(progresses);
+    }
 
 }

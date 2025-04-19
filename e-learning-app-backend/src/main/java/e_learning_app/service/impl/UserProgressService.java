@@ -15,6 +15,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class UserProgressService {
     private final UserProgressRepository userProgressRepository;
@@ -62,5 +66,36 @@ public class UserProgressService {
     public Optional<UserProgress> getProgressById(UUID id) {
         return userProgressRepository.findById(id);
     }
+
+    public List<UserProgressDTO> getLatestProgressPerLesson(UUID userId) {
+        List<UserProgress> allProgress = userProgressRepository.findByUserId(userId);
+
+        // Mapare: lessonId → cel mai recent progres
+        Map<UUID, UserProgress> latestByLesson = new HashMap<>();
+
+        for (UserProgress progress : allProgress) {
+            if (progress.getLesson() == null) continue;
+
+            UUID lessonId = progress.getLesson().getId();
+            if (!latestByLesson.containsKey(lessonId) ||
+                    progress.getCompletedAt().isAfter(latestByLesson.get(lessonId).getCompletedAt())) {
+                latestByLesson.put(lessonId, progress);
+            }
+        }
+
+        // Convertim fiecare progres în DTO
+        return latestByLesson.values().stream()
+                .map(progress -> {
+                    UserProgressDTO dto = new UserProgressDTO();
+                    dto.setUserId(progress.getUser().getId());
+                    dto.setLessonId(progress.getLesson().getId());
+                    dto.setTestId(progress.getTest().getId());
+                    dto.setScore(progress.getScore());
+                    dto.setCompletedAt(progress.getCompletedAt());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+
 }
 
