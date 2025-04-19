@@ -18,22 +18,36 @@ export class AuthRedirectComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       const token = params['token'];
+      const isIncomplete = params['incomplete'] === 'true';
 
       if (token) {
         localStorage.setItem('token', token);
         this.authService.setToken(token);
 
-        // 🔥 Apelează backend-ul pentru a obține userul curent (bazat pe token)
         this.authService.getCurrentUser().subscribe((user) => {
           if (user) {
-            localStorage.setItem('username', user.username);
-            localStorage.setItem('userId', user.id); // 🔥 adaugă și ID-ul!
-          }
+            localStorage.setItem('username', user.username || '');
+            localStorage.setItem('userId', user.id || '');
+            localStorage.setItem('userRole', user.userRole || '');
 
-          this.router.navigate(['/home']);
+            // 🔥 Modificare aici
+            if (
+              isIncomplete ||
+              !user.userRole ||
+              user.userRole === 'PENDING' ||
+              user.username === null
+            ) {
+              this.router.navigate(['/complete-profile'], {
+                queryParams: { token },
+              });
+            } else {
+              this.router.navigate(['/home']);
+            }
+          } else {
+            this.router.navigate(['/login']);
+          }
         });
       } else {
-        console.error('Token missing from redirect URL');
         this.router.navigate(['/login']);
       }
     });

@@ -55,6 +55,7 @@ export class LoginComponent implements OnInit {
         [this.usernameValidator.bind(this)],
       ],
       emailAddress: ['', [Validators.required, Validators.email]],
+      userRole: ['STUDENT', Validators.required],
 
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
@@ -88,7 +89,7 @@ export class LoginComponent implements OnInit {
       username: this.signupForm.value.username,
       emailAddress: this.signupForm.value.emailAddress,
       password: this.signupForm.value.password,
-      userRole: 'CUSTOMER',
+      userRole: this.signupForm.value.userRole,
     };
 
     this.authService.signup(signupData).subscribe({

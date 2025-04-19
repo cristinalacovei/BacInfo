@@ -1,5 +1,6 @@
 package e_learning_app.controller;
 
+import e_learning_app.dto.CompleteProfileDTO;
 import e_learning_app.dto.LoginRequestDTO;
 import e_learning_app.dto.UserDTO;
 import e_learning_app.mapper.UserMapper;
@@ -100,7 +101,35 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
+    @PostMapping("/complete-profile")
+    public ResponseEntity<?> completeProfile(@RequestBody CompleteProfileDTO dto) {
+        log.info("Profil primit: email={}, username={}, userRole={}",
+                dto.getEmail(), dto.getUsername(), dto.getUserRole());
+        try {
+            User user = userService.getUserByEmail(dto.getEmail());
 
+            boolean isPlaceholderUsername = user.getUsername() != null && user.getUsername().startsWith("temp_");
+            boolean isPendingRole = user.getUserRole() != null && user.getUserRole().equalsIgnoreCase("PENDING");
 
+            // 💥 Blochează doar dacă are deja username și rol real
+            if (!isPlaceholderUsername && !isPendingRole) {
+                return ResponseEntity.badRequest().body("Profilul a fost deja completat.");
+            }
+
+            user.setUsername(dto.getUsername());
+            user.setUserRole(dto.getUserRole());
+
+            userService.save(user);
+
+            // 🔁 Regenerăm token cu datele noi
+            String newJwt = jwtUtil.generateTokenForOAuth2User(user);
+            return ResponseEntity.ok(Map.of("token", newJwt)); // trimitem tokenul nou înapoi
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 }
+
+
+

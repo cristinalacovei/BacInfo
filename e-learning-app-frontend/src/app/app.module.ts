@@ -41,6 +41,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { EditeazaTestComponent } from './components/editeaza-test/editeaza-test.component';
+import { CompleteProfileComponent } from './components/complete-profile/complete-profile.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { EditeazaTestComponent } from './components/editeaza-test/editeaza-test.
     TestComponent,
     AdaugaTestComponent,
     EditeazaTestComponent,
+    CompleteProfileComponent,
   ],
   imports: [
     BrowserModule,

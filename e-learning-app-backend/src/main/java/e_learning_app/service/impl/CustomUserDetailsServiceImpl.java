@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 
 @Service
 @RequiredArgsConstructor
@@ -16,10 +18,20 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+    public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
+        User user;
+        try {
+            // Dacă este UUID, caută după ID
+            UUID id = UUID.fromString(identifier);
+            user = userRepository.findById(id)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + identifier));
+        } catch (IllegalArgumentException e) {
+            // Dacă nu e UUID, caută după username
+            user = userRepository.findByUsername(identifier)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + identifier));
+        }
 
         return new CustomUserDetails(user);
     }
+
 }

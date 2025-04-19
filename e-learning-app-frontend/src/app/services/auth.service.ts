@@ -3,6 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../environments/environment';
 import { User } from '../types/user.types';
+import { jwtDecode } from 'jwt-decode';
+
+interface DecodedToken {
+  sub: string; // ID-ul utilizatorului
+  email?: string; // pentru Google OAuth
+  username?: string; // adăugat manual de noi în JWT
+  userRole?: string; // adăugat manual de noi în JWT
+  [key: string]: any; // fallback pentru orice altceva
+}
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +31,16 @@ export class AuthService {
 
   signup(userData: Partial<User>): Observable<any> {
     return this.http.post(`${this.baseUrl}/api/users`, userData);
+  }
+
+  getEmailFromToken(token: string): string | null {
+    try {
+      const decoded = jwtDecode<DecodedToken>(token);
+      return decoded.email || decoded.sub || null;
+    } catch (e) {
+      console.error('Token decode error', e);
+      return null;
+    }
   }
 
   login(username: string, password: string): Observable<string> {
@@ -49,9 +68,27 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
-  setToken(token: string) {
+  setToken(token: string): void {
     localStorage.setItem('token', token);
-    this.isLoggedInSubject.next(true); // 🔥 UI-ul se actualizează fără refresh
+    this.isLoggedInSubject.next(true);
+
+    try {
+      const decoded = jwtDecode<DecodedToken>(token);
+
+      if (decoded.username) {
+        localStorage.setItem('username', decoded.username);
+      }
+
+      if (decoded.sub) {
+        localStorage.setItem('userId', decoded.sub);
+      }
+
+      if (decoded.userRole) {
+        localStorage.setItem('userRole', decoded.userRole);
+      }
+    } catch (e) {
+      console.error('Eroare la extragerea datelor din token', e);
+    }
   }
 
   logout(): void {
@@ -115,6 +152,16 @@ export class AuthService {
       {
         params: { username },
       }
+    );
+  }
+  completeProfile(data: {
+    email: string;
+    username: string;
+    userRole: string;
+  }): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(
+      `${this.baseUrl}/api/auth/complete-profile`,
+      data
     );
   }
 }

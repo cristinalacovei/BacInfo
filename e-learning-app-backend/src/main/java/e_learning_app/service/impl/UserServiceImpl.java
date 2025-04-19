@@ -22,17 +22,18 @@ public class UserServiceImpl implements UserService {
     public User findByEmailOrCreate(String email, String firstName, String lastName) {
         return userRepository.findByEmailAddress(email)
                 .orElseGet(() -> {
-                    User newUser = User.builder()
+                    User placeholderUser = User.builder()
                             .emailAddress(email)
                             .firstName(firstName)
                             .lastName(lastName)
-                            .username(email)
-                            .password(passwordEncoder.encode("")) // Empty password for OAuth users
-                            .userRole("USER")
+                            .username("temp_" + UUID.randomUUID())
+                            .password(passwordEncoder.encode("")) // OAuth user
+                            .userRole("PENDING")
                             .build();
-                    return userRepository.save(newUser);
+                    return userRepository.save(placeholderUser);
                 });
     }
+
 
     @Override
     public User getUserById(UUID id) {
@@ -74,8 +75,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByEmail(String email) {
         return userRepository.findByEmailAddress(email)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
+                .orElseThrow(() -> new IllegalArgumentException("Utilizatorul nu a fost găsit cu emailul: " + email));
     }
+
     @Override
     public User setUsername(String username, String email) {
         if (!isUsernameAvailable(username)) {
@@ -87,5 +89,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
+    }
 
 }

@@ -26,6 +26,7 @@
     "angular-editor": "^0.0.3",
     "bootstrap": "^5.3.3",
     "firebase": "^9.23.0",
+    "jwt-decode": "^4.0.0",
     "ngx-quill": "^27.0.1",
     "quill": "^2.0.3",
     "rxjs": "~7.8.0",

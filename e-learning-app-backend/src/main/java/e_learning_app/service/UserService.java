@@ -17,6 +17,7 @@ public interface UserService {
     User findByEmailOrCreate(String email, String firstName, String lastName);
     User getUserByEmail(String email);
     User setUsername(String username, String email);
+    User save(User user);
 
 }
 

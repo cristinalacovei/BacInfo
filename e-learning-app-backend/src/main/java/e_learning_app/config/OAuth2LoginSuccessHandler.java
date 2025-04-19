@@ -38,7 +38,12 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String jwt = jwtUtil.generateTokenForOAuth2User(user);
 
         // Redirect to frontend with JWT
-        String redirectUrl = "http://localhost:4200/oauth2/redirect?token=" + jwt;
+        String redirectUrl;
+        if (user.getUserRole() == null || user.getUserRole().equals("PENDING")) {
+            redirectUrl = "http://localhost:4200/oauth2/redirect?token=" + jwt + "&incomplete=true";
+        } else {
+            redirectUrl = "http://localhost:4200/oauth2/redirect?token=" + jwt;
+        }
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
 }

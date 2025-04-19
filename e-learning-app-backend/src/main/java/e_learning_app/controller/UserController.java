@@ -1,5 +1,6 @@
 package e_learning_app.controller;
 
+import e_learning_app.dto.CompleteProfileDTO;
 import e_learning_app.dto.UserDTO;
 import e_learning_app.mapper.UserMapper;
 import e_learning_app.model.User;
@@ -86,7 +87,6 @@ public class UserController {
         User user = userService.getUserByUsername(username); // ✅ aceasta EXISTĂ
         return ResponseEntity.ok(userMapper.toDto(user));
     }
-
 
 
 
