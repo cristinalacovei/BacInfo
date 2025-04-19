@@ -41,8 +41,17 @@ interface Answer {
 export class LectiiService {
   private apiUrl = 'http://localhost:8080/api/lessons'; // Endpoint pentru lecții
   private lessonContentUrl = 'http://localhost:8080/api/lesson-content'; // Endpoint pentru conținut
+  private baseUrl = 'http://localhost:8080'; // URL-ul backend-ului tău
 
   constructor(private http: HttpClient) {}
+
+  getLatestProgress(
+    userId: string
+  ): Observable<{ lessonId: string; score: number; completedAt: string }[]> {
+    return this.http.get<
+      { lessonId: string; score: number; completedAt: string }[]
+    >(`${this.baseUrl}/api/progress/latest-score`, { params: { userId } });
+  }
 
   getLectii(): Observable<Lesson[]> {
     return this.http.get<Lesson[]>(`${this.apiUrl}`);

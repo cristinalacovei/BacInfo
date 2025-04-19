@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   isAdmin = false;
   cartItemCount = 0;
   isDarkMode: boolean = false;
+  isSidebarOpen = false;
 
   constructor(
     private authService: AuthService,
@@ -34,6 +35,10 @@ export class AppComponent implements OnInit {
         });
       }
     });
+  }
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
   }
 
   navigateToLogin(): void {

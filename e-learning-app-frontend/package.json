@@ -26,6 +26,8 @@
     "angular-editor": "^0.0.3",
     "bootstrap": "^5.3.3",
     "firebase": "^9.23.0",
+    "jspdf": "^3.0.1",
+    "jspdf-autotable": "^5.0.2",
     "jwt-decode": "^4.0.0",
     "ngx-quill": "^27.0.1",
     "quill": "^2.0.3",

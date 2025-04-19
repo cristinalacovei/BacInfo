@@ -1,40 +1,27 @@
 <header>
   <nav class="navbar" aria-label="Main Navigation">
     <div class="logo">
-      <button
-        class="profile-button"
-        (click)="navigateToProfile()"
-        aria-label="Profile"
-      >
-        <mat-icon>account_circle</mat-icon>
+      <!-- Buton Meniu în navbar -->
+      <button class="menu-button" (click)="toggleSidebar()">
+        <mat-icon>menu</mat-icon>
       </button>
       <h1>BacInfoLearn</h1>
     </div>
 
     <div class="nav-links">
-      <!-- Link către lecții -->
       <a routerLink="/home" class="nav-link" aria-label="Lectii"
         >Lecții si Teste</a
       >
     </div>
 
     <div>
-      <!-- Buton Logout (afisat doar daca utilizatorul este logat) -->
-      <button
-        *ngIf="isLoggedIn"
-        (click)="logout()"
-        class="logout-button"
-        aria-label="Logout"
-      >
+      <button *ngIf="isLoggedIn" (click)="logout()" class="logout-button">
         Logout
       </button>
-
-      <!-- Buton Autentificare (afisat doar daca utilizatorul nu este logat) -->
       <button
         *ngIf="!isLoggedIn"
         (click)="navigateToLogin()"
         class="login-button"
-        aria-label="Login"
       >
         Autentificare
       </button>
@@ -42,10 +29,14 @@
   </nav>
 </header>
 
-<main role="main" aria-labelledby="main-content-title">
+<!-- Sidebar și overlay -->
+<div *ngIf="isSidebarOpen" class="overlay" (click)="toggleSidebar()"></div>
+<app-sidebar *ngIf="isSidebarOpen" class="floating-sidebar"></app-sidebar>
+
+<main role="main">
   <router-outlet></router-outlet>
 </main>
 
-<footer role="contentinfo">
+<footer>
   <p>© {{ currentYear }} BacInfoLearn. All Rights Reserved.</p>
 </footer>

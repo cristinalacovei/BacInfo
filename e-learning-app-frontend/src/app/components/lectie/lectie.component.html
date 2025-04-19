@@ -17,6 +17,16 @@
         {{ isEditing ? "Anulează" : "Editează lecția" }}
       </button>
 
+      <button
+        mat-raised-button
+        color="accent"
+        class="ml-2"
+        (click)="exportTestAsPDF()"
+        *ngIf="isTeacher && testId"
+      >
+        📄 Exportă Testul în PDF
+      </button>
+
       <div class="text-center mt-4" *ngIf="isAdmin">
         <ng-container *ngIf="!testId; else dejaExistaTest">
           <button

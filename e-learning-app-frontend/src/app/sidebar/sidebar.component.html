@@ -1,0 +1,12 @@
+<nav class="sidebar">
+  <h2 class="logo">📘 Lecții</h2>
+
+  <div *ngFor="let clasa of grupatePeClase | keyvalue">
+    <h3 class="clasa-titlu">{{ clasa.key }}</h3>
+    <ul>
+      <li *ngFor="let lectie of clasa.value">
+        <a [routerLink]="['/lectie', lectie.id]">{{ lectie.title }}</a>
+      </li>
+    </ul>
+  </div>
+</nav>

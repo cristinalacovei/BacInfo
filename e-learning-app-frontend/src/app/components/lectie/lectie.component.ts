@@ -7,6 +7,9 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TestService } from '../../services/test.service';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import { addRobotoFont } from '../../../../src/assets/fonts/roboto-regular.js';
 
 interface Lesson {
   id: string;
@@ -30,6 +33,7 @@ export class LectieComponent implements OnInit {
   paginaCurenta = 0;
   testId: string | null = null;
   isAdmin: boolean = false;
+  isTeacher: boolean = false;
 
   editorConfig = {
     toolbar: [
@@ -63,6 +67,7 @@ export class LectieComponent implements OnInit {
     this.authService.getCurrentUser().subscribe(
       (user) => {
         this.isAdmin = user?.userRole === 'ADMIN';
+        this.isTeacher = user?.userRole === 'TEACHER';
       },
       (err) => {
         console.error('Eroare la verificarea rolului:', err);
@@ -70,28 +75,138 @@ export class LectieComponent implements OnInit {
       }
     );
 
-    const lectieId = this.route.snapshot.paramMap.get('id');
-    if (lectieId) {
-      this.lectiiService.getLectieById(lectieId).subscribe((data) => {
-        this.lectie = data;
-        this.pagini = this.lectie?.content
-          ? this.lectie.content.split('&lt;!-- PAGE BREAK --&gt;')
-          : [];
+    // 🔁 Important: subscribe la params în loc de snapshot
+    this.route.params.subscribe((params) => {
+      const lectieId = params['id'];
+      if (lectieId) {
+        this.incarcaLectie(lectieId); // 🔄 Refactorizează în funcție separată
+      }
+    });
+  }
 
-        // Obține testul asociat lecției
-        this.lectiiService.getLessonTest(this.lectie).subscribe((test) => {
-          if (test) {
-            this.testId = test.id;
-          }
-        });
-        // Inițializează formularul cu datele lecției
-        this.lessonForm = this.fb.group({
-          title: [this.lectie?.title || ''],
-          description: [this.lectie?.description || ''],
-          content: [this.lectie?.content || ''],
-        });
+  // 🔧 Funcție separată pentru a încărca lecția
+  private incarcaLectie(id: string): void {
+    this.lectiiService.getLectieById(id).subscribe((data) => {
+      this.lectie = data;
+      this.pagini = this.lectie?.content
+        ? this.lectie.content.split('&lt;!-- PAGE BREAK --&gt;')
+        : [];
+
+      // Obține testul asociat lecției
+      this.lectiiService.getLessonTest(this.lectie).subscribe((test) => {
+        if (test) {
+          this.testId = test.id;
+        }
       });
-    }
+
+      this.lessonForm = this.fb.group({
+        title: [this.lectie?.title || ''],
+        description: [this.lectie?.description || ''],
+        content: [this.lectie?.content || ''],
+      });
+    });
+  }
+
+  exportTestAsPDF(): void {
+    if (!this.testId || !this.lectie) return;
+
+    this.testService.getTestById(this.testId).subscribe((test) => {
+      const doc = new jsPDF();
+      addRobotoFont(doc);
+      doc.setFont('Roboto');
+      doc.setFontSize(12);
+
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const marginLeft = 15;
+      let currentY = 15;
+
+      // 🟡 Numele elevului și clasa
+      doc.text(
+        'Numele elevului: ___________________________',
+        marginLeft,
+        currentY
+      );
+      doc.text('Clasa: ___________', marginLeft, currentY + 7);
+
+      // 🟡 Data în colț dreapta
+      const currentDate = new Date().toLocaleDateString('ro-RO');
+      doc.text(`Data: ${currentDate}`, pageWidth - 60, currentY);
+
+      // 🟣 Titlul lecției centrat
+      currentY += 20;
+      doc.setFontSize(18);
+      doc.setFont('Roboto');
+      doc.text(this.lectie!.title, pageWidth / 2, currentY, {
+        align: 'center',
+      });
+      currentY += 10;
+
+      // 🟠 Descriere wrap
+      doc.setFont('Roboto', 'normal');
+      doc.setFontSize(12);
+      const descriere = this.lectie!.description || '';
+      const wrappedDescription = doc.splitTextToSize(
+        descriere,
+        pageWidth - 2 * marginLeft
+      );
+      doc.text(wrappedDescription, marginLeft, currentY);
+      currentY += wrappedDescription.length * 7;
+
+      // 🔻 Linie orizontală
+      doc.setLineWidth(0.5);
+      doc.line(marginLeft, currentY, pageWidth - marginLeft, currentY);
+      currentY += 10;
+
+      // 📝 Instrucțiuni
+      doc.setFont('Roboto', 'normal');
+      doc.text(
+        'Completează fiecare întrebare alegând varianta corectă:',
+        marginLeft,
+        currentY
+      );
+      currentY += 12;
+
+      // 🔁 Întrebări și răspunsuri
+      test.questions.forEach((q: any, index: number) => {
+        // Întrebare
+        doc.setFont('Roboto', 'normal');
+        doc.setFontSize(13);
+        const questionText = `${index + 1}. ${q.questionText}`;
+        const wrappedQuestion = doc.splitTextToSize(
+          questionText,
+          pageWidth - 2 * marginLeft
+        );
+        doc.text(wrappedQuestion, marginLeft, currentY);
+        currentY += wrappedQuestion.length * 8;
+
+        // Răspunsuri
+        doc.setFont('Roboto', 'normal');
+        doc.setFontSize(12);
+        q.answers.forEach((a: any, idx: number) => {
+          const answerText = `${String.fromCharCode(65 + idx)}. ${
+            a.answerText
+          }`;
+          const wrappedAnswer = doc.splitTextToSize(
+            answerText,
+            pageWidth - 2 * marginLeft - 5
+          );
+          doc.text(wrappedAnswer, marginLeft + 5, currentY);
+          currentY += wrappedAnswer.length * 6;
+        });
+
+        currentY += 10;
+
+        // 📄 Dacă trece de pagină
+        if (currentY > 270) {
+          doc.addPage();
+          currentY = 20;
+        }
+      });
+
+      // 💾 Salvare fișier
+      const fileName = `${this.lectie!.title.replace(/\s+/g, '_')}_test.pdf`;
+      doc.save(fileName);
+    });
   }
 
   toggleEditMode() {

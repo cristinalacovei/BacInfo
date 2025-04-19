@@ -6,6 +6,47 @@
   letter-spacing: 0.5px; /* Opțional pentru îmbunătățirea aspectului */
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 998;
+}
+
+.floating-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  background-color: #1a1a1a;
+  z-index: 999;
+  padding: 1rem;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.4);
+  animation: slideIn 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-250px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.menu-button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
 .profile-button {
   display: flex;
   align-items: center;

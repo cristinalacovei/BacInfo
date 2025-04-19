@@ -23,7 +23,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { HomeComponent } from './components/home/home.component';
 import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth'; // Import Firebase Auth module for Firebase Authentication
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { environment } from '../app/environments/environment';
 import { AuthService } from './services/auth.service';
 import { AboutComponent } from './components/about/about.component';
@@ -42,6 +42,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { EditeazaTestComponent } from './components/editeaza-test/editeaza-test.component';
 import { CompleteProfileComponent } from './components/complete-profile/complete-profile.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { CompleteProfileComponent } from './components/complete-profile/complete
     AdaugaTestComponent,
     EditeazaTestComponent,
     CompleteProfileComponent,
+    SidebarComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,8 +77,8 @@ import { CompleteProfileComponent } from './components/complete-profile/complete
     FormsModule,
     MatButtonModule,
     MatFormFieldModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig), // Initialize Firebase
-    AngularFireAuthModule, // Add AngularFireAuthModule to the imports
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireAuthModule,
     MatCardModule,
     AngularEditorModule,
     QuillModule.forRoot(),
