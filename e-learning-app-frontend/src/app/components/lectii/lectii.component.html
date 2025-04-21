@@ -1,17 +1,26 @@
 <div class="container">
-  <h1>Lista Lecțiilor</h1>
-  <!-- Buton pentru adăugare lecție -->
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="adaugaLectie()"
-    *ngIf="isAdmin"
-  >
-    Adaugă Lecție
-  </button>
+  <div class="lectii-header">
+    <h1 class="page-title">Lecții disponibile</h1>
+
+    <button
+      mat-raised-button
+      class="btn-adauga-emoji"
+      (click)="adaugaLectie()"
+      *ngIf="isAdmin"
+      aria-label="Adaugă Lecție"
+    >
+      ➕
+    </button>
+  </div>
+
+  <p class="intro-text">
+    Alege clasa și explorează lecțiile interactive disponibile. Fiecare lecție
+    conține materiale utile și teste pentru verificarea cunoștințelor tale.
+    Progresul este salvat automat.
+  </p>
 
   <div *ngFor="let an of ani">
-    <button (click)="selecteazaAn(an.nivel)" class="btn btn-primary">
+    <button (click)="selecteazaAn(an.nivel)" class="btn-clasa">
       {{ an.nume }}
     </button>
 
@@ -21,40 +30,43 @@
           <mat-card-title>{{ lectie.title }}</mat-card-title>
         </mat-card-header>
         <mat-card-content class="card-content">
-          <p>{{ lectie.description }}</p>
-          <div
-            *ngIf="progressMap.get(lectie.id) as progress"
-            class="progress-badge completat"
-          >
-            <span class="emoji">✅</span>
-            <span class="score-text">
-              Scor: <strong>{{ progress.score }}%</strong>
-              <small>({{ progress.completedAt | date : "short" }})</small>
-            </span>
-          </div>
-          <div
-            *ngIf="!progressMap.get(lectie.id)"
-            class="progress-badge incomplet"
-          >
-            <span class="emoji">🕓</span>
-            <span class="score-text">Testul nu a fost încă completat</span>
+          <div class="content-wrap">
+            <p>{{ lectie.description }}</p>
+            <div
+              *ngIf="progressMap.get(lectie.id) as progress"
+              class="progress-badge completat"
+            >
+              <span class="emoji">✅</span>
+              <span class="score-text">
+                Scor: <strong>{{ progress.score }}%</strong>
+                <small>({{ progress.completedAt | date : "short" }})</small>
+              </span>
+            </div>
+            <div
+              *ngIf="!progressMap.get(lectie.id)"
+              class="progress-badge incomplet"
+            >
+              <span class="emoji">🕓</span>
+              <span class="score-text">Testul nu a fost încă completat</span>
+            </div>
           </div>
         </mat-card-content>
+
         <mat-card-actions class="card-actions">
           <button
             mat-button
-            color="primary"
+            class="btn-vizualizare"
             [routerLink]="['/lectie', lectie.id]"
           >
-            Vizualizează Lecția
+            📘
           </button>
           <button
             mat-button
-            color="warn"
+            class="btn-sterge"
             (click)="stergeLectie(lectie.id, an.nume)"
             *ngIf="isAdmin"
           >
-            Șterge Lecția
+            🗑️
           </button>
         </mat-card-actions>
       </mat-card>

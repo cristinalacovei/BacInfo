@@ -11,8 +11,18 @@
     <!-- Card Teste -->
     <mat-card class="custom-card" (click)="navigateToTests()">
       <mat-card-title>Teste de Antrenament</mat-card-title>
+      <mat-card-content> Decarca testele din anii anteriori. </mat-card-content>
+    </mat-card>
+
+    <!-- Card Utilizatori -->
+    <mat-card
+      class="custom-card"
+      (click)="navigateToUserStats()"
+      *ngIf="isAdmin"
+    >
+      <mat-card-title>Utilizatori & Progres</mat-card-title>
       <mat-card-content>
-        Evaluează-ți cunoștințele cu teste interactive.
+        Vezi lista de utilizatori și progresul fiecăruia la teste și lecții.
       </mat-card-content>
     </mat-card>
   </div>

@@ -16,6 +16,10 @@ export class UserService {
     return this.http.get(`${this.apiUrl}/${userId}`);
   }
 
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.apiUrl);
+  }
+
   // Actualizează utilizatorul
   updateUser(user: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${user.id}`, user);

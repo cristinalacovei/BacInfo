@@ -6,6 +6,15 @@
         <mat-icon>menu</mat-icon>
       </button>
       <h1>BacInfoLearn</h1>
+
+      <button
+        *ngIf="isLoggedIn"
+        (click)="navigateToProfile()"
+        class="profile-button"
+        aria-label="Profil utilizator"
+      >
+        <mat-icon>account_circle</mat-icon>
+      </button>
     </div>
 
     <div class="nav-links">

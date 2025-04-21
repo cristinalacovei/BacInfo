@@ -43,6 +43,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { EditeazaTestComponent } from './components/editeaza-test/editeaza-test.component';
 import { CompleteProfileComponent } from './components/complete-profile/complete-profile.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { AdminUserStatsComponent } from './components/admin-user-stats/admin-user-stats.component';
+import { AdminUserDetailComponent } from './components/admin-user-detail/admin-user-detail.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     EditeazaTestComponent,
     CompleteProfileComponent,
     SidebarComponent,
+    AdminUserStatsComponent,
+    AdminUserDetailComponent,
   ],
   imports: [
     BrowserModule,

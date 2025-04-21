@@ -2,10 +2,29 @@
   <h2 class="logo">📘 Lecții</h2>
 
   <div *ngFor="let clasa of grupatePeClase | keyvalue">
-    <h3 class="clasa-titlu">{{ clasa.key }}</h3>
-    <ul>
+    <h3 class="clasa-titlu" (click)="toggleClasa(clasa.key)">
+      {{ clasa.key }}
+      <span class="arrow-icon">{{ claseDeschise[clasa.key] ? "▼" : "▶" }}</span>
+    </h3>
+    <ul *ngIf="claseDeschise[clasa.key]">
       <li *ngFor="let lectie of clasa.value">
-        <a [routerLink]="['/lectie', lectie.id]">{{ lectie.title }}</a>
+        <a [routerLink]="['/lectie', lectie.id]" class="lesson-link">
+          <span>{{ lectie.title }}</span>
+
+          <span
+            class="progres-badge complete"
+            *ngIf="progressMap[lectie.id] !== undefined"
+          >
+            ✅ {{ progressMap[lectie.id] }}%
+          </span>
+
+          <span
+            class="progres-badge incomplete"
+            *ngIf="progressMap[lectie.id] === undefined"
+          >
+            ⏳ Neînceput
+          </span>
+        </a>
       </li>
     </ul>
   </div>

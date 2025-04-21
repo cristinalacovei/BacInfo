@@ -14,6 +14,8 @@ import { TestComponent } from './components/test/test.component';
 import { AdaugaTestComponent } from './components/adauga-test/adauga-test.component';
 import { EditeazaTestComponent } from './components/editeaza-test/editeaza-test.component';
 import { CompleteProfileComponent } from './components/complete-profile/complete-profile.component';
+import { AdminUserStatsComponent } from './components/admin-user-stats/admin-user-stats.component';
+import { AdminUserDetailComponent } from './components/admin-user-detail/admin-user-detail.component';
 
 const routes: Routes = [
   { path: '', component: AboutComponent },
@@ -35,6 +37,14 @@ const routes: Routes = [
   {
     path: 'complete-profile',
     component: CompleteProfileComponent,
+  },
+  {
+    path: 'admin/users',
+    component: AdminUserStatsComponent,
+  },
+  {
+    path: 'admin/user/:id',
+    component: AdminUserDetailComponent,
   },
 ];
 

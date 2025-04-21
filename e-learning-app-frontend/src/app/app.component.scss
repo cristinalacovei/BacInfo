@@ -48,41 +48,21 @@
 }
 
 .profile-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: $color-primary;
-  color: white; /* Culoare text/icon */
+  background: none;
   border: none;
-  border-radius: 50%; /* Formă rotundă */
-  width: 40px; /* Dimensiune buton */
-  height: 40px;
-  font-size: 1.5em; /* Dimensiune icon */
+  color: white;
+  margin-right: 0.5rem;
+  font-size: 1.6rem;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease,
-    box-shadow 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Umbre subtile */
+  transition: transform 0.2s;
 
   &:hover {
-    background-color: $color-primary-dark; /* Culoare pe hover */
-    transform: scale(1.1); /* Mărire ușoară pe hover */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Umbră mai intensă pe hover */
+    transform: scale(1.1);
+    color: #bb86fc;
   }
 
-  &:focus {
-    outline: none; /* Elimină conturul implicit */
-    background-color: $color-primary;
-    transform: scale(1.1); /* Mărire ușoară la focus */
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 4px rgba(0, 0, 0, 0.3); /* Glow */
-  }
-
-  &:active {
-    transform: scale(0.95); /* Micșorare la click */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); /* Umbre mai intense la click */
-    background-color: darken(
-      $color-primary,
-      10%
-    ); /* Culoare mai închisă la click */
+  mat-icon {
+    vertical-align: middle;
   }
 }
 

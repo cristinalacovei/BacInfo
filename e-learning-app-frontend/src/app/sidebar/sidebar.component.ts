@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LectiiService } from '../services/lectii.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,20 +10,41 @@ import { LectiiService } from '../services/lectii.service';
 })
 export class SidebarComponent implements OnInit {
   grupatePeClase: { [clasa: string]: any[] } = {};
+  progressMap: { [lessonId: string]: number } = {}; // lessonId -> scor
+  claseDeschise: { [clasa: string]: boolean } = {};
 
-  constructor(private lectiiService: LectiiService) {}
+  constructor(
+    private lectiiService: LectiiService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.lectiiService.getLectii().subscribe((data) => {
       const sortate = data.sort((a, b) =>
         a.title.localeCompare(b.title, 'ro', { numeric: true })
       );
+
       this.grupatePeClase = sortate.reduce((acc, lectie) => {
         const cheie = `Clasa a ${lectie.classLevel}-a`;
         if (!acc[cheie]) acc[cheie] = [];
         acc[cheie].push(lectie);
         return acc;
       }, {} as { [clasa: string]: any[] });
+
+      // ✅ Obține progresul
+      this.authService.getCurrentUser().subscribe((user) => {
+        const userId = user.id;
+        if (userId) {
+          this.lectiiService.getLatestProgress(userId).subscribe((progres) => {
+            progres.forEach((p) => {
+              this.progressMap[p.lessonId] = p.score;
+            });
+          });
+        }
+      });
     });
+  }
+  toggleClasa(clasa: string) {
+    this.claseDeschise[clasa] = !this.claseDeschise[clasa];
   }
 }

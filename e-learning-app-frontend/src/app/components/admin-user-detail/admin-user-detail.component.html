@@ -1,0 +1,59 @@
+<div class="user-detail-wrapper" *ngIf="userData">
+  <h2>📘 Detalii pentru: {{ userData.username }}</h2>
+
+  <div class="user-info">
+    <p><strong>Username:</strong> {{ userData.username }}</p>
+    <p><strong>Rol:</strong> {{ userData.userRole }}</p>
+    <p><strong>Nume:</strong> {{ userData.firstName }}</p>
+    <p><strong>Prenume:</strong> {{ userData.lastName }}</p>
+    <p><strong>Email:</strong> {{ userData.emailAddress }}</p>
+    <p><strong>ID:</strong> {{ userData.id }}</p>
+  </div>
+
+  <h3>📊 Progres la lecții</h3>
+  <div class="filter-controls">
+    <label>🎚 Scor minim: {{ scoreThreshold }}%</label>
+    <input
+      type="range"
+      min="0"
+      max="100"
+      [(ngModel)]="scoreThreshold"
+      style="width: 200px"
+    />
+
+    <label for="sort-select">📋 Sortează după:</label>
+    <select id="sort-select" [(ngModel)]="sortBy">
+      <option value="title">Titlu lecție</option>
+      <option value="score">Scor</option>
+    </select>
+
+    <button (click)="sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'">
+      ↕️ {{ sortOrder === "asc" ? "Ascendent" : "Descendent" }}
+    </button>
+  </div>
+
+  <ul class="progress-list">
+    <li *ngFor="let p of filteredAndSortedProgress" class="progress-item">
+      <div class="progress-header">
+        <div class="lesson-title">
+          ✅ <strong>Lecție:</strong>
+          {{ lessonTitles[p.lessonId] || "Lecție necunoscută" }}
+        </div>
+        <div
+          class="score-value"
+          [ngStyle]="{
+            color:
+              p.score >= 90 ? '#00e676' : p.score >= 60 ? '#ffeb3b' : '#ff5252'
+          }"
+        >
+          {{ p.score }}%
+        </div>
+      </div>
+      <small>⏱ {{ p.completedAt | date : "short" }}</small>
+    </li>
+
+    <li *ngIf="progress.length === 0">⏳ Fără progres înregistrat.</li>
+  </ul>
+
+  <button routerLink="/admin/users" class="back-btn">← Înapoi</button>
+</div>

@@ -1,0 +1,40 @@
+<div class="admin-container">
+  <h2>📊 Statistici Utilizatori</h2>
+
+  <div *ngIf="loading" class="loading">Se încarcă utilizatorii...</div>
+
+  <div *ngIf="!loading" class="user-list">
+    <div
+      class="user-card"
+      *ngFor="let user of utilizatori"
+      (click)="toggleUser(user.id)"
+      [class.expanded]="expandedUserId === user.id"
+    >
+      <div class="user-header">
+        <span class="user-name">👤 {{ user.username }}</span>
+        <span class="user-email">{{ user.email }}</span>
+        <button
+          class="detalii-btn"
+          (click)="goToDetails(user.id); $event.stopPropagation()"
+        >
+          🔍 Vezi detalii
+        </button>
+      </div>
+
+      <div class="user-progress" *ngIf="expandedUserId === user.id">
+        <h4>📚 Progres la lecții:</h4>
+        <ul>
+          <li *ngFor="let entry of progres[user.id]">
+            ✅ Lecție:
+            {{ lessonTitles[entry.lessonId] || "Lecție necunoscută" }} – Scor:
+            {{ entry.score }}%
+
+            <br />
+            <small>⏱ {{ entry.completedAt | date : "short" }}</small>
+          </li>
+          <li *ngIf="!progres[user.id]?.length">Fără progres înregistrat.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
