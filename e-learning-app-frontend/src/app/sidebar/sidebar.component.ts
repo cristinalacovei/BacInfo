@@ -47,4 +47,13 @@ export class SidebarComponent implements OnInit {
   toggleClasa(clasa: string) {
     this.claseDeschise[clasa] = !this.claseDeschise[clasa];
   }
+
+  sortByClassLevel = (a: { key: string }, b: { key: string }): number => {
+    const extrageNumar = (cheie: string) => {
+      const match = cheie.match(/\d+/);
+      return match ? parseInt(match[0], 10) : 0;
+    };
+
+    return extrageNumar(a.key) - extrageNumar(b.key);
+  };
 }

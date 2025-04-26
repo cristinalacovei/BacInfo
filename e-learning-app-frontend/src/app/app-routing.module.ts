@@ -19,6 +19,7 @@ import { AdminUserDetailComponent } from './components/admin-user-detail/admin-u
 import { QuestionDetailComponent } from './forum/question-detail/question-detail.component';
 import { ForumPageComponent } from './forum/forum-page/forum-page.component';
 import { AuthGuard } from './guards/auth.guard';
+import { ContactComponent } from './components/contact/contact.component';
 
 const routes: Routes = [
   { path: '', component: AboutComponent },
@@ -53,6 +54,11 @@ const routes: Routes = [
   {
     path: 'forum/:id',
     component: QuestionDetailComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'contact',
+    component: ContactComponent,
     canActivate: [AuthGuard],
   },
 ];

@@ -65,6 +65,12 @@ export class AppComponent implements OnInit {
     }
   }
 
+  navigateToContact(): void {
+    this.router.navigate(['/contact']).catch((err) => {
+      console.error('Failed to navigate to contact page:', err);
+    });
+  }
+
   logout(): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '300px',

@@ -1,7 +1,7 @@
 <nav class="sidebar">
   <h2 class="logo">📘 Lecții</h2>
 
-  <div *ngFor="let clasa of grupatePeClase | keyvalue">
+  <div *ngFor="let clasa of grupatePeClase | keyvalue : sortByClassLevel">
     <h3 class="clasa-titlu" (click)="toggleClasa(clasa.key)">
       {{ clasa.key }}
       <span class="arrow-icon">{{ claseDeschise[clasa.key] ? "▼" : "▶" }}</span>

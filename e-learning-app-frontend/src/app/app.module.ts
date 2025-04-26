@@ -48,6 +48,7 @@ import { AdminUserDetailComponent } from './components/admin-user-detail/admin-u
 import { QuestionDetailComponent } from './forum/question-detail/question-detail.component';
 import { ForumPageComponent } from './forum/forum-page/forum-page.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { ContactComponent } from './components/contact/contact.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -71,6 +72,7 @@ import { MatMenuModule } from '@angular/material/menu';
     AdminUserDetailComponent,
     QuestionDetailComponent,
     ForumPageComponent,
+    ContactComponent,
   ],
   imports: [
     BrowserModule,
