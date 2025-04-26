@@ -60,6 +60,44 @@
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
+.lectii-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 30px;
+  margin-bottom: 1.5rem;
+  gap: 10px; // spațiu între titlu și buton
+}
+.page-title {
+  font-size: 2.5rem;
+  color: #bb86fc;
+  font-weight: 600;
+  margin: 0;
+}
+
+.btn-adauga-emoji {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #e0d7ff !important; // 🟣 FORȚEAZĂ culoarea să fie ca la .btn-clasa
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: 0.2s ease all;
+  text-transform: none;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-1px);
+    color: #bb86fc !important; // mov deschis la hover
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
 .intro-text {
   color: #dddddd;
   font-size: 1rem;
@@ -74,38 +112,6 @@
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(4px);
-}
-
-.page-title {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  color: white;
-  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  z-index: 2;
-}
-
-.btn-adauga-emoji {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  font-size: 1.6rem;
-  font-weight: bold;
-  color: #ffffff;
-  background: rgba(187, 134, 252, 0.15); // semi-transparent mov
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(6px);
-  padding: 8px 14px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-
-  &:hover {
-    background: rgba(187, 134, 252, 0.25);
-    transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(187, 134, 252, 0.3);
-  }
 }
 
 .grid {
@@ -241,32 +247,6 @@ img {
 button:disabled {
   background: gray;
   cursor: not-allowed;
-}
-
-.btn-adauga {
-  background: linear-gradient(135deg, #bb86fc, #6a1b9a); // mov saturat elegant
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  margin-bottom: 20px;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-  transition: 0.3s ease all;
-  text-transform: none;
-
-  &:hover {
-    background: linear-gradient(135deg, #d1a4ff, #7b1fa2);
-    box-shadow: 0 6px 18px rgba(187, 134, 252, 0.4);
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    transform: scale(0.96);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
-  }
 }
 
 .progress-badge {

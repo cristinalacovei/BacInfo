@@ -1,15 +1,15 @@
 <div class="container">
   <div class="lectii-header">
     <h1 class="page-title">Lecții disponibile</h1>
-
     <button
       mat-raised-button
-      class="btn-adauga-emoji"
+      class="btn-adauga-emoji btn-clasa"
       (click)="adaugaLectie()"
       *ngIf="isAdmin"
       aria-label="Adaugă Lecție"
     >
-      ➕
+      <mat-icon>add_circle</mat-icon>
+      Adaugă Lecție
     </button>
   </div>
 

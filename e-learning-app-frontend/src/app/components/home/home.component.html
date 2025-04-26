@@ -1,29 +1,32 @@
 <div class="container">
-  <div class="card-wrapper">
-    <!-- Card Lecții -->
-    <mat-card class="custom-card" (click)="navigateToLessons()">
-      <mat-card-title>Lecții</mat-card-title>
-      <mat-card-content>
-        Accesează lecții interactive și explicate pas cu pas.
-      </mat-card-content>
-    </mat-card>
+  <div class="title-area">
+    <h1 class="animated-title">Platforma ta de e-learning</h1>
+    <p class="subtitle">Învață clar. Exersează eficient. Întreabă liber.</p>
 
-    <!-- Card Teste -->
-    <mat-card class="custom-card" (click)="navigateToTests()">
-      <mat-card-title>Teste de Antrenament</mat-card-title>
-      <mat-card-content> Decarca testele din anii anteriori. </mat-card-content>
-    </mat-card>
+    <div class="hero-cards">
+      <div class="hero-card" (click)="navigateToLessons()">
+        <h4><i class="material-icons">school</i> Lecții Interactive</h4>
+        <p>
+          Explorează lecții pas cu pas, structurate pe teme și ani de studiu.
+        </p>
+      </div>
 
-    <!-- Card Utilizatori -->
-    <mat-card
-      class="custom-card"
-      (click)="navigateToUserStats()"
-      *ngIf="isAdmin"
-    >
-      <mat-card-title>Utilizatori & Progres</mat-card-title>
-      <mat-card-content>
-        Vezi lista de utilizatori și progresul fiecăruia la teste și lecții.
-      </mat-card-content>
-    </mat-card>
+      <div class="hero-card" (click)="navigateToTests()">
+        <h4><i class="material-icons">quiz</i> Teste de Antrenament</h4>
+        <p>Verifică-ți cunoștințele prin teste grilă și provocări reale.</p>
+      </div>
+
+      <div class="hero-card" (click)="navigateToForum()">
+        <h4><i class="material-icons">forum</i> Forum Q&A</h4>
+        <p>Pune întrebări și primește răspunsuri de la colegi și profesori.</p>
+      </div>
+      <div class="hero-card" *ngIf="isAdmin" (click)="navigateToUserStats()">
+        <h4><i class="material-icons">bar_chart</i> Utilizatori & Progres</h4>
+        <p>
+          Vizualizează statistici despre utilizatori și progresul acestora în
+          platformă.
+        </p>
+      </div>
+    </div>
   </div>
 </div>

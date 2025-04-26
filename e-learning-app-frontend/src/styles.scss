@@ -2,6 +2,29 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap");
 @import "quill/dist/quill.snow.css";
 
+.question-text.preview img {
+  max-width: 50px;
+  height: auto;
+  border-radius: 10px;
+  margin: 10px 0;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.question-html img {
+  max-width: 250px;
+  height: auto;
+  border-radius: 10px;
+  margin: 10px 0;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease;
+  cursor: zoom-in;
+}
+
+.question-html img:hover {
+  transform: scale(1.03);
+}
+
 body {
   font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
   margin: 0;

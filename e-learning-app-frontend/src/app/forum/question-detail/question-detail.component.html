@@ -1,0 +1,78 @@
+<div class="container">
+  <div class="question-detail">
+    <!-- Întrebarea -->
+    <div class="question-box">
+      <h3>Întrebare:</h3>
+      <div
+        class="question-html"
+        [innerHTML]="question.questionText"
+        (click)="onImageClick($event)"
+      ></div>
+
+      <!-- Modal imagine full screen -->
+      <div class="image-modal" *ngIf="modalImage" (click)="closeModal()">
+        <img [src]="modalImage" alt="Imagine completă" />
+      </div>
+
+      <p class="author-line">
+        <i class="material-icons">person</i>
+        <span
+          >{{ question?.author?.firstName }}
+          {{ question?.author?.lastName }}</span
+        >
+        &nbsp;•&nbsp;
+        <i class="material-icons">schedule</i>
+        <span>{{ question?.createdAt | date : "short" }}</span>
+      </p>
+    </div>
+
+    <!-- Formular răspuns -->
+    <div class="answer-form mt-4">
+      <h5>Adaugă un răspuns:</h5>
+      <form
+        *ngIf="answerForm"
+        [formGroup]="answerForm"
+        (ngSubmit)="submitAnswer()"
+      >
+        <quill-editor
+          formControlName="answerHtml"
+          [modules]="editorConfig"
+          placeholder="Scrie răspunsul tău..."
+        ></quill-editor>
+
+        <button
+          type="submit"
+          class="btn btn-success mt-2"
+          [disabled]="answerForm.invalid"
+        >
+          Trimite răspuns
+        </button>
+      </form>
+    </div>
+    <hr />
+
+    <!-- Lista răspunsuri -->
+    <div class="answers-box">
+      <h4>{{ answers.length }} răspuns(uri):</h4>
+      <div *ngFor="let answer of answers" class="answer">
+        <div [innerHTML]="answer.answerHtml"></div>
+        <p>
+          <small>
+            — {{ answer.author.firstName }} {{ answer.author.lastName }}
+            &nbsp;•&nbsp;
+            {{ answer.createdAt | date : "short" }}
+          </small>
+          <button
+            *ngIf="isAdmin"
+            class="delete-btn"
+            (click)="deleteAnswer(answer.id)"
+            aria-label="Șterge răspuns"
+          >
+            🗑️
+          </button>
+        </p>
+        <hr />
+      </div>
+    </div>
+  </div>
+</div>

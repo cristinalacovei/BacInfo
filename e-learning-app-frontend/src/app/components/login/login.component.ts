@@ -90,6 +90,7 @@ export class LoginComponent implements OnInit {
       emailAddress: this.signupForm.value.emailAddress,
       password: this.signupForm.value.password,
       userRole: this.signupForm.value.userRole,
+      profileImageUrl: '', // Default image URL
     };
 
     this.authService.signup(signupData).subscribe({

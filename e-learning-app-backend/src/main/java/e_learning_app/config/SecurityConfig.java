@@ -74,7 +74,7 @@ public class SecurityConfig {
                         .requestMatchers("api/tests/{id}/lesson-id").permitAll()
                         .requestMatchers("/api/questions/**").permitAll()
                         .requestMatchers("/api/answers/**").permitAll()
-
+                        .requestMatchers("/api/forum/**").permitAll()
 
 
 

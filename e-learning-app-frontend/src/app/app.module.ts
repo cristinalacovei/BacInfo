@@ -45,7 +45,9 @@ import { CompleteProfileComponent } from './components/complete-profile/complete
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { AdminUserStatsComponent } from './components/admin-user-stats/admin-user-stats.component';
 import { AdminUserDetailComponent } from './components/admin-user-detail/admin-user-detail.component';
-
+import { QuestionDetailComponent } from './forum/question-detail/question-detail.component';
+import { ForumPageComponent } from './forum/forum-page/forum-page.component';
+import { MatMenuModule } from '@angular/material/menu';
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,6 +69,8 @@ import { AdminUserDetailComponent } from './components/admin-user-detail/admin-u
     SidebarComponent,
     AdminUserStatsComponent,
     AdminUserDetailComponent,
+    QuestionDetailComponent,
+    ForumPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,6 +95,7 @@ import { AdminUserDetailComponent } from './components/admin-user-detail/admin-u
     MatRadioModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatMenuModule,
   ],
   providers: [
     AuthService,

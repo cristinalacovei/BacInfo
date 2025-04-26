@@ -16,17 +16,20 @@ import { EditeazaTestComponent } from './components/editeaza-test/editeaza-test.
 import { CompleteProfileComponent } from './components/complete-profile/complete-profile.component';
 import { AdminUserStatsComponent } from './components/admin-user-stats/admin-user-stats.component';
 import { AdminUserDetailComponent } from './components/admin-user-detail/admin-user-detail.component';
+import { QuestionDetailComponent } from './forum/question-detail/question-detail.component';
+import { ForumPageComponent } from './forum/forum-page/forum-page.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', component: AboutComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'lectii', component: LectiiComponent },
+  { path: 'lectii', component: LectiiComponent, canActivate: [AuthGuard] },
   { path: 'lectie/:id', component: LectieComponent },
   { path: 'oauth2/redirect', component: AuthRedirectComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'editor', component: EditorComponent },
   { path: 'test/:id', component: TestComponent },
   { path: 'adauga-test/:lessonId', component: AdaugaTestComponent },
@@ -45,6 +48,12 @@ const routes: Routes = [
   {
     path: 'admin/user/:id',
     component: AdminUserDetailComponent,
+  },
+  { path: 'forum', component: ForumPageComponent, canActivate: [AuthGuard] },
+  {
+    path: 'forum/:id',
+    component: QuestionDetailComponent,
+    canActivate: [AuthGuard],
   },
 ];
 

@@ -29,4 +29,8 @@ export class HomeComponent implements OnInit {
   navigateToUserStats() {
     this.router.navigate(['/admin/users']);
   }
+
+  navigateToForum() {
+    this.router.navigate(['/forum']);
+  }
 }
