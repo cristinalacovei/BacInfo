@@ -1,12 +1,83 @@
-<mat-card *ngIf="user; else loading">
-  <mat-card-title>Profilul meu</mat-card-title>
-  <mat-card-content>
-    <p><strong>First Name:</strong> {{ user.firstName || "-" }}</p>
-    <p><strong>Last Name:</strong> {{ user.lastName || "-" }}</p>
-    <p><strong>Email:</strong> {{ user.emailAddress || "-" }}</p>
-    <p><strong>Username:</strong> {{ user.username || "-" }}</p>
-    <p><strong>Rol:</strong> {{ user.userRole || "-" }}</p>
+<!-- SNACKBAR MESSAGES -->
+<div *ngIf="feedbackMessage" class="snackbar" [ngClass]="feedbackType">
+  {{ feedbackMessage }}
+</div>
+
+<mat-card *ngIf="user; else loading" class="user-profile">
+  <mat-card-title class="profile-title">Profilul meu</mat-card-title>
+
+  <mat-card-content class="profile-content">
+    <div *ngIf="!isEditing && user?.profileImageUrl" class="avatar-preview">
+      <img
+        [src]="user.profileImageUrl"
+        alt="Avatar curent"
+        width="120"
+        height="120"
+        style="border-radius: 50%; object-fit: cover"
+      />
+    </div>
+
+    <div *ngIf="isEditing">
+      <h4>Alege un avatar</h4>
+      <div class="avatar-list">
+        <img
+          *ngFor="let avatar of avatars"
+          [src]="avatar"
+          (click)="selectAvatar(avatar)"
+          [class.selected]="user?.profileImageUrl === avatar"
+          class="avatar-option"
+        />
+      </div>
+    </div>
+
+    <!-- Câmpuri editabile -->
+    <div class="profile-field">
+      <label>First Name:</label>
+      <span *ngIf="!isEditing">{{ user.firstName || "-" }}</span>
+      <input *ngIf="isEditing" [(ngModel)]="user.firstName" />
+    </div>
+
+    <div class="profile-field">
+      <label>Last Name:</label>
+      <span *ngIf="!isEditing">{{ user.lastName || "-" }}</span>
+      <input *ngIf="isEditing" [(ngModel)]="user.lastName" />
+    </div>
+
+    <div class="profile-field">
+      <label>Email:</label>
+      <span *ngIf="!isEditing">{{ user.emailAddress || "-" }}</span>
+      <input *ngIf="isEditing" [(ngModel)]="user.emailAddress" />
+    </div>
+
+    <div class="profile-field">
+      <label>Username:</label>
+      <span *ngIf="!isEditing">{{ user.username || "-" }}</span>
+      <input
+        *ngIf="isEditing"
+        [(ngModel)]="user.username"
+        (blur)="checkUsernameAvailability()"
+      />
+      <small *ngIf="usernameTaken" style="color: red"
+        >Username-ul este deja folosit</small
+      >
+    </div>
+
+    <div class="profile-field">
+      <label>Rol:</label>
+      <span>{{ user.userRole }}</span>
+    </div>
   </mat-card-content>
+
+  <!-- Butoane jos și centrate -->
+  <div class="profile-actions">
+    <button *ngIf="!isEditing" (click)="editProfile()">
+      ✏️ Editează profilul
+    </button>
+    <div *ngIf="isEditing">
+      <button (click)="saveProfile()">💾 Salvează</button>
+      <button (click)="cancelEdit()">❌ Anulează</button>
+    </div>
+  </div>
 </mat-card>
 
 <ng-template #loading>

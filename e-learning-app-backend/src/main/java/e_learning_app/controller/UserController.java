@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.security.Principal;
@@ -89,6 +90,11 @@ public class UserController {
     }
 
 
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable UUID id, @RequestBody UserDTO userDTO) {
+        User updatedUser = userService.updateUser(id, userMapper.toEntity(userDTO));
+        return ResponseEntity.ok(userMapper.toDto(updatedUser));
+    }
 
     @RestControllerAdvice
     public class GlobalExceptionHandler {
@@ -98,5 +104,8 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
         }
     }
+
+
+
 
 }

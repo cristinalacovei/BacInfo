@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { User } from './types/user.types';
 
 @Component({
   selector: 'app-root',
@@ -15,9 +16,8 @@ export class AppComponent implements OnInit {
   currentYear: number = new Date().getFullYear();
   isLoggedIn = false;
   isAdmin = false;
-  cartItemCount = 0;
-  isDarkMode: boolean = false;
   isSidebarOpen = false;
+  user: User | null = null;
 
   constructor(
     private authService: AuthService,
@@ -32,6 +32,7 @@ export class AppComponent implements OnInit {
       if (loggedIn) {
         this.authService.getCurrentUser().subscribe((user) => {
           this.isAdmin = user?.userRole === 'ADMIN';
+          this.user = user; // ✅ păstrăm userul complet pt. avatar
         });
       }
     });
@@ -79,5 +80,10 @@ export class AppComponent implements OnInit {
         this.router.navigate(['']);
       }
     });
+  }
+
+  onAvatarError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = '/assets/default-avatar.png'; // fallback default
   }
 }

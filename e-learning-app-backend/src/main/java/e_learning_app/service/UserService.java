@@ -3,6 +3,7 @@ package e_learning_app.service;
 
 
 import e_learning_app.model.User;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +19,7 @@ public interface UserService {
     User getUserByEmail(String email);
     User setUsername(String username, String email);
     User save(User user);
+     User updateUser(UUID id, User updatedUser);
 
 }
 

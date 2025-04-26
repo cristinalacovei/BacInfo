@@ -16,6 +16,7 @@ public class UserMapper {
                 .username(userDTO.getUsername())
                 .emailAddress(userDTO.getEmailAddress())
                 .userRole(userDTO.getUserRole())
+                .profileImageUrl(userDTO.getProfileImageUrl())
                 .build();
     }
 
@@ -27,6 +28,7 @@ public class UserMapper {
                 .username(user.getUsername())
                 .emailAddress(user.getEmailAddress())
                 .userRole(user.getUserRole())
+                .profileImageUrl(user.getProfileImageUrl())
                 .build();
     }
 }

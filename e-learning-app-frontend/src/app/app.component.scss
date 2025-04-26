@@ -1,17 +1,16 @@
 @import "../app/styles/colors.scss";
 
+/* Font general */
 .font-primary {
-  font-family: "Poppins", sans-serif; /* Fontul utilizat */
-  font-weight: bold; /* Asigură stilul bold */
-  letter-spacing: 0.5px; /* Opțional pentru îmbunătățirea aspectului */
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  letter-spacing: 0.5px;
 }
 
+/* Sidebar și overlay */
 .overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.4);
   z-index: 998;
 }
@@ -38,22 +37,55 @@
   }
 }
 
+/* Navbar */
+.navbar {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background: linear-gradient(135deg, #7c0c8e, #000000);
+  color: white;
+  height: 60px;
+  position: relative;
+  z-index: 100;
+}
+
+/* Logo + Titlu */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+
+  h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: white;
+    font-weight: bold;
+  }
+}
+
+/* Buton meniu */
 .menu-button {
   background: transparent;
   border: none;
   color: white;
   font-size: 24px;
   cursor: pointer;
-  margin-right: 0.5rem;
 }
 
+/* Profil (icon/avatar) */
 .profile-button {
   background: none;
   border: none;
-  color: white;
   margin-right: 0.5rem;
-  font-size: 1.6rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  color: white;
   transition: transform 0.2s;
 
   &:hover {
@@ -61,243 +93,184 @@
     color: #bb86fc;
   }
 
+  img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid transparent;
+    transition: transform 0.2s, border 0.2s;
+
+    &:hover {
+      border-color: #bb86fc;
+    }
+  }
+
   mat-icon {
-    vertical-align: middle;
+    font-size: 28px;
   }
 }
 
-.navbar {
-  font-family: "Poppins";
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px; /* Spațiu pe margini */
-  background: linear-gradient(135deg, #7c0c8e, #000000); /* Fundal gradient */
-  color: rgb(215, 121, 255);
-  height: 60px;
-}
-
-.logo {
-  display: flex; /* Layout pe orizontală */
-  align-items: center; /* Aliniere verticală centrată */
-  gap: 12px; /* Spațiu între butonul de profil și titlu */
-  flex: 1; /* Asigură spațiere adecvată pentru partea stângă */
-}
-
-.logo h1 {
-  margin: 0; /* Elimină marginea implicită */
-  font-size: 1.5rem; /* Ajustează dimensiunea fontului */
-  color: white; /* Culoare albă pentru text */
-  font-weight: bold; /* Stil bold */
-}
-
-.centered-links {
-  flex: 1; /* Centrare pe mijloc */
-  display: flex;
-  justify-content: center;
-}
-
+/* Linkuri de navigație */
 .nav-links {
-  flex: 1; /* Elemente din partea dreaptă */
+  flex: 1;
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
+
+  a {
+    color: white;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: 0.3s ease;
+
+    &:hover {
+      background: linear-gradient(135deg, #5a0d5e, #3b083e);
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.4);
+    }
+
+    &.active {
+      background: linear-gradient(135deg, #6c0b6f, #480852);
+    }
+  }
+}
+
+.nav-center {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+
+  a {
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 10px;
+    transition: 0.3s ease all;
+
+    &:hover,
+    &.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: #bb86fc;
+      box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+      transform: scale(1.05);
+    }
+  }
+}
+
+/* Butoane login/logout */
+.nav-actions {
+  display: flex;
   align-items: center;
-  gap: 10px; /* Spațiu între elemente */
+  gap: 10px;
+
+  button {
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    color: white;
+    transition: 0.3s ease all;
+
+    &.login-button {
+      background: linear-gradient(135deg, #6c0b6f, #480852);
+    }
+
+    &.logout-button {
+      background: #3498db;
+
+      &:hover {
+        background-color: #2980b9;
+      }
+
+      &:active {
+        transform: scale(0.95);
+        box-shadow: 0 4px 8px rgba(40, 1, 48, 0.6);
+      }
+    }
+  }
 }
 
-.nav-actions .login-button,
-.nav-actions .logout-button {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-.nav-actions .login-button:hover,
-.nav-actions .logout-button:hover {
-  background-color: #2980b9;
-}
-
-.login-button .logout-button,
-.products-link {
-  width: 130px;
-  height: 40px;
-  line-height: 42px;
-  padding: 0;
-  border: none;
-  color: #fff; /* Text alb */
-  border-radius: 8px; /* Colțuri rotunjite */
-  cursor: pointer;
-  font-size: 18px;
-  font-family: "Poppins", sans-serif;
-  position: relative;
-  transition: 400ms ease all; /* Tranziții uniforme */
-  text-align: center;
-  display: inline-block;
-  text-decoration: none; /* Elimină sublinierea */
-  background: transparent; /* Fundal transparent */
-}
-
-a.logout-button,
-a.login-button {
-  display: inline-block; /* Comportament de buton */
-  text-align: center;
-  text-decoration: none; /* Elimină sublinierea implicită */
-  border: none; /* Elimină orice bordură implicită */
-  padding: 0; /* Asigură consistență cu `button` */
-}
-
-.logout-button:hover,
-.products-link:hover {
-  color: #ffffff; /* Schimbare culoare text */
-  background: transparent; /* Fundal transparent */
-  box-shadow: none;
-}
-
-.login-button::before,
-.login-button::after,
-.logout-button:before,
-.logout-button:after,
-.products-link:before,
-.products-link:after {
-  content: "";
+/* Banner Mod Admin */
+.admin-mode-banner {
   position: absolute;
-  top: 0;
-  right: 0;
-  height: 2px;
-  width: 0;
-  background: #2c0335; /* Bordură animată */
-  box-shadow: -1px -1px 5px 0px #fff, 7px 7px 20px 0px #0003,
-    4px 4px 5px 0px #0002;
-  transition: 400ms ease all;
-}
-
-.login-button::after,
-.logout-button:after,
-.products-link:after {
-  right: inherit;
-  top: inherit;
-  left: 0;
-  bottom: 0;
-}
-
-.login-button::before,
-.login-button::after,
-.logout-button:hover:before,
-.logout-button:hover:after {
-  width: 100%; /* Bordura devine completă */
-  transition: 800ms ease all;
-}
-
-.logout-button:active,
-.products-link:active {
-  transform: scale(0.95); /* Micșorare ușoară la click */
-  box-shadow: 0 4px 8px rgba(40, 1, 48, 0.6); /* Umbre pentru feedback */
-}
-
-.nav-links a,
-.nav-actions .login-button,
-.nav-actions .logout-button {
-  color: white; /* Text alb */
-  border: none;
-  padding: 10px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: 0.3s ease, transform 0.3s ease;
-  text-decoration: none;
-  display: inline-block;
-  text-align: center;
-  background: transparent; /* Fundal transparent */
-}
-
-.nav-links a.active,
-.nav-actions .logout-button:hover {
-  background: linear-gradient(135deg, #6c0b6f, #480852); // Mov mai deschis
-  transform: scale(1.05); // Mărire ușoară pe hover
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.4); // Umbră subtilă
-}
-
-.nav-actions .logout-button:active {
-  background: linear-gradient(135deg, #8c0d8a, #480852); // Mov intens la click
-  transform: scale(1.1); // Evidențiere mai mare la click
-  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.6);
-}
-
-.nav-links a:hover {
-  background: linear-gradient(135deg, #5a0d5e, #3b083e); // Gradient mai intens
-  transform: scale(1.05);
-}
-
-.login-button {
-  width: 150px; /* Dimensiune buton */
-  height: 45px;
-  line-height: 45px;
-  padding: 0;
-  border: none;
-  color: #fff; /* Text alb */
-  border-radius: 10px; /* Colțuri rotunjite */
-  cursor: pointer;
-  font-size: 18px;
+  top: 70px;
+  right: 40px;
+  background: linear-gradient(135deg, #8e24aa, #5e35b1);
+  color: white;
+  padding: 8px 18px;
+  border-radius: 12px;
+  font-weight: bold;
   font-family: "Poppins", sans-serif;
-  position: relative;
-  transition: 0.3s ease all; /* Tranziție lină pentru efecte */
-  text-align: center;
-  display: inline-block;
-  text-decoration: none; /* Elimină sublinierea */
-  background: linear-gradient(
-    135deg,
-    #6c0b6f,
-    #480852
-  ); /* Gradient închis și deschis */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Umbră subtile */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  animation: fadeSlide 0.4s ease-in;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.profile-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
 
   &:hover {
-    background: linear-gradient(
-      135deg,
-      #5a0d5e,
-      #3b083e
-    ); /* Culoare la hover */
-    transform: scale(1.05); /* Mărire ușoară */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Umbra mai intensă */
+    transform: scale(1.05);
   }
 
-  &:focus {
-    outline: none; /* Elimină conturul implicit */
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 0 0 4px rgba(0, 0, 0, 0.3); /* Glow la focus */
+  img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid transparent;
+    transition: 0.2s ease;
   }
 
-  &:active {
-    transform: scale(0.95); /* Micșorare la click */
-    box-shadow: 0 4px 8px rgba(40, 1, 48, 0.6); /* Umbre mai intense */
+  mat-icon {
+    font-size: 32px;
+    color: white;
   }
+}
 
-  ::before,
-  ::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 2px;
-    width: 0;
-    background: #fff; /* Bordură animată */
-    transition: 0.4s ease all;
-  }
+::ng-deep .mat-menu-panel.profile-menu {
+  background: #1e082e;
+  border-radius: 10px;
+  padding: 4px 0;
+  color: white;
 
-  ::before {
-    left: 0;
-  }
+  .mat-menu-item {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
 
-  ::after {
-    right: 0;
-  }
+    mat-icon {
+      margin-right: 10px;
+      color: #bb86fc;
+    }
 
-  &:hover::before,
-  &:hover::after {
-    width: 100%; /* Extinderea bordurii pe hover */
+    &:hover {
+      background: rgba(187, 134, 252, 0.1);
+    }
   }
 }

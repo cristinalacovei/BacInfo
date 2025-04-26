@@ -6,4 +6,5 @@ export interface User {
   password: string;
   emailAddress: string;
   userRole: string;
+  profileImageUrl: string;
 }

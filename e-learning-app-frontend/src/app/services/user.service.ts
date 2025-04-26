@@ -29,4 +29,16 @@ export class UserService {
       `http://localhost:8080/api/users/username/${username}`
     );
   }
+  uploadProfilePicture(userId: string, file: File): Observable<string> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post(
+      `${this.apiUrl}/upload-profile-picture/${userId}`,
+      formData,
+      {
+        responseType: 'text', // pentru că backendul returnează un string (linkul imaginii)
+      }
+    );
+  }
 }

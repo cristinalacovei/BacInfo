@@ -1,32 +1,48 @@
 <header>
   <nav class="navbar" aria-label="Main Navigation">
     <div class="logo">
-      <!-- Buton Meniu în navbar -->
       <button class="menu-button" (click)="toggleSidebar()">
         <mat-icon>menu</mat-icon>
       </button>
       <h1>BacInfoLearn</h1>
+    </div>
 
+    <div class="nav-center">
+      <a routerLink="/home" routerLinkActive="active">🏠 Home</a>
+      <a routerLink="/lectii" routerLinkActive="active">📘 Lecții</a>
+      <a routerLink="/teste" routerLinkActive="active">🧠 Teste</a>
+      <a routerLink="/forum" routerLinkActive="active">💬 Forum</a>
+    </div>
+
+    <div class="nav-actions">
       <button
         *ngIf="isLoggedIn"
-        (click)="navigateToProfile()"
+        [matMenuTriggerFor]="menu"
         class="profile-button"
         aria-label="Profil utilizator"
       >
-        <mat-icon>account_circle</mat-icon>
+        <img
+          *ngIf="user?.profileImageUrl; else defaultIcon"
+          [src]="user?.profileImageUrl"
+          (error)="onAvatarError($event)"
+          alt="Avatar utilizator"
+        />
+        <ng-template #defaultIcon>
+          <mat-icon>account_circle</mat-icon>
+        </ng-template>
       </button>
-    </div>
 
-    <div class="nav-links">
-      <a routerLink="/home" class="nav-link" aria-label="Lectii"
-        >Lecții si Teste</a
-      >
-    </div>
+      <mat-menu #menu="matMenu" class="profile-menu">
+        <button mat-menu-item (click)="navigateToProfile()">
+          <mat-icon>person</mat-icon>
+          <span>Profil</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Delogare</span>
+        </button>
+      </mat-menu>
 
-    <div>
-      <button *ngIf="isLoggedIn" (click)="logout()" class="logout-button">
-        Logout
-      </button>
       <button
         *ngIf="!isLoggedIn"
         (click)="navigateToLogin()"
@@ -38,10 +54,14 @@
   </nav>
 </header>
 
-<!-- Sidebar și overlay -->
+<!-- Sidebar + overlay -->
 <div *ngIf="isSidebarOpen" class="overlay" (click)="toggleSidebar()"></div>
 <app-sidebar *ngIf="isSidebarOpen" class="floating-sidebar"></app-sidebar>
 
+<!-- Banner admin -->
+<div *ngIf="isAdmin" class="admin-mode-banner">Admin Mode</div>
+
+<!-- Conținut principal -->
 <main role="main">
   <router-outlet></router-outlet>
 </main>
