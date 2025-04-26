@@ -18,13 +18,36 @@ export class AboutComponent {
     {
       question: 'Ce este BacInfoLearn?',
       answer:
-        'BacInfoLearn este platforma ideală pentru cei care se pregătesc pentru examenul de Bacalaureat la informatică. Oferim lecții structurate, exemple practice și teste interactive pentru fiecare capitol important.',
+        'BacInfoLearn este platforma ideală pentru pregătirea examenului de Bacalaureat la informatică, oferind lecții, teste interactive și exemple practice.',
       isOpen: false,
     },
     {
       question: 'Cum funcționează platforma?',
       answer:
-        'Platforma îți permite să accesezi lecții online, să rezolvi teste și să îți urmărești progresul în timp real, pentru a te pregăti eficient pentru examenul de Bacalaureat.',
+        'Accesezi lecții organizate pe capitole, rezolvi teste, analizezi răspunsurile greșite și îți urmărești progresul în timp real.',
+      isOpen: false,
+    },
+    {
+      question: 'Cum îmi pot urmări progresul?',
+      answer: 'Fiecare test completat actualizează automat progresul tău.',
+      isOpen: false,
+    },
+    {
+      question: 'Pot să refac testele sau să exersez întrebările greșite?',
+      answer:
+        'Da! Poți reface testele oricând dorești și poți exersa întrebările pe care le-ai greșit anterior.',
+      isOpen: false,
+    },
+    {
+      question: 'Ce este forumul BacInfoLearn?',
+      answer:
+        'Forumul este locul unde poți pune întrebări, răspunde altor colegi și discuta concepte de informatică pentru Bacalaureat.',
+      isOpen: false,
+    },
+    {
+      question: 'Ce opțiuni au profesorii pe platformă?',
+      answer:
+        'Profesorii pot exporta rapid în format PDF pentru a fi utilizate la clasă sau ca teme.',
       isOpen: false,
     },
   ];

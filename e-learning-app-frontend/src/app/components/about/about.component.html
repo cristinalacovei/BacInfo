@@ -9,55 +9,66 @@
   />
 </head>
 
-<section class="about-section">
-  <div class="container">
-    <div class="image-container">
-      <img src="fd.jpg" alt="Learning" />
+<section class="hero-section">
+  <div class="overlay"></div>
+  <div class="hero-content">
+    <h1 class="fade-in-title">
+      Bine ai venit la <span class="glow-text">BacInfoLearn!</span>
+    </h1>
+    <p class="typewriter">
+      Învață inteligent. Exersează eficient. Reușește fără stres!
+    </p>
+    <button class="hero-button" (click)="goToLogin()">Începe acum!</button>
+  </div>
+</section>
+
+<section class="about-highlights">
+  <div class="highlights-container">
+    <div class="highlight-card">
+      <i class="material-icons">menu_book</i>
+      <h3>Lecții Interactive</h3>
+      <p>
+        Învață organizat, pas cu pas, cu lecții structurate și teste aferente
+        fiecărui capitol.
+      </p>
     </div>
 
-    <div class="text-container">
-      <h6>Despre noi</h6>
-
-      <!-- Loop prin întrebările din componentă -->
-      <div *ngFor="let item of faqItems; let i = index" class="faq-item">
-        <div class="question">
-          {{ item.question }}
-        </div>
-        <!-- Afișează întotdeauna răspunsurile -->
-        <div class="answer">
-          {{ item.answer }}
-        </div>
-      </div>
-
-      <div class="social-icons">
-        <a href="#"><i class="fab fa-facebook"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-youtube"></i></a>
-      </div>
+    <div class="highlight-card">
+      <i class="material-icons">quiz</i>
+      <h3>Teste și Statistici</h3>
+      <p>
+        Rezolvă teste grilă, vezi progresul tău și analizează răspunsurile
+        greșite pentru a evolua constant.
+      </p>
     </div>
 
-    <!-- Secțiune pentru butonul de autentificare cu mesaj -->
-    <div class="auth-section">
-      <p class="auth-message">Alătură-te și învață!</p>
-      <button class="btn" (click)="goToLogin()">Începe acum!</button>
+    <div class="highlight-card">
+      <i class="material-icons">forum</i>
+      <h3>Comunitate Activă</h3>
+      <p>
+        Pune întrebări, răspunde colegilor și participă la forumul dedicat
+        discuțiilor educaționale.
+      </p>
     </div>
+  </div>
+</section>
 
-    <div class="benefits">
-      <div class="benefit">
-        <i class="material-icons">school</i>
-        <h4>Lecții Structurate</h4>
-        <p>Învăță cu lecții organizate pe capitole exact ca la examen.</p>
+<section class="faq-section">
+  <div class="faq-container">
+    <h2>Întrebări Frecvente</h2>
+
+    <div *ngFor="let item of faqItems; let i = index" class="faq-item">
+      <div class="faq-question" (click)="toggleAnswer(i)">
+        <i class="fas fa-question-circle"></i> {{ item.question }}
+        <i
+          class="fas"
+          [ngClass]="item.isOpen ? 'fa-chevron-up' : 'fa-chevron-down'"
+          style="margin-left: auto"
+        ></i>
       </div>
-      <div class="benefit">
-        <i class="material-icons">quiz</i>
-        <h4>Teste Interactive</h4>
-        <p>Exersează cu teste grilă și probleme de programare.</p>
-      </div>
-      <div class="benefit">
-        <i class="material-icons">emoji_events</i>
-        <h4>Statistici și Progres</h4>
-        <p>Urmărește progresul tău și îmbunătățește rezultatele.</p>
+
+      <div class="faq-answer" *ngIf="item.isOpen">
+        {{ item.answer }}
       </div>
     </div>
   </div>
