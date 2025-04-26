@@ -3,6 +3,7 @@ package e_learning_app.controller;
 import e_learning_app.model.Answer;
 import e_learning_app.service.impl.AnswerService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,11 +36,13 @@ public class AnswerController {
         return ResponseEntity.ok(answerService.createAnswer(answer));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAnswer(@PathVariable UUID id) {
         answerService.deleteAnswer(id);
         return ResponseEntity.noContent().build();
     }
+
     @PostMapping("/validate-score")
     public ResponseEntity<Map<String, Object>> validateAnswersWithScore(@RequestBody List<UUID> selectedAnswerIds) {
         Map<String, Object> result = answerService.validateAnswersWithScore(selectedAnswerIds);

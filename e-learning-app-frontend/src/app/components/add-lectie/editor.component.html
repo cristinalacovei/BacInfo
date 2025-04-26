@@ -1,64 +1,70 @@
-<div class="editor-container">
-  <form [formGroup]="lessonForm" (ngSubmit)="saveLesson()">
-    <!-- Titlul lecției -->
-    <div class="form-group">
-      <label for="title">Titlul lecției:</label>
-      <input
-        id="title"
-        formControlName="title"
-        type="text"
-        class="form-control"
-        placeholder="Introduceți titlul lecției"
-      />
-    </div>
+<div class="add-lesson-page">
+  <div class="editor-container">
+    <form [formGroup]="lessonForm" (ngSubmit)="saveLesson()">
+      <!-- Titlul lecției -->
+      <div class="form-group">
+        <label for="title">Titlul lecției:</label>
+        <input
+          id="title"
+          formControlName="title"
+          type="text"
+          class="form-control"
+          placeholder="Introduceți titlul lecției"
+        />
+      </div>
 
-    <!-- Descrierea lecției -->
-    <div class="form-group">
-      <label for="description">Descrierea lecției:</label>
-      <textarea
-        id="description"
-        formControlName="description"
-        class="form-control"
-        placeholder="Introduceți o descriere scurtă a lecției"
-      ></textarea>
-    </div>
+      <!-- Descrierea lecției -->
+      <div class="form-group">
+        <label for="description">Descrierea lecției:</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          class="form-control"
+          placeholder="Introduceți o descriere scurtă a lecției"
+        ></textarea>
+      </div>
 
-    <!-- Select pentru clasa asignată -->
-    <div class="form-group">
-      <label for="classLevel">Clasa:</label>
-      <select id="classLevel" formControlName="classLevel" class="form-control">
-        <option value="" disabled>Selectează clasa</option>
-        <option *ngFor="let level of [9, 10, 11, 12]" [value]="level">
-          Clasa {{ level }}
-        </option>
-      </select>
-    </div>
+      <!-- Select pentru clasa asignată -->
+      <div class="form-group">
+        <label for="classLevel">Clasa:</label>
+        <select
+          id="classLevel"
+          formControlName="classLevel"
+          class="form-control"
+        >
+          <option value="" disabled>Selectează clasa</option>
+          <option *ngFor="let level of [9, 10, 11, 12]" [value]="level">
+            Clasa {{ level }}
+          </option>
+        </select>
+      </div>
 
-    <!-- Editorul de text pentru conținut -->
-    <div class="form-group">
-      <label for="content">Conținutul lecției:</label>
-      <quill-editor
-        formControlName="content"
-        [modules]="editorConfig"
-        placeholder="Scrieți conținutul lecției..."
-      ></quill-editor>
-    </div>
+      <!-- Editorul de text pentru conținut -->
+      <div class="form-group">
+        <label for="content">Conținutul lecției:</label>
+        <quill-editor
+          formControlName="content"
+          [modules]="editorConfig"
+          placeholder="Scrieți conținutul lecției..."
+        ></quill-editor>
+      </div>
 
-    <!-- Buton pentru salvare -->
-    <button
-      type="submit"
-      [disabled]="lessonForm.invalid"
-      class="btn btn-primary"
-    >
-      Salvează lecția
-    </button>
-  </form>
-</div>
+      <!-- Buton pentru salvare -->
+      <button
+        type="submit"
+        [disabled]="lessonForm.invalid"
+        class="btn btn-primary"
+      >
+        Salvează lecția
+      </button>
+    </form>
+  </div>
 
-<!-- SECȚIUNEA DE AFIȘARE A LECȚIEI SALVATE -->
-<div class="lesson-display" *ngIf="savedLesson">
-  <h3>{{ savedLesson.title }}</h3>
-  <p><strong>Clasa:</strong> {{ savedLesson.classLevel }}</p>
-  <p><strong>Descriere:</strong> {{ savedLesson.description }}</p>
-  <quill-view [content]="savedLesson.content"></quill-view>
+  <!-- SECȚIUNEA DE AFIȘARE A LECȚIEI SALVATE -->
+  <div class="lesson-display" *ngIf="savedLesson">
+    <h3>{{ savedLesson.title }}</h3>
+    <p><strong>Clasa:</strong> {{ savedLesson.classLevel }}</p>
+    <p><strong>Descriere:</strong> {{ savedLesson.description }}</p>
+    <quill-view [content]="savedLesson.content"></quill-view>
+  </div>
 </div>

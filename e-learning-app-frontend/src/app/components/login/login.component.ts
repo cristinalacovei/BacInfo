@@ -185,6 +185,12 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['']);
   }
 
+  navigateToHome(): void {
+    this.router.navigate(['/home']).catch((err) => {
+      console.error('Failed to navigate to home page:', err);
+    });
+  }
+
   goToForgotPassword() {
     this.router.navigate(['/forgot-password']);
   }

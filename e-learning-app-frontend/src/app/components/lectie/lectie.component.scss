@@ -1,91 +1,185 @@
-/* Fundal general al paginii */
-body,
-.container {
-  background: linear-gradient(135deg, #0d0d0d, #1a1a1a); /* Gradient negru */
-  color: #ffffff; /* Text alb */
+.lesson-page {
+  position: relative;
+  min-height: 100vh;
+  padding: 60px 20px;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  color: #fff;
+
+  /* Fundal imagine */
+  background: url("../../../../public/coding.png") no-repeat center center/cover;
+  overflow: hidden;
+
+  /* Suprapunem un overlay întunecat */
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(15, 15, 30, 0.85); /* Negru transparent peste imagine */
+    z-index: 1;
+  }
+
+  /* Facem conținutul principal deasupra overlay-ului */
+  > * {
+    position: relative;
+    z-index: 2;
+  }
 }
 
-/* Card pentru lecție */
-.card {
-  background: #ffffff; /* Negru semi-transparent */
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 5px 15px rgba(154, 15, 191, 0.3); /* Umbră mov */
-  justify-content: center;
+.lesson-card {
+  background: rgba(30, 30, 50, 0.85);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(154, 15, 191, 0.4);
+  width: 100%;
+  max-width: 1000px;
+  backdrop-filter: blur(10px);
 }
 
-/* Titlul lecției */
-.text-primary {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #9a0fbf !important; /* Mov */
+.lesson-title {
+  font-size: 2.8rem;
   text-align: center;
-  text-shadow: 2px 2px 5px rgba(154, 15, 191, 0.5); /* Umbră mov subtilă */
+  color: #9a0fbf; /* Mov intens */
+  text-shadow: 0 0 10px rgba(154, 15, 191, 0.6);
 }
 
-/* Fundal conținut lecție */
-.lesson-content {
-  background: #ffffff; /* Gri închis semi-transparent */
-  padding: 20px;
-  border-radius: 10px;
+.lesson-subtitle {
+  font-size: 20px;
+  text-align: center;
+  color: #bbb;
+  margin-bottom: 30px;
+}
+
+.lesson-buttons {
+  display: flex;
   justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
-/* Butonul "Editează lecția" */
-button {
-  background-color: #6a0dad;
+.admin-section {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.admin-test-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.test-info {
+  color: #ba68c8; /* Mov pastel */
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.lesson-content {
+  background: rgba(40, 40, 70, 0.85);
+  padding: 30px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+}
+
+.page-content {
+  margin: 20px 0;
+  font-size: 18px;
+  color: #ddd;
+  width: 100%;
+  padding: 0 10px; /* Adaugă un mic padding stânga-dreapta */
+  word-wrap: break-word;
+  overflow-x: hidden;
+}
+
+.pagination-controls {
+  background: rgba(50, 50, 80, 0.85);
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin: 20px 0;
+}
+.pagination-controls button {
+  background: linear-gradient(135deg, #6a1b9a, #8e24aa);
   color: white;
   font-weight: bold;
-  padding: 12px 20px;
+  padding: 10px 20px;
   border: none;
   border-radius: 8px;
-  transition: 0.3s ease-in-out;
+  transition: 0.3s;
+  box-shadow: 0 4px 10px rgba(154, 15, 191, 0.3);
 }
 
-button:hover {
-  background-color: #9a0fbf;
+.pagination-controls button:hover:not([disabled]) {
+  background: linear-gradient(135deg, #8e24aa, #9c27b0);
   transform: scale(1.05);
 }
 
-/* Fundal paginare */
-.pagination-controls {
-  background: rgba(195, 195, 195, 0.8);
-  padding: 10px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
-  color: #ffffff;
-}
-/* Stilizare formular editare */
-.edit-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  align-items: center;
+.pagination-controls button[disabled] {
+  background: rgba(100, 100, 120, 0.4);
+  color: rgba(255, 255, 255, 0.6);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
-/* Lățime completă pentru inputuri */
+.edit-form {
+  background: rgba(50, 50, 80, 0.85);
+  padding: 30px;
+  border-radius: 15px;
+}
+
 .full-width {
   width: 100%;
 }
 
-/* Casetă mai mare pentru descriere */
 .larger-textarea textarea {
-  min-height: 100px !important;
+  min-height: 100px;
 }
 
-/* Text mai închis pentru lizibilitate */
-mat-form-field input,
-mat-form-field textarea {
-  color: #222 !important; /* Negru închis */
+.centered-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Buttons */
+button {
+  background: linear-gradient(135deg, #6a1b9a, #8e24aa); /* MOV MOV */
+  color: white;
+  border-radius: 8px;
   font-weight: bold;
+  padding: 12px 24px;
+  box-shadow: 0 4px 12px rgba(154, 15, 191, 0.4); /* Umbra MOV */
+  transition: 0.3s;
 }
 
-/* Bordură mai vizibilă */
-mat-form-field {
-  border: 1px solid #6a0dad !important; /* Mov */
-  border-radius: 5px;
-  padding: 5px;
+button:hover {
+  background: linear-gradient(135deg, #8e24aa, #9c27b0);
+  transform: scale(1.05);
+}
+
+.start-test-button {
+  background: linear-gradient(135deg, #6a1b9a, #8e24aa); /* Mov intens */
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  margin-top: 30px;
+  margin-bottom: 50px;
+  box-shadow: 0 0 15px rgba(154, 15, 191, 0.5); /* Glow mov */
+  transition: 0.4s ease;
+}
+
+.start-test-button:hover {
+  background: linear-gradient(135deg, #8e24aa, #9c27b0);
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(154, 15, 191, 0.7);
 }

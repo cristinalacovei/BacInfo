@@ -1,44 +1,42 @@
-<div class="container mt-4">
-  <div *ngIf="lectie">
-    <div class="card shadow-lg p-4">
-      <h1 class="text-center text-primary">
-        {{ lectie.title }}
-      </h1>
-      <p class="text-muted text-center">
-        {{ lectie.description }}
-      </p>
+<div class="lesson-page">
+  <div *ngIf="lectie" class="lesson-card">
+    <h1 class="lesson-title">{{ lectie.title }}</h1>
+    <p class="lesson-subtitle">{{ lectie.description }}</p>
 
+    <div class="lesson-buttons">
       <button
         mat-raised-button
         color="accent"
         (click)="toggleEditMode()"
         *ngIf="isAdmin"
       >
-        {{ isEditing ? "Anulează" : "Editează lecția" }}
+        {{ isEditing ? "Anulează" : "Editează Lecția" }}
       </button>
 
       <button
         mat-raised-button
         color="accent"
-        class="ml-2"
         (click)="exportTestAsPDF()"
         *ngIf="isTeacher && testId"
       >
         📄 Exportă Testul în PDF
       </button>
+    </div>
 
-      <div class="text-center mt-4" *ngIf="isAdmin">
-        <ng-container *ngIf="!testId; else dejaExistaTest">
-          <button
-            mat-raised-button
-            color="accent"
-            [routerLink]="['/adauga-test', lectie.id]"
-          >
-            ➕ Adaugă Test pentru această lecție
-          </button>
-        </ng-container>
-        <ng-template #dejaExistaTest>
-          <p class="text-muted">✅ Această lecție are deja un test asociat.</p>
+    <div *ngIf="isAdmin" class="admin-section">
+      <ng-container *ngIf="!testId; else testExists">
+        <button
+          mat-raised-button
+          color="accent"
+          [routerLink]="['/adauga-test', lectie.id]"
+        >
+          ➕ Adaugă Test
+        </button>
+      </ng-container>
+
+      <ng-template #testExists>
+        <p class="test-info">✅ Lecția are deja test asociat.</p>
+        <div class="admin-test-buttons">
           <button
             mat-raised-button
             color="primary"
@@ -46,105 +44,92 @@
           >
             ✏️ Editează Testul
           </button>
-
           <button
             mat-raised-button
             color="warn"
-            class="ml-2"
             (click)="confirmaStergereTest()"
           >
             🗑️ Șterge Testul
           </button>
-        </ng-template>
+        </div>
+      </ng-template>
+    </div>
+
+    <div class="lesson-content" *ngIf="!isEditing">
+      <div class="pagination-controls">
+        <button
+          mat-button
+          (click)="paginaAnterioara()"
+          [disabled]="paginaCurenta === 0"
+        >
+          ⬅ Anterior
+        </button>
+        <span>Pagina {{ paginaCurenta + 1 }} / {{ pagini.length }}</span>
+        <button
+          mat-button
+          (click)="paginaUrmatoare()"
+          [disabled]="paginaCurenta === pagini.length - 1"
+        >
+          Următor ➡
+        </button>
       </div>
 
-      <div class="lesson-content mt-4">
-        <!-- Butoane de navigare sus (doar când NU este în editare) -->
-        <div class="pagination-controls" *ngIf="!isEditing">
-          <button
-            mat-button
-            color="secondary"
-            (click)="paginaAnterioara()"
-            [disabled]="paginaCurenta === 0"
-          >
-            ⬅ Pagina Anterioară
-          </button>
-          <span>Pagina {{ paginaCurenta + 1 }} / {{ pagini.length }}</span>
-          <button
-            mat-button
-            color="secondary"
-            (click)="paginaUrmatoare()"
-            [disabled]="paginaCurenta === pagini.length - 1"
-          >
-            Pagina Următoare ➡
-          </button>
-        </div>
-        <!-- Buton pentru a începe testul -->
-        <div
-          *ngIf="paginaCurenta === pagini.length - 1"
-          class="text-center mt-4"
+      <div class="page-content" [innerHTML]="pagini[paginaCurenta]"></div>
+
+      <div *ngIf="paginaCurenta === pagini.length - 1" class="text-center">
+        <button
+          mat-raised-button
+          class="start-test-button"
+          (click)="startTest()"
         >
-          <button mat-raised-button color="primary" (click)="startTest()">
-            Începe Testul
-          </button>
-        </div>
+          🚀 Începe Testul
+        </button>
+      </div>
 
-        <!-- Mod de vizualizare cu paginare -->
-        <div *ngIf="!isEditing">
-          <div [innerHTML]="pagini[paginaCurenta]"></div>
-        </div>
-
-        <!-- Butoane de navigare jos (doar când NU este în editare) -->
-        <!-- ✅ Butoane de paginare poziționate mai bine -->
-        <div class="pagination-controls" *ngIf="!isEditing">
-          <button
-            mat-button
-            (click)="paginaAnterioara()"
-            [disabled]="paginaCurenta === 0"
-          >
-            ⬅ Pagina Anterioară
-          </button>
-          <span>Pagina {{ paginaCurenta + 1 }} / {{ pagini.length }}</span>
-          <button
-            mat-button
-            (click)="paginaUrmatoare()"
-            [disabled]="paginaCurenta === pagini.length - 1"
-          >
-            Pagina Următoare ➡
-          </button>
-        </div>
-
-        <!-- ✅ Buton de salvare în formular -->
-        <form *ngIf="isEditing" [formGroup]="lessonForm" class="edit-form">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Titlul lecției</mat-label>
-            <input matInput formControlName="title" />
-          </mat-form-field>
-
-          <mat-form-field
-            appearance="outline"
-            class="full-width larger-textarea"
-          >
-            <mat-label>Descrierea lecției</mat-label>
-            <textarea matInput formControlName="description"></textarea>
-          </mat-form-field>
-
-          <div class="form-group">
-            <label>Conținutul lecției</label>
-            <quill-editor
-              formControlName="content"
-              [modules]="editorConfig"
-              placeholder="Scrieți conținutul lecției..."
-            ></quill-editor>
-          </div>
-
-          <div class="centered-buttons">
-            <button mat-raised-button color="primary" (click)="saveLesson()">
-              Salvează Modificările
-            </button>
-          </div>
-        </form>
+      <div class="pagination-controls">
+        <button
+          mat-button
+          (click)="paginaAnterioara()"
+          [disabled]="paginaCurenta === 0"
+        >
+          ⬅ Anterior
+        </button>
+        <span>Pagina {{ paginaCurenta + 1 }} / {{ pagini.length }}</span>
+        <button
+          mat-button
+          (click)="paginaUrmatoare()"
+          [disabled]="paginaCurenta === pagini.length - 1"
+        >
+          Următor ➡
+        </button>
       </div>
     </div>
+
+    <form *ngIf="isEditing" [formGroup]="lessonForm" class="edit-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Titlul lecției</mat-label>
+        <input matInput formControlName="title" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width larger-textarea">
+        <mat-label>Descrierea lecției</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+      </mat-form-field>
+
+      <div class="form-group">
+        <label>Conținutul lecției</label>
+        <quill-editor
+          formControlName="content"
+          [modules]="editorConfig"
+          placeholder="Scrieți conținutul lecției..."
+        ></quill-editor>
+      </div>
+
+      <div class="centered-buttons">
+        <button mat-raised-button color="primary" (click)="saveLesson()">
+          💾 Salvează Modificările
+        </button>
+      </div>
+    </form>
   </div>
 </div>

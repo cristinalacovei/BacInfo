@@ -1,81 +1,137 @@
-/* Fundal general al editorului */
+.add-lesson-page {
+  position: relative;
+  height: 100vh;
+  background: url("../../../../public/coding.png") no-repeat center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  overflow: hidden;
+}
+
+.add-lesson-page::before {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 15, 30, 0.8);
+  backdrop-filter: blur(5px);
+  z-index: 1;
+}
+
 .editor-container {
+  position: relative;
+  z-index: 2;
   width: 80%;
-  margin: 0 auto;
-  padding: 20px;
-  background: #ffffff; /* Fundal alb */
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4); /* Umbră mov */
-  color: #000000; /* Text negru */
+  max-width: 1000px;
+  background: rgba(30, 30, 50, 0.85);
+  backdrop-filter: blur(12px);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(154, 15, 191, 0.5);
+  color: #ffffff;
   text-align: center;
 }
 
-/* Inputuri și textarea */
+/* Inputuri, textarea și select */
 input,
 textarea,
 select {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  background-color: #ffffff; /* Alb */
-  border: 1px solid #6a0dad; /* Mov */
-  border-radius: 5px;
-  color: #000000; /* Text negru */
+  padding: 12px;
+  margin: 15px 0;
+  background-color: rgba(40, 40, 70, 0.8);
+  border: 1px solid #8e24aa;
+  border-radius: 8px;
+  color: #ffffff;
   font-size: 16px;
+  transition: all 0.3s ease;
 }
 
-/* Placeholder negru pentru input-uri și textarea */
+/* Placeholder alb */
 input::placeholder,
 textarea::placeholder {
-  color: #666666 !important; /* Gri închis */
-  opacity: 0.8;
-}
-
-/* Editorul Quill */
-quill-editor {
-  background-color: #ffffff; /* Alb */
-  border-radius: 8px;
-  padding: 10px;
-  border: 1px solid #6a0dad; /* Mov */
-}
-
-/* Placeholder negru pentru Quill Editor */
-.ql-editor::before {
-  color: #666666 !important; /* Placeholder gri închis */
+  color: #bbb;
   opacity: 0.7;
 }
 
-/* Dropdown select stilizat */
-select {
-  appearance: none;
-  background-color: #ffffff; /* Alb */
-  color: #000000; /* Text negru */
-  border: 1px solid #6a0dad; /* Mov */
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-}
-
-/* Când un element este selectat, să fie mov */
+/* Select focus */
 select:focus,
 select option:checked {
-  background-color: #6a0dad !important;
+  background-color: #8e24aa !important;
   color: #ffffff !important;
 }
 
-/* Buton stilizat */
+::ng-deep quill-editor {
+  background-color: rgba(40, 40, 70, 0.8);
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid #8e24aa;
+  color: #ffffff;
+}
+
+/* Toolbar-ul */
+::ng-deep .ql-toolbar.ql-snow {
+  background: rgba(30, 30, 50, 0.9);
+  border: none;
+  border-bottom: 1px solid #8e24aa;
+}
+
+/* Iconițe și texte în toolbar */
+::ng-deep .ql-snow .ql-picker,
+::ng-deep .ql-snow .ql-stroke,
+::ng-deep .ql-snow .ql-picker-label,
+::ng-deep .ql-snow .ql-picker-item,
+::ng-deep .ql-snow .ql-formats button {
+  color: #ffffff;
+  stroke: #ffffff;
+  fill: #ffffff;
+}
+
+/* Hover și active */
+::ng-deep .ql-snow .ql-formats button:hover,
+::ng-deep .ql-snow .ql-formats button.ql-active {
+  color: #ff80ff;
+  stroke: #ff80ff;
+}
+
+/* Textul din editor */
+::ng-deep .ql-editor {
+  color: #ffffff;
+  font-size: 16px;
+}
+
+/* Placeholder în editor */
+::ng-deep .ql-editor::before {
+  color: #ffffff !important;
+  opacity: 0.5; /* dacă vrei să fie puțin mai subtil */
+  font-style: italic;
+}
+
+/* Buton principal */
 button {
-  background-color: #6a0dad !important;
+  background: linear-gradient(135deg, #6a1b9a, #8e24aa);
   color: white;
   font-weight: bold;
-  padding: 12px 20px;
-  margin-top: 15px;
+  padding: 14px 28px;
+  margin-top: 20px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   transition: 0.3s ease-in-out;
+  box-shadow: 0 4px 12px rgba(154, 15, 191, 0.4);
 }
 
 button:hover {
-  background-color: #9a0fbf !important;
+  background: linear-gradient(135deg, #8e24aa, #9c27b0);
   transform: scale(1.05);
+}
+
+/* Secțiunea de preview lecție */
+.lesson-display {
+  background: rgba(40, 40, 70, 0.8);
+  border-radius: 16px;
+  padding: 30px;
+  margin-top: 30px;
+  box-shadow: 0 6px 16px rgba(154, 15, 191, 0.3);
+  color: #ffffff;
 }

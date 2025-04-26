@@ -33,6 +33,7 @@
             [(ngModel)]="test.questions[currentQuestionIndex].selectedAnswer"
             [value]="answer.id"
             [disabled]="showResults"
+            (change)="updateProgress()"
           />
           <input
             *ngIf="
@@ -42,6 +43,7 @@
             type="checkbox"
             [(ngModel)]="answer.isSelected"
             [disabled]="showResults"
+            (change)="updateProgress()"
           />
           {{ answer.answerText }}
         </label>
