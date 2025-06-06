@@ -30,18 +30,14 @@ public class PasswordResetController {
 
         PasswordResetToken resetToken = passwordResetService.createPasswordResetToken(email);
         if(resetToken == null){
-            // Pentru securitate, de obicei nu dezvălăm dacă email-ul nu există
             return ResponseEntity.ok(Map.of("message", "Dacă email-ul există în sistem, vei primi instrucțiuni."));
 
         }
 
-        // Construiește link-ul de resetare – de exemplu: https://frontend-app/reset-password?token=...
         String encodedToken = URLEncoder.encode(resetToken.getToken(), StandardCharsets.UTF_8);
-        String frontendUrl = "http://localhost:4200"; // Poți seta acest URL și în application.properties
+        String frontendUrl = "http://localhost:4200";
         String resetUrl = frontendUrl + "/reset-password?token=" + encodedToken;
 
-
-        // Trimiterea emailului
         String subject = "Resetare parolă";
         String bodyEmail = "Pentru a-ți reseta parola, te rog accesează link-ul: " + resetUrl;
         emailService.sendEmail(email, subject, bodyEmail);

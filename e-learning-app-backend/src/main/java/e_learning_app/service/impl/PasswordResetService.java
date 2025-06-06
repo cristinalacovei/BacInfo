@@ -15,22 +15,23 @@ import java.util.UUID;
 @Service
 public class PasswordResetService {
     // Expirarea tokenului, de ex.: 30 minute
+
+
+    @Autowired
+    public PasswordResetTokenRepository tokenRepository;
+
+    @Autowired
+    public UserRepository userRepository; // presupunând că ai un repository pentru entitatea User
+
+    @Autowired
+    public PasswordEncoder passwordEncoder;
+
     private static final long EXPIRATION_MINUTES = 30L;
 
-    @Autowired
-    private PasswordResetTokenRepository tokenRepository;
-
-    @Autowired
-    private UserRepository userRepository; // presupunând că ai un repository pentru entitatea User
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    // Metoda care generează tokenul și creează o intrare în DB
     public PasswordResetToken createPasswordResetToken(String email) {
         Optional<User> userOpt = userRepository.findByEmailAddress(email);
         if(userOpt.isEmpty()){
-            return null; // sau poți arunca o excepție, în funcție de comportamentul dorit
+            return null;
         }
         User user = userOpt.get();
         String token = UUID.randomUUID().toString();
@@ -40,7 +41,7 @@ public class PasswordResetService {
         return resetToken;
     }
 
-    // Metoda care actualizează parola, după validarea tokenului
+
     public boolean resetPassword(String token, String newPassword) {
         Optional<PasswordResetToken> tokenOpt = tokenRepository.findByToken(token);
         if(tokenOpt.isEmpty()){
@@ -50,13 +51,13 @@ public class PasswordResetService {
         if(resetToken.isExpired()){
             return false;
         }
-        // Preluăm utilizatorul
+
         Optional<User> userOpt = userRepository.findById(resetToken.getUserId());
         if(userOpt.isEmpty()){
             return false;
         }
         User user = userOpt.get();
-        // Actualizare parolă (asigură-te că o encodezi)
+
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
         // Invalidate token after use

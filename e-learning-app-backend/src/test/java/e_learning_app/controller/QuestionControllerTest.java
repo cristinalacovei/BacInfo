@@ -85,4 +85,13 @@ class QuestionControllerTest {
 
         verify(questionService, times(1)).deleteQuestion(questionId);
     }
+
+    @Test
+    void testGetQuestionById_NotFound() throws Exception {
+        when(questionService.getQuestionById(questionId)).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/questions/" + questionId))
+                .andExpect(status().isNotFound());
+    }
+
 }

@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -85,5 +86,34 @@ class AnswerControllerTest {
 
         verify(answerService, times(1)).deleteAnswer(answerId);
     }
+
+    @Test
+    void testGetAnswerById_NotFound() throws Exception {
+        when(answerService.getAnswerById(answerId)).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/answers/" + answerId))
+                .andExpect(status().isNotFound());
+    }
+    @Test
+    void testValidateAnswersWithScore() throws Exception {
+        UUID id1 = UUID.randomUUID();
+        UUID id2 = UUID.randomUUID();
+        List<UUID> selectedIds = List.of(id1, id2);
+
+        Map<String, Object> result = Map.of(
+                "score", 2,
+                "correct", true
+        );
+
+        when(answerService.validateAnswersWithScore(anyList())).thenReturn(result);
+
+        mockMvc.perform(post("/api/answers/validate-score")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("[\"" + id1 + "\", \"" + id2 + "\"]"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.score").value(2))
+                .andExpect(jsonPath("$.correct").value(true));
+    }
+
 }
 

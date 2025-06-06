@@ -1,3 +1,4 @@
+
 package e_learning_app.service;
 
 import e_learning_app.model.Question;
@@ -5,79 +6,62 @@ import e_learning_app.repository.QuestionRepository;
 import e_learning_app.service.impl.QuestionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-class QuestionServiceTest {
+public class QuestionServiceTest {
 
-    @Mock
     private QuestionRepository questionRepository;
-
-    @InjectMocks
     private QuestionService questionService;
 
-    private Question question;
-    private UUID questionId;
-    private UUID testId;
-
     @BeforeEach
-    void setUp() {
-        questionId = UUID.randomUUID();
-        testId = UUID.randomUUID();
-        question = Question.builder()
-                .id(questionId)
-                .questionText("What is OOP?")
-                .questionType("SINGLE_CHOICE")
-                .build();
+    public void setUp() {
+        questionRepository = mock(QuestionRepository.class);
+        questionService = new QuestionService(questionRepository);
     }
 
     @Test
-    void testGetQuestionsByTestId() {
-        when(questionRepository.findByTestId(testId)).thenReturn(List.of(question));
+    public void testGetQuestionsByTestId() {
+        UUID testId = UUID.randomUUID();
+        List<Question> questions = List.of(new Question(), new Question());
+        when(questionRepository.findByTestId(testId)).thenReturn(questions);
 
-        List<Question> questions = questionService.getQuestionsByTestId(testId);
+        List<Question> result = questionService.getQuestionsByTestId(testId);
 
-        assertFalse(questions.isEmpty());
-        assertEquals(1, questions.size());
-        assertEquals("What is OOP?", questions.get(0).getQuestionText());
+        assertEquals(2, result.size());
+        verify(questionRepository, times(1)).findByTestId(testId);
     }
 
     @Test
-    void testGetQuestionById() {
+    public void testGetQuestionById() {
+        UUID questionId = UUID.randomUUID();
+        Question question = new Question();
         when(questionRepository.findById(questionId)).thenReturn(Optional.of(question));
 
-        Optional<Question> foundQuestion = questionService.getQuestionById(questionId);
+        Optional<Question> result = questionService.getQuestionById(questionId);
 
-        assertTrue(foundQuestion.isPresent());
-        assertEquals("What is OOP?", foundQuestion.get().getQuestionText());
+        assertTrue(result.isPresent());
+        verify(questionRepository).findById(questionId);
     }
 
     @Test
-    void testCreateQuestion() {
-        when(questionRepository.save(any(Question.class))).thenReturn(question);
+    public void testCreateQuestion() {
+        Question question = new Question();
+        when(questionRepository.save(question)).thenReturn(question);
 
-        Question savedQuestion = questionService.createQuestion(question);
+        Question saved = questionService.createQuestion(question);
 
-        assertNotNull(savedQuestion);
-        assertEquals("What is OOP?", savedQuestion.getQuestionText());
+        assertNotNull(saved);
+        verify(questionRepository).save(question);
     }
 
     @Test
-    void testDeleteQuestion() {
-        doNothing().when(questionRepository).deleteById(questionId);
-
-        questionService.deleteQuestion(questionId);
-
-        verify(questionRepository, times(1)).deleteById(questionId);
+    public void testDeleteQuestion() {
+        UUID id = UUID.randomUUID();
+        questionService.deleteQuestion(id);
+        verify(questionRepository).deleteById(id);
     }
 }

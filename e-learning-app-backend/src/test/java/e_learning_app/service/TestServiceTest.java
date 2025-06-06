@@ -1,79 +1,132 @@
+
 package e_learning_app.service;
 
+import e_learning_app.model.Lesson;
 import e_learning_app.model.TestEntity;
+import e_learning_app.model.Question;
+import e_learning_app.model.Answer;
 import e_learning_app.repository.TestRepository;
 import e_learning_app.service.impl.TestService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.Mockito;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-class TestServiceTest {
+public class TestServiceTest {
 
-    @Mock
     private TestRepository testRepository;
-
-    @InjectMocks
     private TestService testService;
 
-    private TestEntity test;
-    private UUID testId;
-
     @BeforeEach
-    void setUp() {
-        testId = UUID.randomUUID();
-        test = TestEntity.builder()
-                .id(testId)
-                .classLevel(11)
-                .build();
+    public void setUp() {
+        testRepository = mock(TestRepository.class);
+        testService = new TestService(testRepository);
     }
 
     @Test
-    void testGetAllTests() {
-        when(testRepository.findAll()).thenReturn(List.of(test));
+    public void testGetAllTests() {
+        List<TestEntity> mockTests = Arrays.asList(new TestEntity(), new TestEntity());
+        when(testRepository.findAll()).thenReturn(mockTests);
 
-        List<TestEntity> tests = testService.getAllTests();
+        List<TestEntity> result = testService.getAllTests();
 
-        assertFalse(tests.isEmpty());
-        assertEquals(1, tests.size());
+        assertEquals(2, result.size());
+        verify(testRepository, times(1)).findAll();
     }
 
     @Test
-    void testGetTestById() {
-        when(testRepository.findById(testId)).thenReturn(Optional.of(test));
+    public void testGetTestsByClassLevel() {
+        List<TestEntity> mockTests = Arrays.asList(new TestEntity());
+        when(testRepository.findByClassLevel(5)).thenReturn(mockTests);
 
-        Optional<TestEntity> foundTest = testService.getTestById(testId);
+        List<TestEntity> result = testService.getTestsByClassLevel(5);
 
-        assertTrue(foundTest.isPresent());
-        assertEquals(11, foundTest.get().getClassLevel());
+        assertEquals(1, result.size());
+        verify(testRepository, times(1)).findByClassLevel(5);
     }
 
     @Test
-    void testCreateTest() {
+    public void testGetTestById() {
+        UUID id = UUID.randomUUID();
+        TestEntity test = new TestEntity();
+        when(testRepository.findById(id)).thenReturn(Optional.of(test));
+
+        Optional<TestEntity> result = testService.getTestById(id);
+
+        assertTrue(result.isPresent());
+        verify(testRepository).findById(id);
+    }
+
+    @Test
+    public void testCreateTestWithNestedEntities() {
+        TestEntity test = new TestEntity();
+        Question question = new Question();
+        Answer answer = new Answer();
+        question.setAnswers(List.of(answer));
+        test.setQuestions(List.of(question));
+
         when(testRepository.save(any(TestEntity.class))).thenReturn(test);
 
-        TestEntity savedTest = testService.createTest(test);
+        TestEntity saved = testService.createTest(test);
 
-        assertNotNull(savedTest);
-        assertEquals(11, savedTest.getClassLevel());
+        assertNotNull(saved);
+        assertEquals(test, question.getTest());
+        assertEquals(question, answer.getQuestion());
+        verify(testRepository).save(test);
     }
 
     @Test
-    void testDeleteTest() {
-        doNothing().when(testRepository).deleteById(testId);
+    public void testDeleteTest() {
+        UUID id = UUID.randomUUID();
+        testService.deleteTest(id);
+        verify(testRepository).deleteById(id);
+    }
 
-        testService.deleteTest(testId);
+    @Test
+    public void testUpdateTest() {
+        UUID id = UUID.randomUUID();
+        TestEntity existingTest = new TestEntity();
+        TestEntity updatedTest = new TestEntity();
+        updatedTest.setQuestions(List.of(new Question()));
 
-        verify(testRepository, times(1)).deleteById(testId);
+        when(testRepository.findById(id)).thenReturn(Optional.of(existingTest));
+        when(testRepository.save(existingTest)).thenReturn(existingTest);
+
+        Optional<TestEntity> result = testService.updateTest(id, updatedTest);
+
+        assertTrue(result.isPresent());
+        assertEquals(updatedTest.getQuestions(), result.get().getQuestions());
+        verify(testRepository).save(existingTest);
+    }
+
+    @Test
+    public void testGetLessonIdByTestIdWhenFound() {
+        UUID testId = UUID.randomUUID();
+        UUID lessonId = UUID.randomUUID();
+
+        Lesson lesson = mock(Lesson.class);  // <-- Mock corect
+        when(lesson.getId()).thenReturn(lessonId);
+
+        TestEntity test = mock(TestEntity.class);
+        when(test.getLesson()).thenReturn(lesson);
+
+        when(testRepository.findById(testId)).thenReturn(Optional.of(test));
+
+        UUID result = testService.getLessonIdByTestId(testId);
+
+        assertEquals(lessonId, result);
+    }
+
+
+    @Test
+    public void testGetLessonIdByTestIdWhenNotFound() {
+        UUID testId = UUID.randomUUID();
+        when(testRepository.findById(testId)).thenReturn(Optional.empty());
+
+        assertThrows(IllegalArgumentException.class, () -> testService.getLessonIdByTestId(testId));
     }
 }

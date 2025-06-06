@@ -24,8 +24,31 @@
           *ngFor="let avatar of avatars"
           [src]="avatar"
           (click)="selectAvatar(avatar)"
-          [class.selected]="user?.profileImageUrl === avatar"
+          [class.selected]="user.profileImageUrl === avatar"
           class="avatar-option"
+        />
+      </div>
+      <h4>Sau încarcă o imagine nouă:</h4>
+      <input type="file" accept="image/*" (change)="onFileChange($event)" />
+
+      <image-cropper
+        *ngIf="imageChangedEvent"
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="true"
+        [aspectRatio]="1"
+        [resizeToWidth]="150"
+        [roundCropper]="true"
+        format="png"
+        (imageCropped)="onImageCropped($event)"
+      ></image-cropper>
+
+      <!-- 🔥 Aici apare butonul doar dacă există imagine crop-uită -->
+      <div *ngIf="croppedImage" class="avatar-preview">
+        <img
+          [src]="croppedImage"
+          width="120"
+          height="120"
+          class="circular-preview"
         />
       </div>
     </div>

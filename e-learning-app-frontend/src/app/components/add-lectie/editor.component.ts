@@ -39,25 +39,39 @@ export class EditorComponent implements OnInit {
   ngOnInit(): void {
     this.lessonForm = this.fb.group({
       title: ['', Validators.required],
-      description: ['', Validators.required], // Descrierea lecției
+      description: ['', Validators.required],
       content: ['', Validators.required],
-      classLevel: ['', Validators.required], // Clasa la care este asignată lecția
+      classLevel: ['', Validators.required],
     });
+
+    // Încarcă backup dacă există
+    const savedDraft = localStorage.getItem('lessonDraft');
+    if (savedDraft) {
+      this.lessonForm.patchValue(JSON.parse(savedDraft));
+    }
+
+    // Autosave la fiecare 2 minute
+    setInterval(() => {
+      if (this.lessonForm.dirty) {
+        localStorage.setItem(
+          'lessonDraft',
+          JSON.stringify(this.lessonForm.value)
+        );
+        console.log(' Backup salvat local (lessonDraft)');
+      }
+    }, 60 * 1000); // 2 minute
   }
 
   saveLesson(): void {
     if (this.lessonForm.valid) {
       this.savedLesson = this.lessonForm.value;
-
-      console.log('Lecție salvată:', this.savedLesson);
-
-      // Trimiterea către backend
       this.http
         .post('http://localhost:8080/api/lessons', this.savedLesson)
         .subscribe(
           (response) => {
             console.log('Lecția a fost salvată cu succes!', response);
-            this.lessonForm.reset(); // Resetăm formularul după salvare
+            localStorage.removeItem('lessonDraft'); // 🧹 curăță backupul
+            this.lessonForm.reset();
           },
           (error) => {
             console.error('Eroare la salvarea lecției:', error);

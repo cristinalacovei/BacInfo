@@ -24,10 +24,10 @@ public class Question extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "test_id", referencedColumnName = "id")
-    @JsonBackReference // ✅ Evită serializarea infinită
+    @JsonBackReference
     private TestEntity test;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-    @JsonManagedReference // ✅ Asigură relația corectă cu `Answer`
+    @JsonManagedReference
     private List<Answer> answers;
 }

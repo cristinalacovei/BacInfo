@@ -29,21 +29,19 @@ public class TestService {
     }
 
     public TestEntity createTest(TestEntity test) {
-        // Parcurgem întrebările și setăm `test` ca referință
         if (test.getQuestions() != null) {
             test.getQuestions().forEach(question -> {
                 question.setTest(test);
 
                 if (question.getAnswers() != null) {
                     question.getAnswers().forEach(answer -> {
-                        answer.setQuestion(question); // ✅ relație corectă
-                        // `isCorrect` și `answerText` sunt deja setate de JSON
+                        answer.setQuestion(question);
                     });
                 }
             });
         }
 
-        return testRepository.save(test); // ✅ CascadeType.ALL va salva tot
+        return testRepository.save(test);
     }
 
     public void deleteTest(UUID id) {
@@ -56,6 +54,7 @@ public class TestService {
             return testRepository.save(existingTest);
         });
     }
+
     public UUID getLessonIdByTestId(UUID testId) {
         return testRepository.findById(testId)
                 .map(test -> test.getLesson().getId())

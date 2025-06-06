@@ -1,83 +1,95 @@
 package e_learning_app.service;
+
 import e_learning_app.model.Answer;
+import e_learning_app.model.Question;
 import e_learning_app.repository.AnswerRepository;
 import e_learning_app.service.impl.AnswerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-class AnswerServiceTest {
+public class AnswerServiceTest {
 
-    @Mock
     private AnswerRepository answerRepository;
-
-    @InjectMocks
     private AnswerService answerService;
-
-    private Answer answer;
-    private UUID answerId;
-    private UUID questionId;
 
     @BeforeEach
     void setUp() {
-        answerId = UUID.randomUUID();
-        questionId = UUID.randomUUID();
-        answer = Answer.builder()
-                .id(answerId)
-                .answerText("Encapsulation, Inheritance, Polymorphism, Abstraction")
-                .isCorrect(true)
-                .build();
+        answerRepository = mock(AnswerRepository.class);
+        answerService = new AnswerService(answerRepository);
     }
 
     @Test
     void testGetAnswersByQuestionId() {
-        when(answerRepository.findByQuestionId(questionId)).thenReturn(List.of(answer));
+        UUID questionId = UUID.randomUUID();
+        List<Answer> expectedAnswers = List.of(new Answer());
+        when(answerRepository.findByQuestionId(questionId)).thenReturn(expectedAnswers);
 
-        List<Answer> answers = answerService.getAnswersByQuestionId(questionId);
-
-        assertFalse(answers.isEmpty());
-        assertEquals(1, answers.size());
-        assertTrue(answers.get(0).isCorrect());
+        List<Answer> result = answerService.getAnswersByQuestionId(questionId);
+        assertEquals(expectedAnswers, result);
     }
 
     @Test
     void testGetAnswerById() {
-        when(answerRepository.findById(answerId)).thenReturn(Optional.of(answer));
+        UUID id = UUID.randomUUID();
+        Answer answer = new Answer();
+        when(answerRepository.findById(id)).thenReturn(Optional.of(answer));
 
-        Optional<Answer> foundAnswer = answerService.getAnswerById(answerId);
-
-        assertTrue(foundAnswer.isPresent());
-        assertTrue(foundAnswer.get().isCorrect());
+        Optional<Answer> result = answerService.getAnswerById(id);
+        assertTrue(result.isPresent());
+        assertEquals(answer, result.get());
     }
 
     @Test
     void testCreateAnswer() {
-        when(answerRepository.save(any(Answer.class))).thenReturn(answer);
+        Answer answer = new Answer();
+        when(answerRepository.save(answer)).thenReturn(answer);
 
-        Answer savedAnswer = answerService.createAnswer(answer);
-
-        assertNotNull(savedAnswer);
-        assertTrue(savedAnswer.isCorrect());
+        Answer result = answerService.createAnswer(answer);
+        assertEquals(answer, result);
     }
 
     @Test
     void testDeleteAnswer() {
-        doNothing().when(answerRepository).deleteById(answerId);
+        UUID id = UUID.randomUUID();
+        doNothing().when(answerRepository).deleteById(id);
 
-        answerService.deleteAnswer(answerId);
+        answerService.deleteAnswer(id);
+        verify(answerRepository, times(1)).deleteById(id);
+    }
 
-        verify(answerRepository, times(1)).deleteById(answerId);
+    @Test
+    void testValidateAnswersWithScore() {
+        UUID questionId = UUID.randomUUID();
+        UUID correctAnswerId = UUID.randomUUID();
+        UUID wrongAnswerId = UUID.randomUUID();
+
+        Question question = new Question();
+        question.setId(questionId);
+
+        Answer correctAnswer = new Answer();
+        correctAnswer.setId(correctAnswerId);
+        correctAnswer.setQuestion(question);
+        correctAnswer.setCorrect(true);
+
+        Answer wrongAnswer = new Answer();
+        wrongAnswer.setId(wrongAnswerId);
+        wrongAnswer.setQuestion(question);
+        wrongAnswer.setCorrect(false);
+
+        List<UUID> selectedIds = List.of(correctAnswerId);
+        when(answerRepository.findAllById(selectedIds)).thenReturn(List.of(correctAnswer));
+        when(answerRepository.findByQuestionId(questionId)).thenReturn(List.of(correctAnswer, wrongAnswer));
+
+        Map<String, Object> result = answerService.validateAnswersWithScore(selectedIds);
+
+        assertEquals(1, result.get("correctAnswers"));
+        assertEquals(1, result.get("totalQuestions"));
+        assertTrue(((List<?>) result.get("correctAnswerIds")).contains(correctAnswerId));
+        assertTrue(((List<?>) result.get("incorrectAnswerIds")).isEmpty());
     }
 }
-

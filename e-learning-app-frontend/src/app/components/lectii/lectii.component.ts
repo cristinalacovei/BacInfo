@@ -43,8 +43,8 @@ export class LectiiComponent implements OnInit {
     this.ani.forEach((an) => {
       this.lectiiService.getLectiiByClass(an.nivel).subscribe((data) => {
         const sorted = data.sort((a, b) => {
-          const prefixA = this.romanToNumber(a.title);
-          const prefixB = this.romanToNumber(b.title);
+          const prefixA = this.extrageNumarDinTitlu(a.title);
+          const prefixB = this.extrageNumarDinTitlu(b.title);
           return prefixA - prefixB;
         });
         this.lectiiPerAn[an.nume] = sorted;
@@ -80,21 +80,9 @@ export class LectiiComponent implements OnInit {
     );
   }
 
-  private romanToNumber(roman: string): number {
-    const map: { [key: string]: number } = {
-      I: 1,
-      II: 2,
-      III: 3,
-      IV: 4,
-      V: 5,
-      VI: 6,
-      VII: 7,
-      VIII: 8,
-      IX: 9,
-      X: 10,
-    };
-    const match = roman.trim().match(/^[IVXLCDM]+/);
-    return match ? map[match[0]] || 999 : 999;
+  private extrageNumarDinTitlu(titlu: string): number {
+    const match = titlu.trim().match(/^(\d+)/); // extrage un număr de la început
+    return match ? parseInt(match[1], 10) : 9999; // 9999 dacă nu găsește număr
   }
 
   selecteazaAn(nivel: number) {

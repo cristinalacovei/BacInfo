@@ -7,6 +7,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 import { ProgressService } from '../../services/progress.service';
 import { AuthService } from '../../services/auth.service';
 import { LectiiService } from '../../services/lectii.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 interface Answer {
   id: string;
@@ -63,6 +64,13 @@ export class TestComponent implements OnInit {
   incorrectAnswersSet: Set<string> = new Set(); // ✅ Adăugat pentru stocare ID-uri greșite
   progressValue: number = 0;
 
+  currentQuestion: string = ''; // aici pui întrebarea curentă
+  helpMessage: string = '';
+  loadingHelp = false;
+  helpRequests = 0;
+  maxHelpRequests = 3;
+  isHelpPopupVisible = false;
+
   constructor(
     private route: ActivatedRoute,
     @Inject(TestService) private testService: TestService,
@@ -70,7 +78,8 @@ export class TestComponent implements OnInit {
     private progressService: ProgressService,
     private authService: AuthService,
     private lectiiService: LectiiService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {

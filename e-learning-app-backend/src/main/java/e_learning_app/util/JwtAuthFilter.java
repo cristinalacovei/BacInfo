@@ -49,10 +49,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         try {
             String jwt = parseJwt(request);
             if (jwt != null) {
-                // 👀 Nou: dacă tokenul e de la Google, nu-l mai validăm cu cheia noastră
+
                 if (isGoogleToken(jwt)) {
                     log.info("Google token detected, skipping validation and trusting Spring Security's OAuth.");
-                    // Lăsăm Spring Security să se ocupe de autentificare
+
                 } else {
                     String username = jwtUtil.extractUsername(jwt);
 
@@ -61,7 +61,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
                         if (jwtUtil.validateToken(jwt)) {
                             UsernamePasswordAuthenticationToken authToken =
-                                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                                    new UsernamePasswordAuthenticationToken(userDetails, null,
+                                            userDetails.getAuthorities());
                             authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                             SecurityContextHolder.getContext().setAuthentication(authToken);

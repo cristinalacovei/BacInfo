@@ -78,6 +78,8 @@
 
       <div *ngIf="paginaCurenta === pagini.length - 1" class="text-center">
         <button
+          !isAdmin
+          &&
           mat-raised-button
           class="start-test-button"
           (click)="startTest()"

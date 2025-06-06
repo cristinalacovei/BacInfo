@@ -82,4 +82,55 @@ class TestControllerTest {
 
         verify(testService, times(1)).deleteTest(testId);
     }
+
+    @Test
+    void testGetTestById_NotFound() throws Exception {
+        when(testService.getTestById(testId)).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/tests/" + testId))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testGetTestsByClassLevel() throws Exception {
+        when(testService.getTestsByClassLevel(11)).thenReturn(List.of(test));
+
+        mockMvc.perform(get("/api/tests/class/11"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].classLevel").value(11));
+    }
+
+    @Test
+    void testUpdateTest_Found() throws Exception {
+        when(testService.updateTest(eq(testId), any(TestEntity.class)))
+                .thenReturn(Optional.of(test));
+
+        mockMvc.perform(put("/api/tests/" + testId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"classLevel\":11}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.classLevel").value(11));
+    }
+
+    @Test
+    void testUpdateTest_NotFound() throws Exception {
+        when(testService.updateTest(eq(testId), any(TestEntity.class)))
+                .thenReturn(Optional.empty());
+
+        mockMvc.perform(put("/api/tests/" + testId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"classLevel\":11}"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testGetLessonIdByTestId() throws Exception {
+        UUID lessonId = UUID.randomUUID();
+        when(testService.getLessonIdByTestId(testId)).thenReturn(lessonId);
+
+        mockMvc.perform(get("/api/tests/" + testId + "/lesson-id"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("\"" + lessonId.toString() + "\""));
+    }
+
 }

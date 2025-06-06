@@ -33,8 +33,13 @@
           <div class="content-wrap">
             <p>{{ lectie.description }}</p>
             <div
-              *ngIf="progressMap.get(lectie.id) as progress"
+              *ngIf="!isAdmin && progressMap.get(lectie.id) as progress"
               class="progress-badge completat"
+              [ngClass]="{
+                'scor-verde': progress.score >= 80,
+                'scor-galben': progress.score >= 50 && progress.score < 80,
+                'scor-rosu': progress.score < 50
+              }"
             >
               <span class="emoji">✅</span>
               <span class="score-text">
@@ -43,7 +48,7 @@
               </span>
             </div>
             <div
-              *ngIf="!progressMap.get(lectie.id)"
+              *ngIf="!isAdmin && !progressMap.get(lectie.id)"
               class="progress-badge incomplet"
             >
               <span class="emoji">🕓</span>

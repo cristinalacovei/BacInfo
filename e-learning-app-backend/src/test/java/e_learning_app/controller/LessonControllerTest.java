@@ -1,3 +1,4 @@
+
 package e_learning_app.controller;
 
 import e_learning_app.model.Lesson;
@@ -65,12 +66,29 @@ class LessonControllerTest {
     }
 
     @Test
+    void testGetLessonById_NotFound() throws Exception {
+        when(lessonService.getLessonById(lessonId)).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/lessons/" + lessonId))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testGetLessonsByClassLevel() throws Exception {
+        when(lessonService.getLessonsByClassLevel(11)).thenReturn(List.of(lesson));
+
+        mockMvc.perform(get("/api/lessons/class/11"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].title").value("Mock Lesson"));
+    }
+
+    @Test
     void testCreateLesson() throws Exception {
         when(lessonService.createLesson(any(Lesson.class))).thenReturn(lesson);
 
         mockMvc.perform(post("/api/lessons")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"title\":\"Mock Lesson\",\"description\":\"Mock Description\",\"classLevel\":11}"))
+                .content("{\"title\":\"Mock Lesson\",\"description\":\"Mock Description\",\"classLevel\":11}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("Mock Lesson"));
     }
@@ -84,5 +102,33 @@ class LessonControllerTest {
 
         verify(lessonService, times(1)).deleteLesson(lessonId);
     }
-}
 
+    @Test
+    void testUpdateLesson_Found() throws Exception {
+        when(lessonService.updateLesson(eq(lessonId), any(Lesson.class))).thenReturn(Optional.of(lesson));
+
+        mockMvc.perform(put("/api/lessons/" + lessonId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\":\"Updated Lesson\",\"description\":\"Updated Description\",\"classLevel\":12}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value("Mock Lesson"));
+    }
+
+    @Test
+    void testUpdateLesson_NotFound() throws Exception {
+        when(lessonService.updateLesson(eq(lessonId), any(Lesson.class))).thenReturn(Optional.empty());
+
+        mockMvc.perform(put("/api/lessons/" + lessonId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\":\"Updated Lesson\",\"description\":\"Updated Description\",\"classLevel\":12}"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testGetTestForLesson_NotFound() throws Exception {
+        when(lessonService.getTestByLessonId(lessonId)).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/lessons/" + lessonId + "/test"))
+                .andExpect(status().isNotFound());
+    }
+}

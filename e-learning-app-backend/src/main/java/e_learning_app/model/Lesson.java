@@ -23,7 +23,7 @@ public class Lesson extends BaseEntity {
     private String content;
 
     @Column(name = "class_level", nullable = false)
-    private int classLevel; // Nivelul clasei: 9, 10, 11, 12
+    private int classLevel;
 
     @OneToOne
     @JoinColumn(name = "test_id")

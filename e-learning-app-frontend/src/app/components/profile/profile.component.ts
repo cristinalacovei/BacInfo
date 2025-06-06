@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../../types/user.types';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-profile',
@@ -15,6 +16,26 @@ export class ProfileComponent implements OnInit {
   usernameTaken: boolean = false;
   feedbackMessage: string | null = null;
   feedbackType: 'success' | 'error' = 'success';
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
+
+  onFileChange(event: any): void {
+    this.imageChangedEvent = event;
+  }
+
+  onImageCropped(event: ImageCroppedEvent): void {
+    console.log('🧨 Imagine decupată:', event);
+    this.croppedImage = event.base64; // 👈 DOAR base64, nu tot obiectul
+  }
+
+  selectCroppedAvatar(): void {
+    if (this.user && this.croppedImage) {
+      this.user.profileImageUrl = this.croppedImage;
+      this.imageChangedEvent = null;
+      this.croppedImage = null;
+      this.showMessage('Avatar actualizat! Salvează profilul.', 'success');
+    }
+  }
 
   showMessage(message: string, type: 'success' | 'error' = 'success') {
     this.feedbackMessage = message;
@@ -64,10 +85,19 @@ export class ProfileComponent implements OnInit {
 
   saveProfile() {
     if (this.user) {
+      // 🧠 Dacă există o imagine cropuită, o folosim direct
+      if (this.croppedImage) {
+        this.user.profileImageUrl = this.croppedImage;
+      }
+
       this.userService.updateUser(this.user).subscribe({
         next: () => {
           this.isEditing = false;
           this.showMessage('Profilul a fost salvat!', 'success');
+
+          // 🔄 Resetăm cropperul după salvare, ca să nu rămână agățat
+          this.croppedImage = null;
+          this.imageChangedEvent = null;
         },
         error: (err) => {
           this.showMessage('Eroare la salvarea profilului.', 'error');
