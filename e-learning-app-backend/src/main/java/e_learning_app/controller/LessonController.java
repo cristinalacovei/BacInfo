@@ -1,9 +1,14 @@
 package e_learning_app.controller;
 
 import e_learning_app.model.Lesson;
+import e_learning_app.model.NotificareEntity;
 import e_learning_app.model.TestEntity;
+import e_learning_app.service.UserService;
 import e_learning_app.service.impl.LessonService;
+import e_learning_app.service.impl.NotificareService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +20,18 @@ import java.util.UUID;
 @RequestMapping("/api/lessons")
 public class LessonController {
     private final LessonService lessonService;
+    private final NotificareService notificareService;
+    private final UserService userService;
 
-    public LessonController(LessonService lessonService) {
+    public LessonController(LessonService lessonService, NotificareService notificareService,
+                            UserService userService) {
         this.lessonService = lessonService;
+        this.notificareService = notificareService;
+        this.userService = userService;
     }
 
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
     @GetMapping
     public ResponseEntity<List<Lesson>> getAllLessons() {
         return ResponseEntity.ok(lessonService.getAllLessons());
@@ -39,8 +51,21 @@ public class LessonController {
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Lesson> createLesson(@RequestBody Lesson lesson) {
-        return ResponseEntity.ok(lessonService.createLesson(lesson));
+        Lesson created = lessonService.createLesson(lesson);
+
+        List<UUID> totiUserii = userService.getAllUserIds();
+        for (UUID userId : totiUserii) {
+            NotificareEntity entity = notificareService.creeazaNotificare(
+                    "A fost adăugată o lecție nouă: " + created.getTitle(),
+                    "LECTIE",
+                    userId,
+                    created.getId()
+            );
+            messagingTemplate.convertAndSend("/topic/notificari", entity);
+        }
+        return ResponseEntity.ok(created);
     }
+
 
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -50,12 +75,28 @@ public class LessonController {
         return ResponseEntity.noContent().build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Lesson> updateLesson(@PathVariable UUID id, @RequestBody Lesson updatedLesson) {
         Optional<Lesson> updated = lessonService.updateLesson(id, updatedLesson);
+
+        List<UUID> totiUserii = userService.getAllUserIds();
+        for (UUID userId : totiUserii) {
+            updated.ifPresent(lesson -> {
+                NotificareEntity entity = notificareService.creeazaNotificare(
+                        "Lecția \"" + lesson.getTitle() + "\" a fost modificată.",
+                        "LECTIE",
+                        userId,
+                        lesson.getId()
+
+                );
+                messagingTemplate.convertAndSend("/topic/notificari", entity);
+            });
+        }
         return updated.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+
 
     @GetMapping("/{lessonId}/test")
     public ResponseEntity<TestEntity> getTestForLesson(@PathVariable UUID lessonId) {

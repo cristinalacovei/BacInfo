@@ -15,6 +15,47 @@
     </div>
 
     <div class="nav-actions">
+      <!-- 🔔 Buton notificări -->
+      <div
+        class="notification-wrapper"
+        (click)="toggleNotificari()"
+        tabindex="0"
+      >
+        <mat-icon class="notification-icon">notifications</mat-icon>
+        <div class="notification-badge" *ngIf="notificariNecitite.length > 0">
+          {{ notificariNecitite.length }}
+        </div>
+      </div>
+
+      <!-- Dropdown notificări -->
+      <div class="notification-panel" *ngIf="notificariDeschise">
+        <h3>Notificări recente</h3>
+        <div *ngIf="notificari.length === 0" class="empty-msg">
+          Nu există notificări.
+        </div>
+        <ul>
+          <li
+            *ngFor="let notif of notificari"
+            [class.necitita]="!notif.citita"
+            class="notif-item"
+            (click)="navigateFromNotification(notif)"
+          >
+            <div class="notif-content">
+              <span>{{ notif.mesaj }}</span>
+              <small>{{ notif.timestamp | date : "short" }}</small>
+            </div>
+            <button
+              *ngIf="!notif.citita"
+              class="btn-single-read"
+              (click)="marcheazaCaCitita(notif.id); $event.stopPropagation()"
+              title="Marchează ca citită"
+            >
+              ✓
+            </button>
+          </li>
+        </ul>
+      </div>
+
       <button
         *ngIf="isLoggedIn"
         [matMenuTriggerFor]="menu"

@@ -6,15 +6,9 @@ import e_learning_app.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -118,29 +112,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    public String saveProfileImage(UUID userId, MultipartFile file) {
-        Optional<User> userOpt = userRepository.findById(userId);
-        if (userOpt.isEmpty()) throw new RuntimeException("User not found");
-
-        User user = userOpt.get();
-
-        // Salvează imaginea într-un folder local
-        String filename = userId + "_" + file.getOriginalFilename();
-        Path imagePath = Paths.get("uploads/profile-pictures/", filename);
-        try {
-            Files.createDirectories(imagePath.getParent());
-            Files.write(imagePath, file.getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException("Could not save image", e);
-        }
-
-        // Setează calea în DB
-        String url = "http://localhost:8080/images/profile-pictures/" + filename;
-        user.setProfileImageUrl(url);
-
-        user.setProfileImageUrl(url);
-        userRepository.save(user);
-        return url;
+    @Override
+    public List<UUID> getAllUserIds() {
+        return userRepository.findAll()
+                .stream()
+                .map(User::getId)
+                .toList();
     }
+
 
 }

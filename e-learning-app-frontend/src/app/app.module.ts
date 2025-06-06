@@ -49,6 +49,8 @@ import { QuestionDetailComponent } from './forum/question-detail/question-detail
 import { ForumPageComponent } from './forum/forum-page/forum-page.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { ContactComponent } from './components/contact/contact.component';
+import { ImageCropperComponent } from 'ngx-image-cropper';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -98,6 +100,7 @@ import { ContactComponent } from './components/contact/contact.component';
     MatSelectModule,
     MatCheckboxModule,
     MatMenuModule,
+    ImageCropperComponent,
   ],
   providers: [
     AuthService,

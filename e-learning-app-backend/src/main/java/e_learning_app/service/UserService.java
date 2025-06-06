@@ -21,5 +21,6 @@ public interface UserService {
     User save(User user);
      User updateUser(UUID id, User updatedUser);
 
+    List<UUID> getAllUserIds();
 }
 

@@ -4,6 +4,7 @@ import { AuthService } from './services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { User } from './types/user.types';
+import { NotificareService } from './services/notificare.service';
 
 @Component({
   selector: 'app-root',
@@ -18,24 +19,96 @@ export class AppComponent implements OnInit {
   isAdmin = false;
   isSidebarOpen = false;
   user: User | null = null;
+  notificari: any[] = [];
+  notificariNecitite: any[] = [];
+  notificariDeschise = false;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private notificareService: NotificareService
   ) {}
 
   ngOnInit(): void {
     this.authService.getIsLoggedIn().subscribe((loggedIn) => {
       this.isLoggedIn = loggedIn;
 
-      if (loggedIn) {
-        this.authService.getCurrentUser().subscribe((user) => {
-          this.isAdmin = user?.userRole === 'ADMIN';
-          this.user = user; // ✅ păstrăm userul complet pt. avatar
+      if (!loggedIn) return;
+
+      // Așteaptă cu adevărat userul
+      this.authService.getCurrentUser().subscribe((user) => {
+        if (!user) return;
+
+        this.user = user;
+        this.isAdmin = user.userRole === 'ADMIN';
+
+        // 🔁 Întotdeauna preia din backend, nu te baza doar pe websocket
+        this.loadNotificari(user.id);
+
+        // 🧲 Ascultă notificări live DOAR DUPĂ ce ai user.id
+        this.notificareService.subscribeToWebSocket((nouaNotif) => {
+          if (!nouaNotif.userId || nouaNotif.userId === this.user?.id) {
+            this.notificari.unshift(nouaNotif);
+            this.notificariNecitite.unshift(nouaNotif);
+          }
         });
-      }
+      });
     });
+  }
+
+  private loadNotificari(userId: string) {
+    this.notificareService.getNotificari(userId).subscribe((data) => {
+      console.log('📥 Notificări primite:', data); // debug
+      this.notificari = data.sort(
+        (a, b) =>
+          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+      );
+      this.notificariNecitite = this.notificari.filter((n) => !n.citita);
+    });
+  }
+
+  marcheazaCaCitita(id: string) {
+    this.notificareService.markAsRead(id).subscribe(() => {
+      const notif = this.notificari.find((n) => n.id === id);
+      if (notif) notif.citita = true;
+      this.notificariNecitite = this.notificari.filter((n) => !n.citita);
+    });
+  }
+
+  marcheazaToateCaCitite() {
+    if (!this.user) return;
+    this.notificareService.markAllAsRead(this.user.id).subscribe(() => {
+      this.notificari.forEach((n) => (n.citita = true));
+      this.notificariNecitite = [];
+    });
+  }
+
+  toggleNotificari() {
+    this.notificariDeschise = !this.notificariDeschise;
+
+    if (this.notificariDeschise && this.user) {
+      this.marcheazaToateCaCitite();
+    }
+  }
+
+  navigateFromNotification(notif: any): void {
+    if (!notif.citita) this.marcheazaCaCitita(notif.id);
+
+    this.notificariDeschise = false; // Închide dropdown-ul
+
+    const targetId = notif.targetId;
+    const tip = notif.tip?.toUpperCase();
+
+    if (tip === 'LECTIE' && targetId) {
+      this.router.navigate(['/lectie', targetId]);
+    } else if (tip === 'TEST' && targetId) {
+      this.router.navigate(['/test', targetId]);
+    } else if (tip === 'FORUM' && targetId) {
+      this.router.navigate(['/forum', targetId]);
+    } else {
+      this.router.navigate(['/home']);
+    }
   }
 
   toggleSidebar() {
