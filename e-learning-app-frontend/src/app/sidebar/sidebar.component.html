@@ -12,7 +12,13 @@
           <span>{{ lectie.title }}</span>
 
           <span
-            class="progres-badge complete"
+            class="progres-badge"
+            [ngClass]="{
+              'scor-verde': progressMap[lectie.id] >= 80,
+              'scor-galben':
+                progressMap[lectie.id] >= 50 && progressMap[lectie.id] < 80,
+              'scor-rosu': progressMap[lectie.id] < 50
+            }"
             *ngIf="progressMap[lectie.id] !== undefined"
           >
             ✅ {{ progressMap[lectie.id] }}%
