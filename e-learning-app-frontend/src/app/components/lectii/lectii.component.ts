@@ -112,4 +112,38 @@ export class LectiiComponent implements OnInit {
   adaugaLectie() {
     this.router.navigate(['/editor']);
   }
+
+  getProgresTotal(): number {
+    let total = 0;
+    let completate = 0;
+
+    for (const lectii of Object.values(this.lectiiPerAn)) {
+      for (const lectie of lectii) {
+        total++;
+        const progress = this.progressMap.get(lectie.id);
+        if (progress && progress.score !== null) {
+          completate++;
+        }
+      }
+    }
+
+    return total > 0 ? Math.round((completate / total) * 100) : 0;
+  }
+
+  getLectiiCompletate(): string {
+    let total = 0;
+    let completate = 0;
+
+    for (const lectii of Object.values(this.lectiiPerAn)) {
+      for (const lectie of lectii) {
+        total++;
+        const progress = this.progressMap.get(lectie.id);
+        if (progress && progress.score !== null) {
+          completate++;
+        }
+      }
+    }
+
+    return `${completate} din ${total}`;
+  }
 }

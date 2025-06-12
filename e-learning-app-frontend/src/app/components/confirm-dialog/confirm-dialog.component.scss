@@ -5,104 +5,83 @@
   padding: 24px;
   background: linear-gradient(
     135deg,
-    #1e1e1e,
-    #3d003d
-  ); /* Negru spre mov închis */
+    #1c1c1f,
+    #2e1d39
+  ); // Negru spre mov închis
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7); /* Umbre subtile */
-  color: #ffffff; /* Text alb */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  color: #e5e0f7;
+  font-family: "Roboto", sans-serif;
 }
 
 .dialog-title {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
-  color: #cd09f0; /* Mov intens */
-  margin-bottom: 16px;
+  color: #c97aff; // Mov lavandă
+  margin-bottom: 12px;
   text-align: center;
-  text-transform: uppercase;
-  font-family: "Roboto", sans-serif;
 }
 
 .dialog-content p {
   font-size: 16px;
-  color: #eaeaea; /* Text gri deschis */
+  color: #d6cde9;
   text-align: center;
-  margin: 16px 0;
-  font-family: "Roboto", sans-serif;
+  margin: 8px 0 20px;
 }
 
 .dialog-actions {
   display: flex;
   gap: 16px;
   justify-content: center;
-  margin-top: 16px;
 }
 
 button {
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: bold;
-  font-family: "Roboto", sans-serif;
+  padding: 10px 24px;
+  font-size: 15px;
+  font-weight: 600;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); /* Umbre pentru butoane */
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  font-family: inherit;
 }
 
 button.cancel-button {
-  background: linear-gradient(135deg, #3d003d, #6a006a); /* Mov închis */
-  color: #ffffff; /* Alb pentru text */
+  background: #4b355c; // mov închis
+  color: #e6e6f0;
 }
 
 button.cancel-button:hover {
-  background: #a300a3; /* Mov deschis pe hover */
-  box-shadow: 0 4px 10px rgba(160, 0, 160, 0.5); /* Umbre pe hover */
-  transform: scale(1.05); /* Mică mărire */
+  background: #6a4e89;
+  transform: scale(1.04);
 }
 
 button.confirm-button {
-  background: linear-gradient(
-    135deg,
-    #4caf50,
-    #2e7d32
-  ); /* Verde pentru confirmare */
-  color: #ffffff; /* Alb pentru text */
+  background: #3fa36c; // verde calm
+  color: #ffffff;
 }
 
 button.confirm-button:hover {
-  background: #66bb6a; /* Verde deschis pe hover */
-  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.5); /* Umbre pe hover */
-  transform: scale(1.05); /* Mică mărire */
+  background: #57c285;
+  transform: scale(1.04);
 }
 
 button:active {
-  transform: scale(0.95); /* Micșorare pe click */
+  transform: scale(0.97);
 }
 
 button:disabled {
-  background: #757575; /* Gri pentru starea dezactivată */
+  background: #555;
   cursor: not-allowed;
   box-shadow: none;
 }
+
 button.ok-button {
-  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  background: #3fa36c;
   color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 button.ok-button:hover {
-  background: #66bb6a;
-  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.5);
-  transform: scale(1.05);
-}
-
-button.ok-button:active {
-  transform: scale(0.95);
+  background: #57c285;
 }

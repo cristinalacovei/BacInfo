@@ -1,3 +1,16 @@
+<div *ngIf="!isAdmin" class="progres-general">
+  <h3>📊 Progres general:</h3>
+  <mat-progress-bar
+    mode="determinate"
+    [value]="getProgresTotal()"
+    color="accent"
+  ></mat-progress-bar>
+  <p>
+    Ai finalizat {{ getProgresTotal() }}% din lecții ({{
+      getLectiiCompletate()
+    }}) ✅
+  </p>
+</div>
 <div class="container">
   <div class="lectii-header">
     <h1 class="page-title">Lecții disponibile</h1>

@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { TestService } from '../../services/test.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-adauga-test',
@@ -13,24 +15,66 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class AdaugaTestComponent implements OnInit {
   testForm!: FormGroup;
   lessonId!: string;
+  backupKey = '';
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private testService: TestService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.lessonId = this.route.snapshot.paramMap.get('lessonId') || '';
+    this.backupKey = `testDraft-${this.lessonId}`; // cheia unică per lecție
 
     this.testForm = this.fb.group({
       classLevel: [9],
       questions: this.fb.array([], Validators.minLength(1)),
     });
 
-    this.adaugaIntrebare(); // default
+    // Încarcă backup dacă există
+    const savedTest = localStorage.getItem(this.backupKey);
+    if (savedTest) {
+      const parsed = JSON.parse(savedTest);
+      this.testForm.patchValue({ classLevel: parsed.classLevel });
+
+      this.questions.clear();
+      parsed.questions.forEach((q: any) => {
+        const answersArray = this.fb.array(
+          q.answers.map((a: any) =>
+            this.fb.group({
+              answerText: [a.answerText, Validators.required],
+              isCorrect: [a.isCorrect],
+            })
+          ),
+          Validators.minLength(2)
+        );
+
+        this.questions.push(
+          this.fb.group({
+            questionText: [q.questionText, Validators.required],
+            questionType: [q.questionType],
+            answers: answersArray,
+          })
+        );
+      });
+    } else {
+      this.adaugaIntrebare(); // doar dacă nu există backup
+    }
+
+    // Autosave la fiecare 1 minut
+    setInterval(() => {
+      if (this.testForm.dirty) {
+        localStorage.setItem(
+          this.backupKey,
+          JSON.stringify(this.testForm.value)
+        );
+        console.log('📦 Backup autosalvat local.');
+      }
+    }, 60 * 1000); // 1 minut
   }
 
   get questions() {
@@ -109,6 +153,8 @@ export class AdaugaTestComponent implements OnInit {
         }
       );
       this.markFormTouched();
+      localStorage.removeItem(this.backupKey);
+      console.log('📦 Backup eliminat din localStorage.');
       return;
     }
 
@@ -163,6 +209,49 @@ export class AdaugaTestComponent implements OnInit {
           }
         );
       },
+    });
+  }
+
+  stergeIntrebare(index: number): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Confirmare ștergere',
+        message: `Sigur vrei să ștergi întrebarea ${index + 1}?`,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((confirmat) => {
+      if (confirmat === true) {
+        this.questions.removeAt(index);
+      }
+    });
+  }
+
+  stergeRaspuns(intrebareIndex: number, raspunsIndex: number): void {
+    const answers = this.questions
+      .at(intrebareIndex)
+      .get('answers') as FormArray;
+
+    if (answers.length <= 2) {
+      this.snackBar.open(
+        '⚠️ Fiecare întrebare trebuie să aibă cel puțin 2 răspunsuri.',
+        'Închide',
+        { duration: 3000, panelClass: ['snackbar-warning'] }
+      );
+      return;
+    }
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Confirmare ștergere',
+        message: `Sigur vrei să ștergi răspunsul ${raspunsIndex + 1}?`,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((confirmat) => {
+      if (confirmat === true) {
+        answers.removeAt(raspunsIndex);
+      }
     });
   }
 }

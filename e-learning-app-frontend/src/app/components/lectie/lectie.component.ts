@@ -93,10 +93,14 @@ export class LectieComponent implements OnInit {
         : [];
 
       // Obține testul asociat lecției
-      this.lectiiService.getLessonTest(this.lectie).subscribe((test) => {
-        if (test) {
-          this.testId = test.id;
-        }
+      this.lectiiService.getLessonTest(this.lectie).subscribe({
+        next: (test) => {
+          this.testId = test?.id || null;
+        },
+        error: (err) => {
+          console.warn('Niciun test asociat lecției sau eroare:', err);
+          this.testId = null;
+        },
       });
 
       this.lessonForm = this.fb.group({
