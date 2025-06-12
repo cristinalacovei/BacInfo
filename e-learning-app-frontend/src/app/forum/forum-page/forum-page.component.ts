@@ -16,6 +16,10 @@ export class ForumPageComponent implements OnInit {
   allQuestions: any[] = [];
   currentUser!: User;
   isAdmin: boolean = false;
+  currentPage: number = 1;
+  pageSize: number = 5;
+  totalPages: number = 0;
+  sortAsc: boolean = false; // implicit descrescător (cele mai noi primele)
 
   constructor(
     private fb: FormBuilder,
@@ -75,7 +79,17 @@ export class ForumPageComponent implements OnInit {
     this.http
       .get<any[]>('http://localhost:8080/api/forum/questions')
       .subscribe((data) => {
-        this.allQuestions = data;
+        const sorted = data.sort((a, b) => {
+          const dateA = new Date(a.createdAt).getTime();
+          const dateB = new Date(b.createdAt).getTime();
+          return this.sortAsc ? dateA - dateB : dateB - dateA;
+        });
+
+        this.totalPages = Math.ceil(sorted.length / this.pageSize);
+        const startIndex = (this.currentPage - 1) * this.pageSize;
+        const endIndex = startIndex + this.pageSize;
+
+        this.allQuestions = sorted.slice(startIndex, endIndex);
       });
   }
 
@@ -103,5 +117,25 @@ export class ForumPageComponent implements OnInit {
       .subscribe(() => {
         this.loadQuestions(); // reîncarcă lista
       });
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadQuestions();
+    }
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadQuestions();
+    }
+  }
+
+  toggleSortOrder(): void {
+    this.sortAsc = !this.sortAsc;
+    this.currentPage = 1;
+    this.loadQuestions();
   }
 }

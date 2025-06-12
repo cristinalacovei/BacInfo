@@ -156,6 +156,12 @@ export class AppComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.authService.logout();
+        this.user = null;
+        this.isAdmin = false;
+        this.isLoggedIn = false;
+        this.notificari = [];
+        this.notificariNecitite = [];
+        this.notificariDeschise = false;
         this.router.navigate(['']);
       }
     });

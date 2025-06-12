@@ -33,6 +33,10 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'editor', component: EditorComponent },
   { path: 'test/:id', component: TestComponent },
+  {
+    path: 'test-general',
+    component: TestComponent,
+  },
   { path: 'adauga-test/:lessonId', component: AdaugaTestComponent },
   {
     path: 'editeaza-test/:testId',

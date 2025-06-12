@@ -1,4 +1,13 @@
-<div class="test-container" *ngIf="test">
+<div *ngIf="isGeneralTest && !testStarted" class="intro-message">
+  <h2>
+    Acesta este un test general din toată materia. Ai 15 minute la dispoziție.
+  </h2>
+  <p>Apasă butonul de mai jos pentru a începe.</p>
+  <button mat-raised-button color="primary" (click)="startTest()">
+    Începe testul
+  </button>
+</div>
+<div class="test-container" *ngIf="test && testStarted">
   <!-- ✅ Bară de progres -->
   <mat-progress-bar
     mode="determinate"
@@ -9,6 +18,9 @@
   <p style="margin-top: 5px">
     Progres: {{ progressValue | number : "1.0-0" }}%
   </p>
+  <div *ngIf="isGeneralTest">
+    <p><strong>Timp rămas:</strong> {{ getMinutes() }}:{{ getSeconds() }}</p>
+  </div>
 
   <div class="question-card" *ngIf="test.questions.length > 0">
     <h2>{{ test.questions[currentQuestionIndex].questionText }}</h2>

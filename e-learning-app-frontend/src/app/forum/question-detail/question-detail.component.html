@@ -16,10 +16,13 @@
 
       <p class="author-line">
         <i class="material-icons">person</i>
-        <span
-          >{{ question?.author?.firstName }}
-          {{ question?.author?.lastName }}</span
-        >
+        <span>
+          {{ question?.author?.firstName }} {{ question?.author?.lastName }}
+          <span class="user-role"
+            >({{ question?.author?.userRole | titlecase }})</span
+          >
+        </span>
+
         &nbsp;•&nbsp;
         <i class="material-icons">schedule</i>
         <span>{{ question?.createdAt | date : "short" }}</span>
@@ -59,9 +62,13 @@
         <p>
           <small>
             — {{ answer.author.firstName }} {{ answer.author.lastName }}
+            <span class="user-role"
+              >({{ answer.author.userRole | titlecase }})</span
+            >
             &nbsp;•&nbsp;
             {{ answer.createdAt | date : "short" }}
           </small>
+
           <button
             *ngIf="isAdmin"
             class="delete-btn"

@@ -19,6 +19,11 @@
     </form>
   </div>
 
+  <div class="sort-toggle">
+    <button (click)="toggleSortOrder()">
+      Sortează după dată: {{ sortAsc ? "Crescător ↑" : "Descrescător ↓" }}
+    </button>
+  </div>
   <!-- 📋 Lista întrebărilor -->
   <div
     *ngFor="let question of allQuestions"
@@ -30,7 +35,12 @@
         fontIcon="person"
         style="font-size: 16px; vertical-align: middle"
       ></mat-icon>
-      {{ question.author.firstName }} {{ question.author.lastName }}
+      <span class="author-name">
+        {{ question.author.firstName }} {{ question.author.lastName }}
+        <span class="user-role"
+          >({{ question.author.userRole | titlecase }})</span
+        >
+      </span>
       &nbsp;•&nbsp;
       <mat-icon
         fontIcon="schedule"
@@ -61,5 +71,14 @@
       {{ question.answers?.length || 0 }}
       {{ question.answers?.length === 1 ? "răspuns" : "răspunsuri" }}
     </div>
+  </div>
+  <div class="pagination-controls">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">
+      ⬅ Anterior
+    </button>
+    <span>Pagina {{ currentPage }} din {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+      Următor ➡
+    </button>
   </div>
 </div>

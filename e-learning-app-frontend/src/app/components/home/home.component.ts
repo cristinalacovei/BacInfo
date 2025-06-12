@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   }
 
   navigateToTests() {
-    this.router.navigate(['/teste']);
+    this.router.navigate(['/test-general']);
   }
 
   navigateToUserStats() {

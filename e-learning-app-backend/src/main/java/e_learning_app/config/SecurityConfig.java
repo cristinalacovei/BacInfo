@@ -78,6 +78,7 @@ public class SecurityConfig {
                         .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/topic/**").permitAll()
                         .requestMatchers("/api/notificari/**").permitAll()
+                        .requestMatchers("/api/questions/random").permitAll()
 
                         .requestMatchers(
                                 "/swagger-ui.html",

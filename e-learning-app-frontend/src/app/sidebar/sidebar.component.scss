@@ -99,6 +99,21 @@
           text-align: left;
         }
 
+        .progres-badge.scor-verde {
+          background-color: #4caf50;
+          color: white;
+        }
+
+        .progres-badge.scor-galben {
+          background-color: #ffca28;
+          color: black;
+        }
+
+        .progres-badge.scor-rosu {
+          background-color: #f44336;
+          color: white;
+        }
+
         .progres-badge {
           font-size: 0.75rem;
           font-weight: bold;

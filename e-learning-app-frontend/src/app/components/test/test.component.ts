@@ -8,6 +8,7 @@ import { ProgressService } from '../../services/progress.service';
 import { AuthService } from '../../services/auth.service';
 import { LectiiService } from '../../services/lectii.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { QuestionService } from '../../services/question.service';
 
 interface Answer {
   id: string;
@@ -70,6 +71,10 @@ export class TestComponent implements OnInit {
   helpRequests = 0;
   maxHelpRequests = 3;
   isHelpPopupVisible = false;
+  isGeneralTest = false;
+  testStarted = false;
+  timeLeft: number = 15 * 60;
+  intervalId: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -77,16 +82,72 @@ export class TestComponent implements OnInit {
     @Inject(AnswerService) private answerService: AnswerService,
     private progressService: ProgressService,
     private authService: AuthService,
-    private lectiiService: LectiiService,
+    private QuestionsService: QuestionService,
     private dialog: MatDialog,
     private http: HttpClient
   ) {}
 
+  generateUUID(): string {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+      /[xy]/g,
+      function (c) {
+        const r = (Math.random() * 16) | 0;
+        const v = c === 'x' ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      }
+    );
+  }
+
   ngOnInit(): void {
-    this.testId = this.route.snapshot.paramMap.get('id');
-    if (this.testId) {
-      this.loadTest();
+    const currentRoute = this.route.snapshot.routeConfig?.path;
+    this.isGeneralTest = currentRoute === 'test-general';
+
+    if (this.isGeneralTest) {
+      // Încarcă întrebările random și așteaptă confirmarea
+      this.QuestionsService.getRandomQuestions().subscribe((questions) => {
+        this.test = {
+          id: this.generateUUID(),
+          classLevel: 0, // sau altă valoare implicită
+          questions: questions,
+        };
+      });
+    } else {
+      // Test normal după lecție
+      this.testId = this.route.snapshot.paramMap.get('id');
+      if (this.testId) {
+        this.loadTest();
+      }
     }
+  }
+
+  startTest(): void {
+    this.testStarted = true;
+    this.startTimer();
+  }
+
+  startTimer(): void {
+    this.intervalId = setInterval(() => {
+      if (this.timeLeft > 0) {
+        this.timeLeft--;
+      } else {
+        clearInterval(this.intervalId);
+        this.submitTest();
+      }
+    }, 1000);
+  }
+
+  getMinutes(): string {
+    return Math.floor(this.timeLeft / 60)
+      .toString()
+      .padStart(2, '0');
+  }
+
+  getSeconds(): string {
+    return (this.timeLeft % 60).toString().padStart(2, '0');
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.intervalId);
   }
 
   loadTest(): void {
@@ -191,6 +252,11 @@ export class TestComponent implements OnInit {
 
           if (!lessonId) {
             console.warn('⚠️ Lesson ID este null sau undefined în test!');
+          }
+
+          if (this.isGeneralTest) {
+            console.log('ℹ️ Test general – progresul nu se salvează.');
+            return;
           }
 
           this.progressService

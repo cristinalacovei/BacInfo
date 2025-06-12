@@ -39,4 +39,11 @@ public class QuestionController {
         questionService.deleteQuestion(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/random")
+    public ResponseEntity<List<Question>> getRandomQuestionsForGlobalTest() {
+        List<Question> randomQuestions = questionService.getRandomQuestions(15);
+        return ResponseEntity.ok(randomQuestions);
+    }
+
 }
