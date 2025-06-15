@@ -11,12 +11,13 @@
     }}) ✅
   </p>
 </div>
+
 <div class="container">
   <div class="lectii-header">
     <h1 class="page-title">Lecții disponibile</h1>
     <button
       mat-raised-button
-      class="btn-adauga-emoji btn-clasa"
+      class="btn-clasa"
       (click)="adaugaLectie()"
       *ngIf="isAdmin"
       aria-label="Adaugă Lecție"
@@ -42,31 +43,36 @@
         <mat-card-header>
           <mat-card-title>{{ lectie.title }}</mat-card-title>
         </mat-card-header>
+
         <mat-card-content class="card-content">
           <div class="content-wrap">
             <p>{{ lectie.description }}</p>
-            <div
-              *ngIf="!isAdmin && progressMap.get(lectie.id) as progress"
-              class="progress-badge completat"
-              [ngClass]="{
-                'scor-verde': progress.score >= 80,
-                'scor-galben': progress.score >= 50 && progress.score < 80,
-                'scor-rosu': progress.score < 50
-              }"
-            >
-              <span class="emoji">✅</span>
-              <span class="score-text">
-                Scor: <strong>{{ progress.score }}%</strong>
-                <small>({{ progress.completedAt | date : "short" }})</small>
-              </span>
-            </div>
-            <div
-              *ngIf="!isAdmin && !progressMap.get(lectie.id)"
-              class="progress-badge incomplet"
-            >
-              <span class="emoji">🕓</span>
-              <span class="score-text">Testul nu a fost încă completat</span>
-            </div>
+
+            <ng-container *ngIf="!isAdmin">
+              <div
+                *ngIf="progressMap.get(lectie.id) as progress"
+                class="progress-badge completat"
+                [ngClass]="{
+                  'scor-verde': progress.score >= 80,
+                  'scor-galben': progress.score >= 50 && progress.score < 80,
+                  'scor-rosu': progress.score < 50
+                }"
+              >
+                <span class="emoji">✅</span>
+                <span class="score-text">
+                  Scor: <strong>{{ progress.score }}%</strong>
+                  <small>({{ progress.completedAt | date : "short" }})</small>
+                </span>
+              </div>
+
+              <div
+                *ngIf="!progressMap.get(lectie.id)"
+                class="progress-badge incomplet"
+              >
+                <span class="emoji">🕓</span>
+                <span class="score-text">Testul nu a fost încă completat</span>
+              </div>
+            </ng-container>
           </div>
         </mat-card-content>
 

@@ -9,28 +9,35 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
-  isAdmin = false;
+  isAdmin: boolean = false;
+
   constructor(private router: Router, private authService: AuthService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.authService.getCurrentUser().subscribe((user) => {
-      this.isAdmin = user?.userRole === 'ADMIN'; // presupunând că ai un câmp role
+      this.isAdmin = user?.userRole === 'ADMIN';
     });
   }
 
-  navigateToLessons() {
-    this.router.navigate(['/lectii']);
+  // Navigație centralizată pentru secțiunile principale
+  navigateTo(path: string): void {
+    this.router.navigate([path]);
   }
 
-  navigateToTests() {
-    this.router.navigate(['/test-general']);
+  // Shortcuturi pentru șabloane
+  navigateToLessons(): void {
+    this.navigateTo('/lectii');
   }
 
-  navigateToUserStats() {
-    this.router.navigate(['/admin/users']);
+  navigateToTests(): void {
+    this.navigateTo('/test-general');
   }
 
-  navigateToForum() {
-    this.router.navigate(['/forum']);
+  navigateToForum(): void {
+    this.navigateTo('/forum');
+  }
+
+  navigateToUserStats(): void {
+    this.navigateTo('/admin/users');
   }
 }

@@ -1,61 +1,60 @@
 <div class="contact-page">
   <div class="glass-card">
-    <h2>Contactează-ne</h2>
+    <h2>📬 Contactează-ne</h2>
 
     <p class="description">
-      Ești student? 📚 Ai probleme legate de cont sau acces? Trimite-ne un mesaj
-      și te ajutăm cât mai repede!
+      📚 Student? Ai probleme tehnice? Trimite un mesaj.
     </p>
     <p class="description">
-      Ești profesor? 🎓 Vrei să contribui cu lecții sau teste sau ai sugestii de
-      îmbunătățire? Suntem deschiși colaborării!
+      🎓 Profesor? Vrei să ajuți cu lecții sau teste? Ne bucurăm!
     </p>
 
     <div *ngIf="showConfirmation" class="confirmation-toast">
-      📬 Se pregătește emailul către BacInfoLearn...
+      <div class="spinner"></div>
+      <span>Se pregătește emailul către BacInfoLearn...</span>
     </div>
 
     <form [formGroup]="contactForm" (ngSubmit)="submitContactForm()">
       <div class="form-group">
-        <label for="subject">Subiect:</label>
+        <label for="subject">Subiect</label>
         <input
           id="subject"
-          formControlName="subject"
           type="text"
-          placeholder="Subiectul mesajului"
+          placeholder="Ex: Problemă la test"
+          formControlName="subject"
         />
         <small
           *ngIf="
-            contactForm.get('subject')?.invalid &&
-            contactForm.get('subject')?.touched
+            contactForm.get('subject')?.touched &&
+            contactForm.get('subject')?.invalid
           "
           class="error-message"
         >
-          Subiectul trebuie să aibă cel puțin 3 caractere.
+          Subiectul trebuie să conțină minim 3 caractere.
         </small>
       </div>
 
       <div class="form-group">
-        <label for="message">Mesaj:</label>
+        <label for="message">Mesaj</label>
         <textarea
           id="message"
-          formControlName="message"
           rows="5"
-          placeholder="Scrie aici mesajul tău..."
+          placeholder="Scrie aici detalii despre problemă sau sugestie..."
+          formControlName="message"
         ></textarea>
         <small
           *ngIf="
-            contactForm.get('message')?.invalid &&
-            contactForm.get('message')?.touched
+            contactForm.get('message')?.touched &&
+            contactForm.get('message')?.invalid
           "
           class="error-message"
         >
-          Mesajul trebuie să aibă cel puțin 10 caractere.
+          Mesajul trebuie să conțină minim 10 caractere.
         </small>
       </div>
 
-      <button type="submit" [disabled]="contactForm.invalid">
-        Trimite Mesajul
+      <button type="submit" [disabled]="contactForm.invalid || isSubmitting">
+        {{ isSubmitting ? "Se trimite..." : "📨 Trimite mesajul" }}
       </button>
     </form>
   </div>
