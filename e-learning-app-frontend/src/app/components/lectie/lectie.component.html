@@ -7,19 +7,18 @@
       <button
         mat-raised-button
         color="accent"
-        (click)="toggleEditMode()"
         *ngIf="isAdmin"
+        [routerLink]="['/editeaza-lectie', lectie.id]"
       >
-        {{ isEditing ? "Anulează" : "Editează Lecția" }}
+        ✏️ Editează Lecția
       </button>
-
       <button
         mat-raised-button
         color="accent"
-        (click)="exportTestAsPDF()"
         *ngIf="isTeacher && testId"
+        (click)="exportTestAsPDF()"
       >
-        📄 Exportă Testul în PDF
+        📄 Exportă Testul
       </button>
     </div>
 
@@ -33,7 +32,6 @@
           ➕ Adaugă Test
         </button>
       </ng-container>
-
       <ng-template #testExists>
         <p class="test-info">✅ Lecția are deja test asociat.</p>
         <div class="admin-test-buttons">
@@ -55,7 +53,7 @@
       </ng-template>
     </div>
 
-    <div class="lesson-content" *ngIf="!isEditing">
+    <div class="lesson-content">
       <div class="pagination-controls">
         <button
           mat-button
@@ -107,32 +105,5 @@
         </button>
       </div>
     </div>
-
-    <form *ngIf="isEditing" [formGroup]="lessonForm" class="edit-form">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Titlul lecției</mat-label>
-        <input matInput formControlName="title" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width larger-textarea">
-        <mat-label>Descrierea lecției</mat-label>
-        <textarea matInput formControlName="description"></textarea>
-      </mat-form-field>
-
-      <div class="form-group">
-        <label>Conținutul lecției</label>
-        <quill-editor
-          formControlName="content"
-          [modules]="editorConfig"
-          placeholder="Scrieți conținutul lecției..."
-        ></quill-editor>
-      </div>
-
-      <div class="centered-buttons">
-        <button mat-raised-button color="primary" (click)="saveLesson()">
-          💾 Salvează Modificările
-        </button>
-      </div>
-    </form>
   </div>
 </div>

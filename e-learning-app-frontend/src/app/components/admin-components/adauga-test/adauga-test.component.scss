@@ -25,15 +25,6 @@
   box-shadow: 0 0 12px rgba(186, 104, 200, 0.15);
 }
 
-.full-width {
-  width: 100%;
-}
-
-.question-type {
-  margin-top: 10px;
-  width: 60%;
-}
-
 .answers-container {
   margin-top: 20px;
   padding-left: 15px;
@@ -55,6 +46,12 @@
   flex: 1;
 }
 
+.question-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
 .buttons {
   display: flex;
   justify-content: space-between;
@@ -69,14 +66,6 @@
 mat-form-field {
   width: 100%;
   margin-bottom: 20px;
-}
-
-mat-form-field {
-  color: #f2e7fe;
-
-  .mat-form-field-outline {
-    border-color: #bb86fc !important;
-  }
 
   .mat-form-field-label {
     color: #d0aaff !important;
@@ -87,8 +76,10 @@ mat-form-field {
     caret-color: #bb86fc;
   }
 
-  .mat-select-arrow {
+  .mat-select-arrow,
+  .mat-form-field-outline {
     color: #bb86fc !important;
+    border-color: #bb86fc !important;
   }
 }
 
@@ -107,15 +98,17 @@ button[mat-stroked-button] {
   border-radius: 25px;
   padding: 8px 20px;
 }
+
 .snackbar-error {
-  background-color: #f44336; // roșu intens
+  background-color: #f44336;
   color: #fff;
   font-weight: 500;
   font-size: 15px;
   border-radius: 8px;
 }
+
 .snackbar-success {
-  background-color: #4caf50; // verde
+  background-color: #4caf50;
   color: #fff;
   font-weight: 500;
   font-size: 15px;

@@ -2,12 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-interface LessonContent {
-  contentType: 'TEXT' | 'IMAGE' | 'VIDEO' | 'SCHEME';
-  textContent?: string;
-  contentUrl?: string;
-}
-
 interface Lesson {
   id: string;
   title: string;
@@ -65,23 +59,8 @@ export class LectiiService {
     return this.http.get<Lesson>(`${this.apiUrl}/${id}`);
   }
 
-  getLessonContentByLessonId(lessonId: string): Observable<LessonContent[]> {
-    return this.http.get<LessonContent[]>(
-      `${this.lessonContentUrl}/lesson/${lessonId}`
-    );
-  }
   stergeLectie(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
-  }
-
-  updateLessonContent(
-    lessonId: string,
-    contents: LessonContent[]
-  ): Observable<any> {
-    return this.http.post(
-      `${this.lessonContentUrl}/lesson/${lessonId}`,
-      contents
-    );
   }
 
   updateLectie(lesson: Lesson): Observable<Lesson> {

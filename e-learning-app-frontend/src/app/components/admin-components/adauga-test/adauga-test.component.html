@@ -1,0 +1,132 @@
+<div class="test-container">
+  <h2 class="test-title">📝 Creează Testul pentru Lecție</h2>
+
+  <form [formGroup]="testForm" (ngSubmit)="submitTest()">
+    <div formArrayName="questions" class="question-list">
+      <div
+        *ngFor="let question of questions.controls; let i = index"
+        [formGroupName]="i"
+        class="question-card"
+      >
+        <!-- Întrebare și tip -->
+        <mat-form-field appearance="fill">
+          <mat-label>Întrebarea</mat-label>
+          <input
+            matInput
+            formControlName="questionText"
+            placeholder="Ex: Care este complexitatea?"
+          />
+          <mat-error
+            *ngIf="
+              question.get('questionText')?.invalid &&
+              question.get('questionText')?.touched
+            "
+          >
+            Introdu un text pentru întrebare
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Tip întrebare</mat-label>
+          <mat-select formControlName="questionType">
+            <mat-option value="SINGLE_CHOICE">Răspuns unic</mat-option>
+            <mat-option value="MULTIPLE_CHOICE">Răspunsuri multiple</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Răspunsuri -->
+        <div class="answers-container" [formArrayName]="'answers'">
+          <!-- SINGLE CHOICE -->
+          <mat-radio-group
+            *ngIf="question.get('questionType')?.value === 'SINGLE_CHOICE'"
+            [value]="getSelectedIndex(question)"
+            (change)="selectSingleAnswer(i, $event.value)"
+            class="radio-group"
+          >
+            <div
+              *ngFor="let answer of getAnswersControls(i); let j = index"
+              [formGroupName]="j"
+              class="answer-row"
+            >
+              <mat-radio-button [value]="j"></mat-radio-button>
+              <mat-form-field appearance="outline" class="answer-input">
+                <mat-label>Răspuns {{ j + 1 }}</mat-label>
+                <input matInput formControlName="answerText" />
+              </mat-form-field>
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="stergeRaspuns(i, j)"
+                type="button"
+                aria-label="Șterge răspunsul"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </mat-radio-group>
+
+          <!-- MULTIPLE CHOICE -->
+          <ng-container
+            *ngIf="question.get('questionType')?.value === 'MULTIPLE_CHOICE'"
+          >
+            <div
+              *ngFor="let answer of getAnswersControls(i); let j = index"
+              [formGroupName]="j"
+              class="answer-row"
+            >
+              <mat-checkbox formControlName="isCorrect">Corect</mat-checkbox>
+              <mat-form-field appearance="outline" class="answer-input">
+                <mat-label>Răspuns {{ j + 1 }}</mat-label>
+                <input matInput formControlName="answerText" />
+              </mat-form-field>
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="stergeRaspuns(i, j)"
+                type="button"
+                aria-label="Șterge răspunsul"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Butoane întrebări -->
+        <div class="question-buttons">
+          <button
+            mat-stroked-button
+            color="accent"
+            (click)="adaugaRaspuns(i)"
+            type="button"
+          >
+            ➕ Răspuns
+          </button>
+          <button
+            mat-stroked-button
+            color="warn"
+            (click)="stergeIntrebare(i)"
+            type="button"
+          >
+            🗑️ Șterge Întrebarea
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Butoane generale -->
+    <div class="buttons">
+      <button
+        mat-stroked-button
+        color="accent"
+        (click)="adaugaIntrebare()"
+        type="button"
+      >
+        ➕ Întrebare
+      </button>
+      <button mat-raised-button color="primary" type="submit">
+        💾 Salvează Test
+      </button>
+    </div>
+  </form>
+</div>

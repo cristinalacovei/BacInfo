@@ -1,0 +1,100 @@
+.lesson-page {
+  position: relative;
+  min-height: 100vh;
+  padding: 60px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url("../../../../../public/coding.png") no-repeat center
+    center/cover;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 15, 30, 0.85);
+    z-index: 1;
+  }
+
+  > * {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+.lesson-card {
+  background: rgba(30, 30, 50, 0.9);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(154, 15, 191, 0.4);
+  max-width: 1000px;
+  width: 100%;
+  backdrop-filter: blur(10px);
+}
+
+.edit-form {
+  background: rgba(50, 50, 80, 0.9);
+  padding: 30px;
+  border-radius: 15px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.larger-textarea textarea {
+  min-height: 100px;
+}
+
+.centered-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+button {
+  background: linear-gradient(135deg, #6a1b9a, #8e24aa);
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+  padding: 12px 24px;
+  box-shadow: 0 4px 12px rgba(154, 15, 191, 0.4);
+  transition: 0.3s;
+
+  &:hover {
+    background: linear-gradient(135deg, #8e24aa, #9c27b0);
+    transform: scale(1.05);
+  }
+
+  &:disabled {
+    background: #888;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+/* Editor stilizat */
+::ng-deep quill-editor {
+  background-color: rgba(40, 40, 70, 0.8);
+  border-radius: 8px;
+  border: 1px solid #8e24aa;
+  padding: 10px;
+  color: #fff;
+}
+
+::ng-deep .ql-toolbar.ql-snow {
+  background: rgba(30, 30, 50, 0.9);
+  border-bottom: 1px solid #8e24aa;
+}
+
+::ng-deep .ql-editor {
+  color: #fff;
+  font-size: 16px;
+
+  &::before {
+    color: #fff !important;
+    opacity: 0.5;
+    font-style: italic;
+  }
+}

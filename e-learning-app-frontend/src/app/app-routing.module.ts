@@ -9,17 +9,18 @@ import { LectieComponent } from './components/lectie/lectie.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { EditorComponent } from './components/add-lectie/editor.component';
+import { EditorComponent } from './components/admin-components/add-lectie/editor.component';
 import { TestComponent } from './components/test/test.component';
-import { AdaugaTestComponent } from './components/adauga-test/adauga-test.component';
-import { EditeazaTestComponent } from './components/editeaza-test/editeaza-test.component';
+import { AdaugaTestComponent } from './components/admin-components/adauga-test/adauga-test.component';
+import { EditeazaTestComponent } from './components/admin-components/editeaza-test/editeaza-test.component';
 import { CompleteProfileComponent } from './components/complete-profile/complete-profile.component';
-import { AdminUserStatsComponent } from './components/admin-user-stats/admin-user-stats.component';
-import { AdminUserDetailComponent } from './components/admin-user-detail/admin-user-detail.component';
+import { AdminUserStatsComponent } from './components/admin-components/admin-user-stats/admin-user-stats.component';
+import { AdminUserDetailComponent } from './components/admin-components/admin-user-detail/admin-user-detail.component';
 import { QuestionDetailComponent } from './forum/question-detail/question-detail.component';
 import { ForumPageComponent } from './forum/forum-page/forum-page.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ContactComponent } from './components/contact/contact.component';
+import { EditeazaLectieComponent } from './components/admin-components/editeaza-lectie/editeaza-lectie.component';
 
 const routes: Routes = [
   { path: '', component: AboutComponent },
@@ -46,6 +47,7 @@ const routes: Routes = [
     path: 'complete-profile',
     component: CompleteProfileComponent,
   },
+  { path: 'editeaza-lectie/:id', component: EditeazaLectieComponent },
   {
     path: 'admin/users',
     component: AdminUserStatsComponent,

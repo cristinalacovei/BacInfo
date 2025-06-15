@@ -1,0 +1,30 @@
+<div class="lesson-page">
+  <div class="lesson-card edit-form" *ngIf="lessonForm">
+    <form [formGroup]="lessonForm" (ngSubmit)="saveLesson()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Titlul lecției</mat-label>
+        <input matInput formControlName="title" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width larger-textarea">
+        <mat-label>Descrierea lecției</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+      </mat-form-field>
+
+      <div class="form-group">
+        <label>Conținutul lecției</label>
+        <quill-editor
+          formControlName="content"
+          [modules]="editorConfig"
+          placeholder="Scrieți conținutul lecției..."
+        ></quill-editor>
+      </div>
+
+      <div class="centered-buttons">
+        <button mat-raised-button color="primary" type="submit">
+          💾 Salvează Modificările
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

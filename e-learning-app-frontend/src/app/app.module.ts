@@ -33,23 +33,24 @@ import { LectieComponent } from './components/lectie/lectie.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { EditorComponent } from './components/add-lectie/editor.component';
+import { EditorComponent } from './components/admin-components/add-lectie/editor.component';
 import { QuillModule } from 'ngx-quill';
 import { TestComponent } from './components/test/test.component';
-import { AdaugaTestComponent } from './components/adauga-test/adauga-test.component';
+import { AdaugaTestComponent } from './components/admin-components/adauga-test/adauga-test.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { EditeazaTestComponent } from './components/editeaza-test/editeaza-test.component';
+import { EditeazaTestComponent } from './components/admin-components/editeaza-test/editeaza-test.component';
 import { CompleteProfileComponent } from './components/complete-profile/complete-profile.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { AdminUserStatsComponent } from './components/admin-user-stats/admin-user-stats.component';
-import { AdminUserDetailComponent } from './components/admin-user-detail/admin-user-detail.component';
+import { AdminUserStatsComponent } from './components/admin-components/admin-user-stats/admin-user-stats.component';
+import { AdminUserDetailComponent } from './components/admin-components/admin-user-detail/admin-user-detail.component';
 import { QuestionDetailComponent } from './forum/question-detail/question-detail.component';
 import { ForumPageComponent } from './forum/forum-page/forum-page.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { ContactComponent } from './components/contact/contact.component';
 import { ImageCropperComponent } from 'ngx-image-cropper';
+import { EditeazaLectieComponent } from './components/admin-components/editeaza-lectie/editeaza-lectie.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { ImageCropperComponent } from 'ngx-image-cropper';
     QuestionDetailComponent,
     ForumPageComponent,
     ContactComponent,
+    EditeazaLectieComponent,
   ],
   imports: [
     BrowserModule,

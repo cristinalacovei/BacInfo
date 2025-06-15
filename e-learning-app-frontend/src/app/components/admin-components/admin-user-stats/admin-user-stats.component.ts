@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
-import { LectiiService } from '../../services/lectii.service';
+import { UserService } from '../../../services/user.service';
+import { LectiiService } from '../../../services/lectii.service';
 import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
 

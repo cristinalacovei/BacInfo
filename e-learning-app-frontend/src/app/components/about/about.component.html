@@ -28,8 +28,7 @@
       <i class="material-icons">menu_book</i>
       <h3>Lecții Interactive</h3>
       <p>
-        Învață organizat, pas cu pas, cu lecții structurate și teste aferente
-        fiecărui capitol.
+        Învață organizat, cu lecții structurate și teste pentru fiecare capitol.
       </p>
     </div>
 
@@ -37,18 +36,14 @@
       <i class="material-icons">quiz</i>
       <h3>Teste și Statistici</h3>
       <p>
-        Rezolvă teste grilă, vezi progresul tău și analizează răspunsurile
-        greșite pentru a evolua constant.
+        Rezolvă teste grilă, analizează greșelile și urmărește progresul tău.
       </p>
     </div>
 
     <div class="highlight-card">
       <i class="material-icons">forum</i>
       <h3>Comunitate Activă</h3>
-      <p>
-        Pune întrebări, răspunde colegilor și participă la forumul dedicat
-        discuțiilor educaționale.
-      </p>
+      <p>Adresează întrebări și ajută colegii în forumul educațional.</p>
     </div>
   </div>
 </section>
@@ -56,7 +51,6 @@
 <section class="faq-section">
   <div class="faq-container">
     <h2>Întrebări Frecvente</h2>
-
     <div *ngFor="let item of faqItems; let i = index" class="faq-item">
       <div class="faq-question" (click)="toggleAnswer(i)">
         <i class="fas fa-question-circle"></i> {{ item.question }}
@@ -66,10 +60,7 @@
           style="margin-left: auto"
         ></i>
       </div>
-
-      <div class="faq-answer" *ngIf="item.isOpen">
-        {{ item.answer }}
-      </div>
+      <div class="faq-answer" *ngIf="item.isOpen">{{ item.answer }}</div>
     </div>
   </div>
 </section>

@@ -6,24 +6,17 @@
   align-items: center;
   justify-content: center;
   color: #fff;
-
-  /* Fundal imagine */
   background: url("../../../../public/coding.png") no-repeat center center/cover;
   overflow: hidden;
 
-  /* Suprapunem un overlay întunecat */
   &::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: rgba(15, 15, 30, 0.85); /* Negru transparent peste imagine */
+    inset: 0;
+    background: rgba(15, 15, 30, 0.85);
     z-index: 1;
   }
 
-  /* Facem conținutul principal deasupra overlay-ului */
   > * {
     position: relative;
     z-index: 2;
@@ -35,15 +28,15 @@
   padding: 40px;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(154, 15, 191, 0.4);
-  width: 100%;
   max-width: 1000px;
+  width: 100%;
   backdrop-filter: blur(10px);
 }
 
 .lesson-title {
   font-size: 2.8rem;
   text-align: center;
-  color: #9a0fbf; /* Mov intens */
+  color: #9a0fbf;
   text-shadow: 0 0 10px rgba(154, 15, 191, 0.6);
 }
 
@@ -54,7 +47,8 @@
   margin-bottom: 30px;
 }
 
-.lesson-buttons {
+.lesson-buttons,
+.admin-test-buttons {
   display: flex;
   justify-content: center;
   gap: 15px;
@@ -62,19 +56,12 @@
 }
 
 .admin-section {
-  margin-bottom: 30px;
   text-align: center;
-}
-
-.admin-test-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 10px;
+  margin-bottom: 30px;
 }
 
 .test-info {
-  color: #ba68c8; /* Mov pastel */
+  color: #ba68c8;
   font-weight: bold;
   margin-bottom: 10px;
 }
@@ -90,8 +77,7 @@
   margin: 20px 0;
   font-size: 18px;
   color: #ddd;
-  width: 100%;
-  padding: 0 10px; /* Adaugă un mic padding stânga-dreapta */
+  padding: 0 10px;
   word-wrap: break-word;
   overflow-x: hidden;
 }
@@ -104,82 +90,46 @@
   justify-content: space-between;
   font-weight: bold;
   margin: 20px 0;
-}
-.pagination-controls button {
-  background: linear-gradient(135deg, #6a1b9a, #8e24aa);
-  color: white;
-  font-weight: bold;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  transition: 0.3s;
-  box-shadow: 0 4px 10px rgba(154, 15, 191, 0.3);
-}
 
-.pagination-controls button:hover:not([disabled]) {
-  background: linear-gradient(135deg, #8e24aa, #9c27b0);
-  transform: scale(1.05);
-}
+  button {
+    background: linear-gradient(135deg, #6a1b9a, #8e24aa);
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(154, 15, 191, 0.3);
 
-.pagination-controls button[disabled] {
-  background: rgba(100, 100, 120, 0.4);
-  color: rgba(255, 255, 255, 0.6);
-  cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
-}
+    &:hover:not([disabled]) {
+      background: linear-gradient(135deg, #8e24aa, #9c27b0);
+      transform: scale(1.05);
+    }
 
-.edit-form {
-  background: rgba(50, 50, 80, 0.85);
-  padding: 30px;
-  border-radius: 15px;
-}
-
-.full-width {
-  width: 100%;
-}
-
-.larger-textarea textarea {
-  min-height: 100px;
-}
-
-.centered-buttons {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-/* Buttons */
-button {
-  background: linear-gradient(135deg, #6a1b9a, #8e24aa); /* MOV MOV */
-  color: white;
-  border-radius: 8px;
-  font-weight: bold;
-  padding: 12px 24px;
-  box-shadow: 0 4px 12px rgba(154, 15, 191, 0.4); /* Umbra MOV */
-  transition: 0.3s;
-}
-
-button:hover {
-  background: linear-gradient(135deg, #8e24aa, #9c27b0);
-  transform: scale(1.05);
+    &:disabled {
+      background: rgba(100, 100, 120, 0.4);
+      color: rgba(255, 255, 255, 0.6);
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+  }
 }
 
 .start-test-button {
-  background: linear-gradient(135deg, #6a1b9a, #8e24aa); /* Mov intens */
+  background: linear-gradient(135deg, #6a1b9a, #8e24aa);
   color: white;
   font-size: 20px;
   font-weight: bold;
   border: none;
   border-radius: 8px;
-  margin-top: 30px;
-  margin-bottom: 50px;
-  box-shadow: 0 0 15px rgba(154, 15, 191, 0.5); /* Glow mov */
+  margin: 30px 0 50px;
+  box-shadow: 0 0 15px rgba(154, 15, 191, 0.5);
   transition: 0.4s ease;
-}
 
-.start-test-button:hover {
-  background: linear-gradient(135deg, #8e24aa, #9c27b0);
-  transform: scale(1.05);
-  box-shadow: 0 0 25px rgba(154, 15, 191, 0.7);
+  &:hover {
+    background: linear-gradient(135deg, #8e24aa, #9c27b0);
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(154, 15, 191, 0.7);
+  }
 }

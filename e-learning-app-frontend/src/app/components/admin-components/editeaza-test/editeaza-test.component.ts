@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { TestService } from '../../services/test.service';
+import { TestService } from '../../../services/test.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { QuestionService } from '../../services/question.service';
-import { AnswerService } from '../../services/answer.service';
+import { QuestionService } from '../../../services/question.service';
+import { AnswerService } from '../../../services/answer.service';
 
 @Component({
   selector: 'app-editeaza-test',
@@ -16,14 +16,15 @@ import { AnswerService } from '../../services/answer.service';
 })
 export class EditeazaTestComponent implements OnInit {
   testForm!: FormGroup;
-  testId!: string;
-  lessonId!: string;
+  testId = '';
+  lessonId = '';
   currentQuestionIndex = 0;
+  private autoSaveIntervalId: any;
+  private readonly BACKUP_KEY = 'test-backup-';
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router,
     private testService: TestService,
     private questionService: QuestionService,
     private answerService: AnswerService,
@@ -37,12 +38,30 @@ export class EditeazaTestComponent implements OnInit {
       this.lessonId = test.lesson?.id || '';
       this.testForm = this.fb.group({
         classLevel: [test.classLevel],
-        questions: this.fb.array([]),
+        questions: this.fb.array(
+          test.questions.map((q) => this.createQuestionGroup(q))
+        ),
       });
 
-      test.questions.forEach((q) => {
-        this.getQuestions().push(this.createQuestionGroup(q));
-      });
+      // 1. Încărcăm backup-ul dacă există
+      const backup = localStorage.getItem(this.BACKUP_KEY + this.testId);
+      if (backup) {
+        try {
+          this.testForm.patchValue(JSON.parse(backup));
+          this.showSnackbar('🕒 Backup încărcat automat.', 'snackbar-success');
+        } catch (e) {
+          console.warn('Backup invalid:', e);
+        }
+      }
+
+      // 2. Pornim auto-salvarea la fiecare minut
+      this.autoSaveIntervalId = setInterval(() => {
+        if (this.testForm.valid) {
+          const backupData = JSON.stringify(this.testForm.value);
+          localStorage.setItem(this.BACKUP_KEY + this.testId, backupData);
+          console.log('Auto-backup salvat.');
+        }
+      }, 60000);
     });
   }
 
@@ -87,10 +106,9 @@ export class EditeazaTestComponent implements OnInit {
     this.getAnswers(index).push(this.createAnswerGroup());
   }
 
-  selectSingle(questionIndex: number, answerIndex: number): void {
-    const answers = this.getAnswers(questionIndex);
-    answers.controls.forEach((control, i) => {
-      control.get('isCorrect')?.setValue(i === answerIndex);
+  selectSingle(qIndex: number, aIndex: number): void {
+    this.getAnswers(qIndex).controls.forEach((control, i) => {
+      control.get('isCorrect')?.setValue(i === aIndex);
     });
   }
 
@@ -106,6 +124,15 @@ export class EditeazaTestComponent implements OnInit {
       this.getQuestions().at(index).get('questionType')?.value ===
       'MULTIPLE_CHOICE'
     );
+  }
+
+  prevQuestion(): void {
+    if (this.currentQuestionIndex > 0) this.currentQuestionIndex--;
+  }
+
+  nextQuestion(): void {
+    if (this.currentQuestionIndex < this.getQuestions().length - 1)
+      this.currentQuestionIndex++;
   }
 
   salveazaModificari(): void {
@@ -129,29 +156,31 @@ export class EditeazaTestComponent implements OnInit {
       }
     }
 
-    this.testService
-      .updateTest({ id: this.testId, ...this.testForm.value })
-      .subscribe({
-        next: () => {
-          this.showSnackbar(
-            '✅ Testul a fost actualizat cu succes!',
-            'snackbar-success'
-          );
-        },
-        error: () =>
-          this.showSnackbar(
-            '❌ Eroare la actualizarea testului.',
-            'snackbar-error'
-          ),
-      });
+    const updatedTest = { id: this.testId, ...this.testForm.value };
+    this.testService.updateTest(updatedTest).subscribe({
+      next: () => {
+        localStorage.removeItem(this.BACKUP_KEY + this.testId);
+        this.showSnackbar(
+          '✅ Testul a fost actualizat cu succes!',
+          'snackbar-success'
+        );
+      },
+
+      error: () =>
+        this.showSnackbar(
+          '❌ Eroare la actualizarea testului.',
+          'snackbar-error'
+        ),
+    });
   }
 
   markFormTouched(): void {
     this.testForm.markAllAsTouched();
-    this.getQuestions().controls.forEach((questionGroup) => {
-      questionGroup.get('questionText')?.markAsTouched();
-      const answers = questionGroup.get('answers') as FormArray;
-      answers.controls.forEach((a) => a.get('answerText')?.markAsTouched());
+    this.getQuestions().controls.forEach((q) => {
+      q.get('questionText')?.markAsTouched();
+      (q.get('answers') as FormArray).controls.forEach((a) =>
+        a.get('answerText')?.markAsTouched()
+      );
     });
   }
 
@@ -164,50 +193,37 @@ export class EditeazaTestComponent implements OnInit {
     });
   }
 
-  prevQuestion(): void {
-    if (this.currentQuestionIndex > 0) this.currentQuestionIndex--;
+  confirmaStergereIntrebare(index: number): void {
+    this.confirmaDialog('Ești sigur că vrei să ștergi această întrebare?')
+      .afterClosed()
+      .subscribe((confirmed) => confirmed && this.stergeIntrebare(index));
   }
 
-  nextQuestion(): void {
-    if (this.currentQuestionIndex < this.getQuestions().length - 1)
-      this.currentQuestionIndex++;
+  confirmaStergereRaspuns(qIndex: number, aIndex: number): void {
+    this.confirmaDialog('Ești sigur că vrei să ștergi acest răspuns?')
+      .afterClosed()
+      .subscribe(
+        (confirmed) => confirmed && this.stergeRaspuns(qIndex, aIndex)
+      );
   }
 
   stergeIntrebare(index: number): void {
-    const questionGroup = this.getQuestions().at(index);
-    const questionId = questionGroup.get('id')?.value;
+    const question = this.getQuestions().at(index);
+    const questionId = question.get('id')?.value;
 
     if (questionId) {
       this.questionService.deleteQuestion(questionId).subscribe(() => {
-        this.getQuestions().removeAt(index);
-        this.currentQuestionIndex = Math.min(
-          this.currentQuestionIndex,
-          this.getQuestions().length - 1
-        );
+        this.removeQuestion(index);
         this.showSnackbar('✅ Întrebarea a fost ștearsă.', 'snackbar-success');
       });
     } else {
-      this.getQuestions().removeAt(index); // doar local dacă nu are ID
+      this.removeQuestion(index);
     }
   }
 
-  finalizeStergereIntrebare(index: number): void {
-    const updatedTest = { id: this.testId, ...this.testForm.value };
-    updatedTest.questions.splice(index, 1);
-
-    this.testService.updateTest(updatedTest).subscribe(() => {
-      this.getQuestions().removeAt(index);
-      this.currentQuestionIndex = Math.min(
-        this.currentQuestionIndex,
-        this.getQuestions().length - 1
-      );
-      this.showSnackbar('✅ Întrebarea a fost ștearsă.', 'snackbar-success');
-    });
-  }
-
   stergeRaspuns(qIndex: number, aIndex: number): void {
-    const answerGroup = this.getAnswers(qIndex).at(aIndex);
-    const answerId = answerGroup.get('id')?.value;
+    const answer = this.getAnswers(qIndex).at(aIndex);
+    const answerId = answer.get('id')?.value;
 
     if (answerId) {
       this.answerService.deleteAnswer(answerId).subscribe(() => {
@@ -215,49 +231,32 @@ export class EditeazaTestComponent implements OnInit {
         this.showSnackbar('✅ Răspunsul a fost șters.', 'snackbar-success');
       });
     } else {
-      this.getAnswers(qIndex).removeAt(aIndex); // doar local dacă nu are ID
+      this.getAnswers(qIndex).removeAt(aIndex);
     }
   }
 
-  finalizeStergereRaspuns(qIndex: number, aIndex: number): void {
-    const updatedTest = { id: this.testId, ...this.testForm.value };
-    updatedTest.questions[qIndex].answers.splice(aIndex, 1);
+  private removeQuestion(index: number): void {
+    this.getQuestions().removeAt(index);
+    this.currentQuestionIndex = Math.min(
+      this.currentQuestionIndex,
+      this.getQuestions().length - 1
+    );
+  }
 
-    this.testService.updateTest(updatedTest).subscribe(() => {
-      this.getAnswers(qIndex).removeAt(aIndex);
-      this.showSnackbar('✅ Răspunsul a fost șters.', 'snackbar-success');
+  private confirmaDialog(message: string) {
+    return this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Confirmare ștergere',
+        message,
+        singleButton: false,
+      },
     });
   }
 
-  confirmaStergereIntrebare(index: number): void {
-    this.dialog
-      .open(ConfirmDialogComponent, {
-        width: '400px',
-        data: {
-          title: 'Confirmare ștergere',
-          message: 'Ești sigur că vrei să ștergi această întrebare?',
-          singleButton: false,
-        },
-      })
-      .afterClosed()
-      .subscribe((result) => {
-        if (result === true) this.stergeIntrebare(index);
-      });
-  }
-
-  confirmaStergereRaspuns(qIndex: number, aIndex: number): void {
-    this.dialog
-      .open(ConfirmDialogComponent, {
-        width: '400px',
-        data: {
-          title: 'Confirmare ștergere',
-          message: 'Ești sigur că vrei să ștergi acest răspuns?',
-          singleButton: false,
-        },
-      })
-      .afterClosed()
-      .subscribe((result) => {
-        if (result === true) this.stergeRaspuns(qIndex, aIndex);
-      });
+  ngOnDestroy(): void {
+    if (this.autoSaveIntervalId) {
+      clearInterval(this.autoSaveIntervalId);
+    }
   }
 }

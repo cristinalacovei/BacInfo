@@ -1,7 +1,7 @@
 .add-lesson-page {
   position: relative;
   height: 100vh;
-  background: url("../../../../public/coding.png") no-repeat center/cover;
+  background: url("../../../../../public/coding.png") no-repeat center/cover;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -106,6 +106,26 @@ select option:checked {
   color: #ffffff !important;
   opacity: 0.5; /* dacă vrei să fie puțin mai subtil */
   font-style: italic;
+}
+
+/* Stilizare dropdown Quill (font size, font family etc.) */
+::ng-deep .ql-picker-options {
+  background: rgba(30, 30, 50, 0.95) !important;
+  border: 1px solid #8e24aa !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 10px rgba(154, 15, 191, 0.3);
+  z-index: 10000;
+}
+
+::ng-deep .ql-picker-options .ql-picker-item {
+  color: #ffffff !important;
+  padding: 8px 12px;
+}
+
+::ng-deep .ql-picker-options .ql-picker-item:hover,
+::ng-deep .ql-picker-options .ql-picker-item.ql-selected {
+  background-color: #8e24aa !important;
+  color: #fff !important;
 }
 
 /* Buton principal */

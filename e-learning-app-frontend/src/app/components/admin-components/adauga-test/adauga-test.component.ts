@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { TestService } from '../../services/test.service';
+import { TestService } from '../../../services/test.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-adauga-test',
@@ -28,19 +28,17 @@ export class AdaugaTestComponent implements OnInit {
 
   ngOnInit(): void {
     this.lessonId = this.route.snapshot.paramMap.get('lessonId') || '';
-    this.backupKey = `testDraft-${this.lessonId}`; // cheia unică per lecție
+    this.backupKey = `testDraft-${this.lessonId}`;
 
     this.testForm = this.fb.group({
       classLevel: [9],
       questions: this.fb.array([], Validators.minLength(1)),
     });
 
-    // Încarcă backup dacă există
     const savedTest = localStorage.getItem(this.backupKey);
     if (savedTest) {
       const parsed = JSON.parse(savedTest);
       this.testForm.patchValue({ classLevel: parsed.classLevel });
-
       this.questions.clear();
       parsed.questions.forEach((q: any) => {
         const answersArray = this.fb.array(
@@ -62,10 +60,9 @@ export class AdaugaTestComponent implements OnInit {
         );
       });
     } else {
-      this.adaugaIntrebare(); // doar dacă nu există backup
+      this.adaugaIntrebare();
     }
 
-    // Autosave la fiecare 1 minut
     setInterval(() => {
       if (this.testForm.dirty) {
         localStorage.setItem(
@@ -74,10 +71,10 @@ export class AdaugaTestComponent implements OnInit {
         );
         console.log('📦 Backup autosalvat local.');
       }
-    }, 60 * 1000); // 1 minut
+    }, 60000);
   }
 
-  get questions() {
+  get questions(): FormArray {
     return this.testForm.get('questions') as FormArray;
   }
 
@@ -85,13 +82,10 @@ export class AdaugaTestComponent implements OnInit {
     return (this.questions.at(i).get('answers') as FormArray).controls;
   }
 
-  selectSingleAnswer(intrebareIndex: number, selectedAnswerIndex: number) {
-    const answers = this.questions
-      .at(intrebareIndex)
-      .get('answers') as FormArray;
-
-    answers.controls.forEach((control, idx) => {
-      control.get('isCorrect')?.setValue(idx === selectedAnswerIndex);
+  selectSingleAnswer(i: number, selectedIndex: number) {
+    const answers = this.questions.at(i).get('answers') as FormArray;
+    answers.controls.forEach((ctrl, idx) => {
+      ctrl.get('isCorrect')?.setValue(idx === selectedIndex);
     });
   }
 
@@ -122,21 +116,53 @@ export class AdaugaTestComponent implements OnInit {
     );
   }
 
-  adaugaRaspuns(intrebareIndex: number) {
-    const answers = this.questions
-      .at(intrebareIndex)
-      .get('answers') as FormArray;
+  adaugaRaspuns(i: number) {
+    const answers = this.questions.at(i).get('answers') as FormArray;
     answers.push(this.fb.group({ answerText: [''], isCorrect: [false] }));
   }
 
-  markFormTouched() {
-    this.testForm.markAllAsTouched();
-    this.questions.controls.forEach((questionGroup) => {
-      questionGroup.get('questionText')?.markAsTouched();
-      const answers = questionGroup.get('answers') as FormArray;
-      answers.controls.forEach((answerGroup) =>
-        answerGroup.get('answerText')?.markAsTouched()
+  stergeIntrebare(index: number): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Confirmare ștergere',
+        message: `Sigur vrei să ștergi întrebarea ${index + 1}?`,
+      },
+    });
+    dialogRef.afterClosed().subscribe((confirm) => {
+      if (confirm) this.questions.removeAt(index);
+    });
+  }
+
+  stergeRaspuns(i: number, j: number): void {
+    const answers = this.questions.at(i).get('answers') as FormArray;
+    if (answers.length <= 2) {
+      this.snackBar.open(
+        '⚠️ Fiecare întrebare trebuie să aibă cel puțin 2 răspunsuri.',
+        'Închide',
+        {
+          duration: 3000,
+          panelClass: ['snackbar-warning'],
+        }
       );
+      return;
+    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Confirmare ștergere',
+        message: `Sigur vrei să ștergi răspunsul ${j + 1}?`,
+      },
+    });
+    dialogRef.afterClosed().subscribe((confirm) => {
+      if (confirm) answers.removeAt(j);
+    });
+  }
+
+  private markFormTouched() {
+    this.testForm.markAllAsTouched();
+    this.questions.controls.forEach((q) => {
+      q.get('questionText')?.markAsTouched();
+      const answers = q.get('answers') as FormArray;
+      answers.controls.forEach((a) => a.get('answerText')?.markAsTouched());
     });
   }
 
@@ -158,9 +184,8 @@ export class AdaugaTestComponent implements OnInit {
       return;
     }
 
-    const questions = this.testForm.value.questions;
-    for (let i = 0; i < questions.length; i++) {
-      const q = questions[i];
+    for (let i = 0; i < this.questions.length; i++) {
+      const q = this.questions.at(i).value;
       const hasCorrect = q.answers.some((a: any) => a.isCorrect);
       if (!hasCorrect) {
         this.snackBar.open(
@@ -177,13 +202,13 @@ export class AdaugaTestComponent implements OnInit {
       }
     }
 
-    const test = {
+    const payload = {
       classLevel: this.testForm.value.classLevel,
       lesson: { id: this.lessonId },
-      questions: questions,
+      questions: this.testForm.value.questions,
     };
 
-    this.testService.createTest(test).subscribe({
+    this.testService.createTest(payload).subscribe({
       next: () => {
         this.snackBar
           .open('✅ Testul a fost adăugat cu succes!', 'Închide', {
@@ -209,49 +234,6 @@ export class AdaugaTestComponent implements OnInit {
           }
         );
       },
-    });
-  }
-
-  stergeIntrebare(index: number): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: 'Confirmare ștergere',
-        message: `Sigur vrei să ștergi întrebarea ${index + 1}?`,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((confirmat) => {
-      if (confirmat === true) {
-        this.questions.removeAt(index);
-      }
-    });
-  }
-
-  stergeRaspuns(intrebareIndex: number, raspunsIndex: number): void {
-    const answers = this.questions
-      .at(intrebareIndex)
-      .get('answers') as FormArray;
-
-    if (answers.length <= 2) {
-      this.snackBar.open(
-        '⚠️ Fiecare întrebare trebuie să aibă cel puțin 2 răspunsuri.',
-        'Închide',
-        { duration: 3000, panelClass: ['snackbar-warning'] }
-      );
-      return;
-    }
-
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: 'Confirmare ștergere',
-        message: `Sigur vrei să ștergi răspunsul ${raspunsIndex + 1}?`,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((confirmat) => {
-      if (confirmat === true) {
-        answers.removeAt(raspunsIndex);
-      }
     });
   }
 }

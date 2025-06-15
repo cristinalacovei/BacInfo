@@ -1,37 +1,28 @@
 <div class="add-lesson-page">
   <div class="editor-container">
     <form [formGroup]="lessonForm" (ngSubmit)="saveLesson()">
-      <!-- Titlul lecției -->
       <div class="form-group">
-        <label for="title">Titlul lecției:</label>
+        <label for="title">Titlul lecției</label>
         <input
           id="title"
           formControlName="title"
           type="text"
-          class="form-control"
           placeholder="Introduceți titlul lecției"
         />
       </div>
 
-      <!-- Descrierea lecției -->
       <div class="form-group">
-        <label for="description">Descrierea lecției:</label>
+        <label for="description">Descrierea lecției</label>
         <textarea
           id="description"
           formControlName="description"
-          class="form-control"
-          placeholder="Introduceți o descriere scurtă a lecției"
+          placeholder="Introduceți o descriere scurtă"
         ></textarea>
       </div>
 
-      <!-- Select pentru clasa asignată -->
       <div class="form-group">
-        <label for="classLevel">Clasa:</label>
-        <select
-          id="classLevel"
-          formControlName="classLevel"
-          class="form-control"
-        >
+        <label for="classLevel">Clasa</label>
+        <select id="classLevel" formControlName="classLevel">
           <option value="" disabled>Selectează clasa</option>
           <option *ngFor="let level of [9, 10, 11, 12]" [value]="level">
             Clasa {{ level }}
@@ -39,9 +30,8 @@
         </select>
       </div>
 
-      <!-- Editorul de text pentru conținut -->
       <div class="form-group">
-        <label for="content">Conținutul lecției:</label>
+        <label for="content">Conținutul lecției</label>
         <quill-editor
           formControlName="content"
           [modules]="editorConfig"
@@ -49,18 +39,12 @@
         ></quill-editor>
       </div>
 
-      <!-- Buton pentru salvare -->
-      <button
-        type="submit"
-        [disabled]="lessonForm.invalid"
-        class="btn btn-primary"
-      >
-        Salvează lecția
+      <button type="submit" [disabled]="lessonForm.invalid">
+        💾 Salvează lecția
       </button>
     </form>
   </div>
 
-  <!-- SECȚIUNEA DE AFIȘARE A LECȚIEI SALVATE -->
   <div class="lesson-display" *ngIf="savedLesson">
     <h3>{{ savedLesson.title }}</h3>
     <p><strong>Clasa:</strong> {{ savedLesson.classLevel }}</p>
