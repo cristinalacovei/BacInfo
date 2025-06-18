@@ -17,7 +17,7 @@ public class TestEmailController {
 
     @GetMapping("/test-email")
     public ResponseEntity<String> testEmail() {
-        // Setează adresa de destinație (poți folosi adresa ta de email pentru test)
+
         emailService.sendEmail("lacoveicristina03@gmail.com", "Test Email", "Acesta este un test pentru configurarea SMTP.");
         return ResponseEntity.ok("Email trimis, verifică căsuța de email!");
     }

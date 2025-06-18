@@ -21,12 +21,12 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
         User user;
         try {
-            // Dacă este UUID, caută după ID
+
             UUID id = UUID.fromString(identifier);
             user = userRepository.findById(id)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + identifier));
         } catch (IllegalArgumentException e) {
-            // Dacă nu e UUID, caută după username
+
             user = userRepository.findByUsername(identifier)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + identifier));
         }

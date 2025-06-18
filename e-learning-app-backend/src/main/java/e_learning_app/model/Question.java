@@ -20,7 +20,7 @@ public class Question extends BaseEntity {
     private String questionText;
 
     @Column(name = "question_type", nullable = false)
-    private String questionType; // SINGLE_CHOICE, MULTIPLE_CHOICE
+    private String questionType;
 
     @ManyToOne
     @JoinColumn(name = "test_id", referencedColumnName = "id")

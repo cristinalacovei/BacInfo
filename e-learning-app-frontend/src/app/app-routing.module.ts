@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from './components/auth-components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './components/about/about.component';
 import { LectiiComponent } from './components/lectii/lectii.component';
 import { AuthRedirectComponent } from './components/auth-components/auth-redirect/auth-redirect.component';
 import { LectieComponent } from './components/lectie/lectie.component';
 import { ForgotPasswordComponent } from './components/auth-components/forgot-password/forgot-password.component';
-import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ResetPasswordComponent } from './components/auth-components/reset-password/reset-password.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { EditorComponent } from './components/admin-components/add-lectie/editor.component';
 import { TestComponent } from './components/test/test.component';
@@ -16,8 +16,8 @@ import { EditeazaTestComponent } from './components/admin-components/editeaza-te
 import { CompleteProfileComponent } from './components/auth-components/complete-profile/complete-profile.component';
 import { AdminUserStatsComponent } from './components/admin-components/admin-user-stats/admin-user-stats.component';
 import { AdminUserDetailComponent } from './components/admin-components/admin-user-detail/admin-user-detail.component';
-import { QuestionDetailComponent } from './forum/question-detail/question-detail.component';
-import { ForumPageComponent } from './forum/forum-page/forum-page.component';
+import { QuestionDetailComponent } from './components/forum-components/question-detail/question-detail.component';
+import { ForumPageComponent } from './components/forum-components/forum-page/forum-page.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ContactComponent } from './components/contact/contact.component';
 import { EditeazaLectieComponent } from './components/admin-components/editeaza-lectie/editeaza-lectie.component';

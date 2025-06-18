@@ -37,4 +37,14 @@ export class NotificareService {
   subscribeToWebSocket(callback: (notif: any) => void) {
     this.ws.connect('/topic/notificari').subscribe(callback);
   }
+
+  stergeNotificare(id: string): Observable<void> {
+    return this.http.delete<void>(`${environment.apiUrl}/api/notificari/${id}`);
+  }
+
+  stergeToate(userId: string): Observable<void> {
+    return this.http.delete<void>(
+      `${environment.apiUrl}/api/notificari/toate/${userId}`
+    );
+  }
 }

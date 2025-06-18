@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { LectiiService } from '../services/lectii.service';
-import { AuthService } from '../services/auth.service';
+import { LectiiService } from '../../services/lectii.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,7 +10,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class SidebarComponent implements OnInit {
   grupatePeClase: { [clasa: string]: any[] } = {};
-  progressMap: { [lessonId: string]: number } = {}; // lessonId -> scor
+  progressMap: { [lessonId: string]: number } = {};
   claseDeschise: { [clasa: string]: boolean } = {};
 
   constructor(
@@ -31,7 +31,6 @@ export class SidebarComponent implements OnInit {
         return acc;
       }, {} as { [clasa: string]: any[] });
 
-      // ✅ Obține progresul
       this.authService.getCurrentUser().subscribe((user) => {
         const userId = user.id;
         if (userId) {

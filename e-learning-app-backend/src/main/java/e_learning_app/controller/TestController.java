@@ -51,7 +51,7 @@ public class TestController {
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TestEntity> createTest(@RequestBody TestEntity test) {
-        // încarcă lecția completă (cu titlu) din baza de date
+
         UUID lessonId = test.getLesson().getId();
         test.setLesson(lessonService.getLessonById(lessonId).orElse(null)); // asigură-te că lessonService există
 
@@ -85,7 +85,7 @@ public class TestController {
     public ResponseEntity<TestEntity> updateTest(@PathVariable UUID id, @RequestBody TestEntity updatedTest) {
         return testService.updateTest(id, updatedTest)
                 .map(test -> {
-                    // 🔧 Asigură-te că lecția e complet populată pentru titlu
+
                     if (test.getLesson() != null && test.getLesson().getTitle() == null) {
                         UUID lessonId = test.getLesson().getId();
                         test.setLesson(lessonService.getLessonById(lessonId).orElse(null));

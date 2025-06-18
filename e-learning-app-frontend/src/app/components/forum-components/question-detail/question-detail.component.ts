@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
-import { User } from '../../types/user.types';
+import { AuthService } from '../../../services/auth.service';
+import { User } from '../../../types/user.types';
 
 @Component({
   selector: 'app-question-detail',
@@ -80,7 +80,7 @@ export class QuestionDetailComponent implements OnInit {
   submitAnswer(): void {
     if (this.answerForm.valid) {
       const answer = this.answerForm.value;
-      answer.author.id = this.currentUser.id; // 🔐 garantat corect
+      answer.author.id = this.currentUser.id;
 
       this.http
         .post(
@@ -89,8 +89,8 @@ export class QuestionDetailComponent implements OnInit {
         )
         .subscribe(() => {
           this.answerForm.reset();
-          this.initForm(); // form cu user presetat
-          this.loadData(); // reîncarcă răspunsurile
+          this.initForm();
+          this.loadData();
         });
 
       setTimeout(() => {

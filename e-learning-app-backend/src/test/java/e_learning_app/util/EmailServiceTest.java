@@ -19,7 +19,7 @@ class EmailServiceTest {
     void setUp() {
         mailSender = mock(JavaMailSender.class);
         emailService = new EmailService();
-        emailService.mailSender = mailSender; // inject mock manually
+        emailService.mailSender = mailSender;
     }
 
     @Test

@@ -1,6 +1,6 @@
 .sidebar {
-  background: rgba(30, 30, 60, 0.4); /* Fundal mai deschis */
-  backdrop-filter: blur(15px); /* Blur puternic */
+  background: rgba(30, 30, 60, 0.4);
+  backdrop-filter: blur(15px);
   color: #ffffff;
   padding: 2rem 1.2rem;
   height: 100vh;
@@ -14,7 +14,6 @@
   font-family: "Poppins", sans-serif;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
 
-  /* ✅ AICI pui scrollbar-ul */
   &::-webkit-scrollbar {
     width: 8px;
   }
@@ -24,7 +23,7 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #8e24aa; /* Mov */
+    background-color: #8e24aa;
     border-radius: 10px;
     border: 2px solid transparent;
     background-clip: content-box;

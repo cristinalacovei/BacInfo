@@ -19,12 +19,10 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // Navigație centralizată pentru secțiunile principale
   navigateTo(path: string): void {
     this.router.navigate([path]);
   }
 
-  // Shortcuturi pentru șabloane
   navigateToLessons(): void {
     this.navigateTo('/lectii');
   }

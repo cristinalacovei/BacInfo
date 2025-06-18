@@ -42,7 +42,6 @@
         (imageCropped)="onImageCropped($event)"
       ></image-cropper>
 
-      <!-- 🔥 Aici apare butonul doar dacă există imagine crop-uită -->
       <div *ngIf="croppedImage" class="avatar-preview">
         <img
           [src]="croppedImage"
@@ -53,7 +52,6 @@
       </div>
     </div>
 
-    <!-- Câmpuri editabile -->
     <div class="profile-field">
       <label>First Name:</label>
       <span *ngIf="!isEditing">{{ user.firstName || "-" }}</span>
@@ -91,7 +89,6 @@
     </div>
   </mat-card-content>
 
-  <!-- Butoane jos și centrate -->
   <div class="profile-actions">
     <button *ngIf="!isEditing" (click)="editProfile()">
       ✏️ Editează profilul

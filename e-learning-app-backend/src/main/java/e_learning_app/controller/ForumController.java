@@ -64,7 +64,7 @@ public class ForumController {
 
         PublicAnswer savedAnswer = forumService.postAnswer(answer);
 
-        // trimite notificare autorului întrebării
+
         if (originalQuestion.getAuthor() != null && originalQuestion.getAuthor().getId() != null) {
             NotificareEntity notificare = notificareService.creeazaNotificare(
                     "Ai primit un răspuns la întrebarea ta!",

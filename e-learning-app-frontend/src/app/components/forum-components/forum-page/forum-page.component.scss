@@ -1,0 +1,202 @@
+.forum-wrapper {
+  background: url("../../../../../public/coding.png") no-repeat center/cover;
+  min-height: 100vh;
+  padding: 80px 20px;
+  position: relative;
+  z-index: 0;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 10, 25, 0.85);
+    backdrop-filter: blur(6px);
+    z-index: -1;
+  }
+}
+
+/* ✍️ Formular întrebare */
+.ask-form {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 40px;
+  box-shadow: 0 8px 20px rgba(123, 104, 238, 0.3);
+  backdrop-filter: blur(8px);
+
+  .section-title {
+    color: #bb86fc;
+    font-size: 1.5rem;
+    margin-bottom: 16px;
+  }
+
+  button {
+    margin-top: 14px;
+    padding: 10px 24px;
+    border-radius: 10px;
+    background: linear-gradient(to right, #bb86fc, #9575cd);
+    color: white;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+
+    &:hover {
+      background: linear-gradient(to right, #c39cff, #bb86fc);
+    }
+
+    &:disabled {
+      background: gray;
+      cursor: not-allowed;
+    }
+  }
+}
+
+::ng-deep quill-editor {
+  width: 100%;
+  max-height: 160px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+::ng-deep .ql-editor {
+  height: 80px;
+  font-size: 15px;
+  font-family: "Poppins", sans-serif;
+  background-color: #f3e5f5;
+  color: #2e003e;
+  padding: 10px 14px;
+  border-radius: 0 0 12px 12px;
+}
+
+::ng-deep .ql-toolbar {
+  border-radius: 12px 12px 0 0;
+  background-color: #ede7f6;
+}
+
+::ng-deep .ql-container {
+  border: none;
+  box-shadow: 0 2px 6px rgba(123, 104, 238, 0.3);
+}
+
+/* 🔄 Sortare + Paginare */
+.forum-controls,
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 20px 0;
+
+  button {
+    padding: 8px 16px;
+    border-radius: 10px;
+    background: #7c4dff;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+
+    &:hover {
+      background: #9575cd;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+  }
+}
+
+/* 🧠 Card întrebări */
+.question-card {
+  background: rgba(30, 8, 46, 0.9);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 6px 14px rgba(123, 104, 238, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(156, 39, 176, 0.35);
+  }
+
+  .question-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #bb86fc;
+    margin-bottom: 10px;
+
+    .author {
+      font-weight: 500;
+      small {
+        font-style: italic;
+        margin-left: 6px;
+        color: #a0c4ff;
+      }
+    }
+
+    .date {
+      opacity: 0.7;
+    }
+
+    .delete-button {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: none;
+      border: none;
+      color: #ff8a80;
+      font-size: 1.1rem;
+      cursor: pointer;
+
+      &:hover {
+        color: #ff5252;
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  .question-content {
+    .question-text {
+      font-size: 1rem;
+      color: #f5f5f5;
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      a {
+        color: #90caf9;
+      }
+
+      code {
+        background: #2a003d;
+        color: #ffcc80;
+        padding: 2px 6px;
+        border-radius: 6px;
+      }
+    }
+
+    .response-count {
+      margin-top: 10px;
+      display: inline-block;
+      background: #ce93d8;
+      color: #2c003e;
+      font-weight: bold;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 8px rgba(123, 104, 238, 0.2);
+    }
+  }
+}

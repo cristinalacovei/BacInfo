@@ -10,7 +10,7 @@
     <div class="nav-center">
       <a routerLink="/home" routerLinkActive="active">🏠 Home</a>
       <a routerLink="/lectii" routerLinkActive="active">📘 Lecții</a>
-      <a routerLink="/teste" routerLinkActive="active">🧠 Teste</a>
+      <a routerLink="/test-general" routerLinkActive="active">🧠 Teste</a>
       <a routerLink="/forum" routerLinkActive="active">💬 Forum</a>
     </div>
 
@@ -27,12 +27,19 @@
         </div>
       </div>
 
-      <!-- Dropdown notificări -->
+      <!-- Notification Dropdown -->
       <div class="notification-panel" *ngIf="notificariDeschise">
-        <h3>Notificări recente</h3>
+        <div class="notification-header">
+          <h3>Notificări recente</h3>
+          <button class="btn-clear-all" (click)="stergeToateNotificarile()">
+            Șterge tot
+          </button>
+        </div>
+
         <div *ngIf="notificari.length === 0" class="empty-msg">
           Nu există notificări.
         </div>
+
         <ul>
           <li
             *ngFor="let notif of notificari"
@@ -44,14 +51,23 @@
               <span>{{ notif.mesaj }}</span>
               <small>{{ notif.timestamp | date : "short" }}</small>
             </div>
-            <button
-              *ngIf="!notif.citita"
-              class="btn-single-read"
-              (click)="marcheazaCaCitita(notif.id); $event.stopPropagation()"
-              title="Marchează ca citită"
-            >
-              ✓
-            </button>
+            <div class="notif-actions">
+              <button
+                class="btn-delete"
+                (click)="stergeNotificare(notif.id); $event.stopPropagation()"
+                title="Șterge"
+              >
+                🗑
+              </button>
+              <button
+                *ngIf="!notif.citita"
+                class="btn-single-read"
+                (click)="marcheazaCaCitita(notif.id); $event.stopPropagation()"
+                title="Marchează ca citită"
+              >
+                ✓
+              </button>
+            </div>
           </li>
         </ul>
       </div>

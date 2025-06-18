@@ -37,7 +37,7 @@ public class AnswerService {
         }
 
         List<Answer> selectedAnswers = answerRepository.findAllById(selectedAnswerIds);
-        System.out.println("🔍 DEBUG: Răspunsuri selectate de utilizator: " + selectedAnswerIds);
+        System.out.println(" DEBUG: Răspunsuri selectate de utilizator: " + selectedAnswerIds);
 
         Map<UUID, List<Answer>> questionAnswersMap = new HashMap<>();
         for (Answer answer : selectedAnswers) {
@@ -50,7 +50,7 @@ public class AnswerService {
         List<UUID> correctAnswerIds = new ArrayList<>();
         List<UUID> incorrectAnswerIds = new ArrayList<>();
 
-        System.out.println("🔎 DEBUG: Total întrebări: " + totalQuestions);
+        System.out.println(" DEBUG: Total întrebări: " + totalQuestions);
 
         for (Map.Entry<UUID, List<Answer>> entry : questionAnswersMap.entrySet()) {
             UUID questionId = entry.getKey();
@@ -87,7 +87,7 @@ public class AnswerService {
 
         System.out.println("🎯 Întrebări răspunse corect: " + correctQuestions);
 
-        // ✅ Returnăm și ID-urile răspunsurilor corecte și greșite
+
         return Map.of(
                 "correctAnswers", correctQuestions,
                 "totalQuestions", totalQuestions,

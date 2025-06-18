@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit {
 
   onImageCropped(event: ImageCroppedEvent): void {
     console.log('🧨 Imagine decupată:', event);
-    this.croppedImage = event.base64; // 👈 DOAR base64, nu tot obiectul
+    this.croppedImage = event.base64;
   }
 
   selectCroppedAvatar(): void {
@@ -42,7 +42,7 @@ export class ProfileComponent implements OnInit {
     this.feedbackType = type;
     setTimeout(() => {
       this.feedbackMessage = null;
-    }, 3000); // mesajul dispare după 3 secunde
+    }, 3000);
   }
 
   editProfile() {
@@ -85,7 +85,6 @@ export class ProfileComponent implements OnInit {
 
   saveProfile() {
     if (this.user) {
-      // 🧠 Dacă există o imagine cropuită, o folosim direct
       if (this.croppedImage) {
         this.user.profileImageUrl = this.croppedImage;
       }
@@ -95,7 +94,6 @@ export class ProfileComponent implements OnInit {
           this.isEditing = false;
           this.showMessage('Profilul a fost salvat!', 'success');
 
-          // 🔄 Resetăm cropperul după salvare, ca să nu rămână agățat
           this.croppedImage = null;
           this.imageChangedEvent = null;
         },

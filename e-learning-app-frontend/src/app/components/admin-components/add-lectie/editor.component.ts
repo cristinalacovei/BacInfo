@@ -50,7 +50,7 @@ export class EditorComponent implements OnInit {
       this.lessonForm.patchValue(JSON.parse(savedDraft));
     }
 
-    // Autosave la fiecare 2 minute
+    // Autosave
     setInterval(() => {
       if (this.lessonForm.dirty) {
         localStorage.setItem(
@@ -59,7 +59,7 @@ export class EditorComponent implements OnInit {
         );
         console.log(' Backup salvat local (lessonDraft)');
       }
-    }, 60 * 1000); // 2 minute
+    }, 60 * 1000);
   }
 
   saveLesson(): void {

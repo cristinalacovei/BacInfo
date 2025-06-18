@@ -58,4 +58,14 @@ public class NotificareService {
         repo.saveAll(notificari);
     }
 
+    public void stergeNotificare(UUID notificareId) {
+        repo.deleteById(notificareId);
+    }
+
+    public void stergeToatePentruUtilizator(UUID userId) {
+        List<NotificareEntity> notificari = repo.findByUserId(userId);
+        repo.deleteAll(notificari);
+    }
+
+
 }

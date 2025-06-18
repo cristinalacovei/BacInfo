@@ -81,8 +81,8 @@ export class LectiiComponent implements OnInit {
   }
 
   private extrageNumarDinTitlu(titlu: string): number {
-    const match = titlu.trim().match(/^(\d+)/); // extrage un număr de la început
-    return match ? parseInt(match[1], 10) : 9999; // 9999 dacă nu găsește număr
+    const match = titlu.trim().match(/^(\d+)/);
+    return match ? parseInt(match[1], 10) : 9999;
   }
 
   selecteazaAn(nivel: number) {

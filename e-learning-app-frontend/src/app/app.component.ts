@@ -36,17 +36,14 @@ export class AppComponent implements OnInit {
 
       if (!loggedIn) return;
 
-      // Așteaptă cu adevărat userul
       this.authService.getCurrentUser().subscribe((user) => {
         if (!user) return;
 
         this.user = user;
         this.isAdmin = user.userRole === 'ADMIN';
 
-        // 🔁 Întotdeauna preia din backend, nu te baza doar pe websocket
         this.loadNotificari(user.id);
 
-        // 🧲 Ascultă notificări live DOAR DUPĂ ce ai user.id
         this.notificareService.subscribeToWebSocket((nouaNotif) => {
           if (!nouaNotif.userId || nouaNotif.userId === this.user?.id) {
             this.notificari.unshift(nouaNotif);
@@ -92,10 +89,50 @@ export class AppComponent implements OnInit {
     }
   }
 
+  stergeNotificare(id: string): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '300px',
+      data: {
+        title: 'Confirmare',
+        message: 'Ești sigur că vrei să ștergi această notificare?',
+        singleButton: false,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.notificareService.stergeNotificare(id).subscribe(() => {
+          this.notificari = this.notificari.filter((n) => n.id !== id);
+          this.notificariNecitite = this.notificari.filter((n) => !n.citita);
+        });
+      }
+    });
+  }
+
+  stergeToateNotificarile(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '300px',
+      data: {
+        title: 'Confirmare',
+        message: 'Ești sigur că vrei să ștergi toate notificările?',
+        singleButton: false,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.notificareService.stergeToate(this.user!.id).subscribe(() => {
+          this.notificari = [];
+          this.notificariNecitite = [];
+        });
+      }
+    });
+  }
+
   navigateFromNotification(notif: any): void {
     if (!notif.citita) this.marcheazaCaCitita(notif.id);
 
-    this.notificariDeschise = false; // Închide dropdown-ul
+    this.notificariDeschise = false;
 
     const targetId = notif.targetId;
     const tip = notif.tip?.toUpperCase();
@@ -169,6 +206,6 @@ export class AppComponent implements OnInit {
 
   onAvatarError(event: Event): void {
     const img = event.target as HTMLImageElement;
-    img.src = '/assets/default-avatar.png'; // fallback default
+    img.src = '/assets/default-avatar.png';
   }
 }

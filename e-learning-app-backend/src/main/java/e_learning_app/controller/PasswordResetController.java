@@ -18,9 +18,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PasswordResetController {
     private final PasswordResetService passwordResetService;
-    private final EmailService emailService; // componentă abstractă care se ocupă de trimiterea emailurilor
+    private final EmailService emailService;
 
-    // Endpoint pentru inițierea resetării parolei
+
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> body) {
         String email = body.get("email");

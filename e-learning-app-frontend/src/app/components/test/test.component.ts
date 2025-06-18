@@ -6,46 +6,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { ProgressService } from '../../services/progress.service';
 import { AuthService } from '../../services/auth.service';
-import { LectiiService } from '../../services/lectii.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { QuestionService } from '../../services/question.service';
+import { Answer } from '../../types/answer.types';
+import { Question } from '../../types/question.types';
+import { TestEntity } from '../../types/test.types';
+import { Lesson } from '../../types/lesson.types';
 
-interface Answer {
-  id: string;
-  answerText: string;
-  isCorrect: boolean;
-  isSelected?: boolean; // ✅ Adăugat pentru MULTIPLE_CHOICE
-}
-
-interface Question {
-  id: string;
-  questionText: string;
-  questionType: 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE';
-  answers: Answer[];
-  selectedAnswer?: string; // ✅ Pentru SINGLE_CHOICE
-}
-
-interface TestEntity {
-  id: string;
-  classLevel: number;
-  questions: Question[];
-  lesson?: Lesson; // ✅ Adăugat pentru a obține lecția asociată
-}
-
-interface Lesson {
-  id: string;
-  title: string;
-  description: string;
-  content?: string;
-  classLevel: number;
-}
-
-// ✅ Actualizat conform backend-ului
 interface ValidationResult {
   correctAnswers: number;
   totalQuestions: number;
-  correctAnswerIds: string[]; // ✅ Liste cu ID-urile răspunsurilor corecte
-  incorrectAnswerIds: string[]; // ✅ Liste cu ID-urile răspunsurilor greșite
+  correctAnswerIds: string[];
+  incorrectAnswerIds: string[];
 }
 
 @Component({
@@ -60,12 +32,12 @@ export class TestComponent implements OnInit {
   currentQuestionIndex = 0;
   score: number | null = null;
   totalQuestions: number | undefined;
-  showResults: boolean = false; // ✅ Variabilă pentru a afișa răspunsurile corecte
-  correctAnswersSet: Set<string> = new Set(); // ✅ Adăugat pentru stocare ID-uri corecte
-  incorrectAnswersSet: Set<string> = new Set(); // ✅ Adăugat pentru stocare ID-uri greșite
+  showResults: boolean = false;
+  correctAnswersSet: Set<string> = new Set();
+  incorrectAnswersSet: Set<string> = new Set();
   progressValue: number = 0;
 
-  currentQuestion: string = ''; // aici pui întrebarea curentă
+  currentQuestion: string = '';
   helpMessage: string = '';
   loadingHelp = false;
   helpRequests = 0;
@@ -103,19 +75,20 @@ export class TestComponent implements OnInit {
     this.isGeneralTest = currentRoute === 'test-general';
 
     if (this.isGeneralTest) {
-      // Încarcă întrebările random și așteaptă confirmarea
       this.QuestionsService.getRandomQuestions().subscribe((questions) => {
         this.test = {
           id: this.generateUUID(),
-          classLevel: 0, // sau altă valoare implicită
+          classLevel: 0,
           questions: questions,
         };
       });
     } else {
-      // Test normal după lecție
       this.testId = this.route.snapshot.paramMap.get('id');
       if (this.testId) {
-        this.loadTest();
+        {
+          this.loadTest();
+          this.testStarted = true;
+        }
       }
     }
   }
@@ -171,7 +144,7 @@ export class TestComponent implements OnInit {
       if (question.questionType === 'SINGLE_CHOICE') {
         return !!question.selectedAnswer;
       } else if (question.questionType === 'MULTIPLE_CHOICE') {
-        return question.answers.some((a) => a.isSelected);
+        return question.answers.some((a: Answer) => a.isSelected);
       }
       return false;
     }).length;
@@ -192,9 +165,9 @@ export class TestComponent implements OnInit {
       if (question.questionType === 'SINGLE_CHOICE') {
         return !question.selectedAnswer;
       } else if (question.questionType === 'MULTIPLE_CHOICE') {
-        return !question.answers.some((a) => a.isSelected);
+        return !question.answers.some((a: Answer) => a.isSelected);
       }
-      return true; // fallback
+      return true;
     });
 
     if (incompleteQuestions) {
@@ -211,8 +184,8 @@ export class TestComponent implements OnInit {
         selectedAnswerIds.push(question.selectedAnswer);
       } else if (question.questionType === 'MULTIPLE_CHOICE') {
         question.answers
-          .filter((answer) => answer.isSelected)
-          .forEach((answer) => selectedAnswerIds.push(answer.id));
+          .filter((answer: Answer) => answer.isSelected)
+          .forEach((answer: Answer) => selectedAnswerIds.push(answer.id));
       }
     });
 
@@ -237,8 +210,6 @@ export class TestComponent implements OnInit {
         console.log(
           `📊 Scor primit de la backend: ${this.score}/${this.totalQuestions}`
         );
-        console.log('✅ Răspunsuri corecte:', this.correctAnswersSet);
-        console.log('❌ Răspunsuri greșite:', this.incorrectAnswersSet);
 
         this.showResults = true;
 
@@ -264,7 +235,7 @@ export class TestComponent implements OnInit {
               userId: user.id,
               testId: this.test!.id,
               lessonId: lessonId,
-              score: scorePercentage, // ✅ scor în procente salvat în DB!
+              score: scorePercentage,
               completedAt: new Date().toISOString(),
             })
             .subscribe(() => {
@@ -321,7 +292,7 @@ export class TestComponent implements OnInit {
       if (question.questionType === 'SINGLE_CHOICE') {
         return !!question.selectedAnswer;
       } else if (question.questionType === 'MULTIPLE_CHOICE') {
-        return question.answers.some((a) => a.isSelected);
+        return question.answers.some((a: Answer) => a.isSelected);
       }
       return false;
     });

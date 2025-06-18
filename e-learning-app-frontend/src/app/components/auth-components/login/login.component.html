@@ -1,0 +1,222 @@
+<section class="section">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row full-screen align-items-center">
+      <div class="right">
+        <div class="form" *ngIf="!isLoggedIn; else logoutTemplate">
+          <div class="text-center">
+            <h6><span>Autentificare</span> <span>Înregistrare</span></h6>
+            <input type="checkbox" class="checkbox" id="reg-log" />
+            <label for="reg-log"></label>
+
+            <div class="card-3d-wrap">
+              <div class="card-3d-wrapper">
+                <!-- LOGIN -->
+                <div class="card-front">
+                  <div class="center-wrap">
+                    <h4 class="heading">Autentificare</h4>
+                    <form [formGroup]="loginForm" (ngSubmit)="login()">
+                      <ng-container
+                        *ngTemplateOutlet="
+                          inputField;
+                          context: {
+                            control: usernameControl,
+                            type: 'text',
+                            icon: 'person',
+                            placeholder: 'Nume utilizator',
+                            error:
+                              'Numele de utilizator este obligatoriu și trebuie să aibă cel puțin 3 caractere.'
+                          }
+                        "
+                      ></ng-container>
+
+                      <ng-container
+                        *ngTemplateOutlet="
+                          inputField;
+                          context: {
+                            control: password,
+                            type: 'password',
+                            icon: 'lock',
+                            placeholder: 'Parolă',
+                            error:
+                              'Parola este obligatorie și trebuie să aibă cel puțin 6 caractere.'
+                          }
+                        "
+                      ></ng-container>
+
+                      <button
+                        type="submit"
+                        class="btn"
+                        [disabled]="loginForm.invalid"
+                      >
+                        Autentificare
+                      </button>
+
+                      <p class="forgot-password">
+                        <a (click)="goToForgotPassword()">Ai uitat parola?</a>
+                      </p>
+
+                      <div class="google-login-container">
+                        <p class="google-text">Conectare cu Google</p>
+                        <button
+                          (click)="loginWithGoogle()"
+                          class="google-signin-btn"
+                        ></button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <!-- REGISTER -->
+                <div class="card-back">
+                  <div class="center-wrap">
+                    <h4 class="heading">Înregistrare</h4>
+                    <form [formGroup]="signupForm" (ngSubmit)="signup()">
+                      <ng-container
+                        *ngTemplateOutlet="
+                          inputField;
+                          context: {
+                            control: signupForm.get('firstName'),
+                            type: 'text',
+                            icon: 'person',
+                            placeholder: 'Prenume'
+                          }
+                        "
+                      ></ng-container>
+
+                      <ng-container
+                        *ngTemplateOutlet="
+                          inputField;
+                          context: {
+                            control: signupForm.get('lastName'),
+                            type: 'text',
+                            icon: 'person',
+                            placeholder: 'Nume'
+                          }
+                        "
+                      ></ng-container>
+
+                      <ng-container
+                        *ngTemplateOutlet="
+                          inputField;
+                          context: {
+                            control: signupUsername,
+                            type: 'text',
+                            icon: 'perm_identity',
+                            placeholder: 'Nume utilizator',
+                            showAvailability: true
+                          }
+                        "
+                      ></ng-container>
+
+                      <ng-container
+                        *ngTemplateOutlet="
+                          inputField;
+                          context: {
+                            control: signupForm.get('emailAddress'),
+                            type: 'email',
+                            icon: 'alternate_email',
+                            placeholder: 'Adresă de email'
+                          }
+                        "
+                      ></ng-container>
+
+                      <div class="form-group">
+                        <select class="form-style" formControlName="userRole">
+                          <option value="STUDENT">Student</option>
+                          <option value="TEACHER">Profesor</option>
+                        </select>
+                        <i class="input-icon material-icons">group</i>
+                      </div>
+
+                      <ng-container
+                        *ngTemplateOutlet="
+                          inputField;
+                          context: {
+                            control: signupForm.get('password'),
+                            type: 'password',
+                            icon: 'lock',
+                            placeholder: 'Parolă'
+                          }
+                        "
+                      ></ng-container>
+
+                      <button
+                        type="submit"
+                        class="btn"
+                        [disabled]="signupForm.invalid"
+                      >
+                        Înregistrare
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #logoutTemplate>
+          <div class="logged-in-page">
+            <div class="glass-card">
+              <h2 class="welcome-title">👋 Salut, {{ username }}!</h2>
+              <p class="welcome-subtitle">
+                Ești gata să continui aventura BacInfo++?
+              </p>
+              <div class="button-group">
+                <button class="btn-dashboard" (click)="navigateToHome()">
+                  🏠 Mergi la Dashboard
+                </button>
+                <button class="btn-logout" (click)="logout()">
+                  🚪 Deconectare
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-template
+          #inputField
+          let-control="control"
+          let-type="type"
+          let-icon="icon"
+          let-placeholder="placeholder"
+          let-error="error"
+          let-showAvailability="showAvailability"
+        >
+          <div class="form-group">
+            <input
+              [type]="type"
+              class="form-style"
+              [placeholder]="placeholder"
+              [formControl]="control"
+              autocomplete="off"
+            />
+            <i class="input-icon material-icons">{{ icon }}</i>
+
+            <span
+              *ngIf="error && control?.invalid && control?.touched"
+              class="validation-message"
+            >
+              {{ error }}
+            </span>
+
+            <span
+              *ngIf="showAvailability && control?.hasError('usernameTaken')"
+              class="error"
+            >
+              Numele de utilizator este deja folosit.
+            </span>
+
+            <span
+              *ngIf="showAvailability && control?.valid && control?.dirty"
+              class="success"
+            >
+              Numele de utilizator este disponibil! ✅
+            </span>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</section>

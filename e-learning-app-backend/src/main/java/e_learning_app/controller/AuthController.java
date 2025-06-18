@@ -111,7 +111,7 @@ public class AuthController {
             boolean isPlaceholderUsername = user.getUsername() != null && user.getUsername().startsWith("temp_");
             boolean isPendingRole = user.getUserRole() != null && user.getUserRole().equalsIgnoreCase("PENDING");
 
-            // 💥 Blochează doar dacă are deja username și rol real
+
             if (!isPlaceholderUsername && !isPendingRole) {
                 return ResponseEntity.badRequest().body("Profilul a fost deja completat.");
             }
@@ -121,9 +121,9 @@ public class AuthController {
 
             userService.save(user);
 
-            // 🔁 Regenerăm token cu datele noi
+
             String newJwt = jwtUtil.generateTokenForOAuth2User(user);
-            return ResponseEntity.ok(Map.of("token", newJwt)); // trimitem tokenul nou înapoi
+            return ResponseEntity.ok(Map.of("token", newJwt));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

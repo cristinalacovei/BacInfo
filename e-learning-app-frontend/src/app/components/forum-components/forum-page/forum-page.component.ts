@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { User } from '../../types/user.types';
+import { AuthService } from '../../../services/auth.service';
+import { User } from '../../../types/user.types';
 
 @Component({
   selector: 'app-forum-page',
@@ -19,7 +19,7 @@ export class ForumPageComponent implements OnInit {
   currentPage: number = 1;
   pageSize: number = 5;
   totalPages: number = 0;
-  sortAsc: boolean = false; // implicit descrescător (cele mai noi primele)
+  sortAsc: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -62,14 +62,13 @@ export class ForumPageComponent implements OnInit {
     if (this.questionForm.valid) {
       const formValue = this.questionForm.value;
 
-      // te asiguri că setezi ID-ul corect
       formValue.author.id = this.currentUser.id;
 
       this.http
         .post('http://localhost:8080/api/forum/questions', formValue)
         .subscribe(() => {
           this.questionForm.reset();
-          this.initForm(); // resetăm formularul cu userul deja inclus
+          this.initForm();
           this.loadQuestions();
         });
     }
@@ -104,7 +103,7 @@ export class ForumPageComponent implements OnInit {
   }
 
   confirmDelete(id: string, event: Event): void {
-    event.stopPropagation(); // evită navigarea la click pe întrebare
+    event.stopPropagation();
 
     if (confirm('Ești sigur că vrei să ștergi această întrebare?')) {
       this.deleteQuestion(id);
@@ -115,7 +114,7 @@ export class ForumPageComponent implements OnInit {
     this.http
       .delete(`http://localhost:8080/api/forum/questions/${id}`)
       .subscribe(() => {
-        this.loadQuestions(); // reîncarcă lista
+        this.loadQuestions();
       });
   }
 

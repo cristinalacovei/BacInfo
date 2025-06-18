@@ -3,11 +3,7 @@
   flex-direction: column;
   align-items: center;
   padding: 24px;
-  background: linear-gradient(
-    135deg,
-    #1c1c1f,
-    #2e1d39
-  ); // Negru spre mov închis
+  background: linear-gradient(135deg, #1c1c1f, #2e1d39);
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
   color: #e5e0f7;
@@ -38,7 +34,6 @@
   width: 100%;
 }
 
-/* Butoane universale */
 button {
   padding: 10px 24px;
   font-size: 1rem;
@@ -61,7 +56,6 @@ button {
   }
 }
 
-/* Stiluri butoane individuale */
 .ok-button,
 .confirm-button {
   background: #3fa36c;

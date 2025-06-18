@@ -20,13 +20,13 @@ public class NotificareEntity extends BaseEntity {
     private String mesaj;
 
     @Column(nullable = false, length = 50)
-    private String tip; // LECTIE, TEST, FORUM
+    private String tip;
 
     @Column(nullable = false)
     private Date timestamp;
 
     @Column(name = "user_id")
-    private UUID userId; // UUID, poate fi null
+    private UUID userId;
 
     @Column(nullable = false)
     private boolean citita = false;

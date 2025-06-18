@@ -1,17 +1,3 @@
-<div *ngIf="!isAdmin" class="progres-general">
-  <h3>📊 Progres general:</h3>
-  <mat-progress-bar
-    mode="determinate"
-    [value]="getProgresTotal()"
-    color="accent"
-  ></mat-progress-bar>
-  <p>
-    Ai finalizat {{ getProgresTotal() }}% din lecții ({{
-      getLectiiCompletate()
-    }}) ✅
-  </p>
-</div>
-
 <div class="container">
   <div class="lectii-header">
     <h1 class="page-title">Lecții disponibile</h1>
@@ -32,6 +18,14 @@
     conține materiale utile și teste pentru verificarea cunoștințelor tale.
     Progresul este salvat automat.
   </p>
+
+  <mat-progress-bar
+    class="progres-subtext"
+    mode="determinate"
+    [value]="getProgresTotal()"
+  ></mat-progress-bar>
+
+  <div class="progres-procentaj">{{ getProgresTotal() }}% completat</div>
 
   <div *ngFor="let an of ani">
     <button (click)="selecteazaAn(an.nivel)" class="btn-clasa">

@@ -70,7 +70,7 @@ public class UserProgressService {
     public List<UserProgressDTO> getLatestProgressPerLesson(UUID userId) {
         List<UserProgress> allProgress = userProgressRepository.findByUserId(userId);
 
-        // Mapare: lessonId → cel mai recent progres
+
         Map<UUID, UserProgress> latestByLesson = new HashMap<>();
 
         for (UserProgress progress : allProgress) {
@@ -83,7 +83,7 @@ public class UserProgressService {
             }
         }
 
-        // Convertim fiecare progres în DTO
+
         return latestByLesson.values().stream()
                 .map(progress -> {
                     UserProgressDTO dto = new UserProgressDTO();

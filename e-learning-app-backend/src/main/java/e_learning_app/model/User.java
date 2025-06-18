@@ -38,7 +38,7 @@ public class User extends BaseEntity {
     private String userRole;
 
     @Column(name = "profile_image_url")
-    private String profileImageUrl; // va conține un link relativ sau absolut către imagine
+    private String profileImageUrl;
 
 
 }

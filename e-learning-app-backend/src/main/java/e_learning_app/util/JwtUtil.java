@@ -110,10 +110,10 @@ public class JwtUtil {
     }
     public String generateTokenForOAuth2User(User user) {
         return Jwts.builder()
-                .setSubject(user.getId().toString()) // 👈 Folosește ID-ul unic, nu username-ul
-                .claim("email", user.getEmailAddress()) // 👈 Ca să o extragi în frontend
-                .claim("username", user.getUsername()) // 👈 În caz că ai nevoie
-                .claim("userRole", user.getUserRole()) // 👈 Pentru redirect logic
+                .setSubject(user.getId().toString())
+                .claim("email", user.getEmailAddress())
+                .claim("username", user.getUsername())
+                .claim("userRole", user.getUserRole())
                 .claim("authorities", List.of("ROLE_" + user.getUserRole()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))

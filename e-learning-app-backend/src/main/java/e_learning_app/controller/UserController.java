@@ -84,8 +84,8 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getCurrentUser(Authentication authentication) {
-        String username = authentication.getName(); // obținut din JWT
-        User user = userService.getUserByUsername(username); // ✅ aceasta EXISTĂ
+        String username = authentication.getName();
+        User user = userService.getUserByUsername(username);
         return ResponseEntity.ok(userMapper.toDto(user));
     }
 

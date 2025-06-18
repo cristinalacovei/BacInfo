@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
         'Închide',
         {
           duration: 4000,
-          panelClass: 'snackbar-warning', // opțional, pentru stiluri
+          panelClass: 'snackbar-warning',
         }
       );
 

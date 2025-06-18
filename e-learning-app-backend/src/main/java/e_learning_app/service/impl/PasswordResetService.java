@@ -21,7 +21,7 @@ public class PasswordResetService {
     public PasswordResetTokenRepository tokenRepository;
 
     @Autowired
-    public UserRepository userRepository; // presupunând că ai un repository pentru entitatea User
+    public UserRepository userRepository;
 
     @Autowired
     public PasswordEncoder passwordEncoder;
@@ -60,7 +60,7 @@ public class PasswordResetService {
 
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
-        // Invalidate token after use
+
         tokenRepository.delete(resetToken);
         return true;
     }

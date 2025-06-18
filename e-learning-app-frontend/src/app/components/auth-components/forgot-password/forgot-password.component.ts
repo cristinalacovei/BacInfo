@@ -28,7 +28,7 @@ export class ForgotPasswordComponent {
 
   sendResetLink(): void {
     if (this.forgotPasswordForm.invalid) {
-      this.forgotPasswordForm.markAllAsTouched(); // afișează erorile vizual
+      this.forgotPasswordForm.markAllAsTouched();
       return;
     }
 

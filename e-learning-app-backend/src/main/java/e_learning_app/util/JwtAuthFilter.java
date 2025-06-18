@@ -78,7 +78,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
     private boolean isGoogleToken(String token) {
         
-        return token.split("\\.").length == 3 && token.length() > 1000; // simplu și eficient, doar pt detectare brută
+        return token.split("\\.").length == 3 && token.length() > 1000;
     }
 
 

@@ -11,8 +11,8 @@ interface Answer {
 interface ValidationResult {
   correctAnswers: number;
   totalQuestions: number;
-  correctAnswerIds: string[]; // ✅ Liste cu ID-urile răspunsurilor corecte
-  incorrectAnswerIds: string[]; // ✅ Liste cu ID-urile răspunsurilor greșite
+  correctAnswerIds: string[];
+  incorrectAnswerIds: string[];
 }
 @Injectable({
   providedIn: 'root',

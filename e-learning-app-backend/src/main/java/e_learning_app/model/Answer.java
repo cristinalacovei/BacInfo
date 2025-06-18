@@ -20,11 +20,11 @@ public class Answer extends BaseEntity {
     private String answerText;
 
     @Column(name = "is_correct", nullable = false)
-    @JsonProperty("isCorrect") // 👈 asta ajută Jackson să-l recunoască din JSON
+    @JsonProperty("isCorrect")
     private boolean isCorrect;
 
     @ManyToOne
     @JoinColumn(name = "question_id", referencedColumnName = "id")
-    @JsonBackReference // ✅ Evită recursivitatea între `Question` și `Answer`
+    @JsonBackReference
     private Question question;
 }

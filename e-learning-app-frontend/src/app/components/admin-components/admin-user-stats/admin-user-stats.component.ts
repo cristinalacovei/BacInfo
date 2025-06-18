@@ -43,7 +43,6 @@ export class AdminUserStatsComponent implements OnInit {
           this.progres[userId] = progresUser;
         });
 
-        // ⚠️ După ce ai progresul, iei lecțiile o singură dată
         this.lectiiService.getLectii().subscribe((lectii) => {
           lectii.forEach((lectie) => {
             this.lessonTitles[lectie.id] = lectie.title;

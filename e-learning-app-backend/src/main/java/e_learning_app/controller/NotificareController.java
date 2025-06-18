@@ -35,5 +35,15 @@ public class NotificareController {
         service.marcheazaToateCaCitite(userId);
     }
 
+    @DeleteMapping("/{id}")
+    public void stergeNotificare(@PathVariable UUID id) {
+        service.stergeNotificare(id);
+    }
+
+    @DeleteMapping("/toate/{userId}")
+    public void stergeToate(@PathVariable UUID userId) {
+        service.stergeToatePentruUtilizator(userId);
+    }
+
 }
 

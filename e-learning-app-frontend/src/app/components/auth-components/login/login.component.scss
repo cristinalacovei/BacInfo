@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
-@import "../../styles/colors.scss";
+@import "../../../styles/colors.scss";
 * {
   margin: 0;
   padding: 0;
@@ -40,7 +40,7 @@ ul {
 .section {
   position: relative;
   height: 100vh;
-  background: url("../../../../public/coding.png") no-repeat center/cover;
+  background: url("../../../../../public/coding.png") no-repeat center/cover;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -75,7 +75,7 @@ ul {
   white-space: nowrap; /* Evită trecerea la linie nouă */
 }
 .google-signin-btn {
-  background-image: url("../../../../public/google.png"); /* Cale corectă */
+  background-image: url("../../../../../public/google.png"); /* Cale corectă */
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -102,13 +102,13 @@ ul {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Overlay negru semi-transparent */
-  z-index: 1; /* Pune overlay-ul sub conținut */
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
 }
 
 .section > * {
   position: relative;
-  z-index: 2; /* Pune conținutul deasupra overlay-ului */
+  z-index: 2;
 }
 
 .container {
@@ -349,20 +349,20 @@ input[type="checkbox"] {
   width: 60px;
   height: 16px;
   border-radius: 8px;
-  background-color: var(--mainColor); /* Roșu */
+  background-color: var(--mainColor);
   padding: 0;
   margin: 10px auto;
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(177, 27, 231, 0.3); /* Shadow roșu */
-  transition: all 0.3s ease; /* Tranziție */
+  box-shadow: 0 4px 8px rgba(177, 27, 231, 0.3);
+  transition: all 0.3s ease;
   top: -50px;
 }
 
 .checkbox:not(:checked) + label:hover,
 .checkbox:checked + label:hover {
-  background-color: #290232; /* Culoare roșu intens */
-  box-shadow: 0 6px 12px rgba(75, 1, 59, 0.5); /* Shadow mai intens */
-  transform: scale(1.1); /* Mărește ușor */
+  background-color: #290232;
+  box-shadow: 0 6px 12px rgba(75, 1, 59, 0.5);
+  transform: scale(1.1);
 }
 
 .checkbox:not(:checked) + label::before,
@@ -403,7 +403,7 @@ input[type="checkbox"] {
   position: relative;
   width: 400px;
   max-width: 100%;
-  height: 480px; /* 🔥 modificăm de la 400px la 520px */
+  height: 480px;
   margin-top: -5vh;
   transform-style: preserve-3d;
   perspective: 800px;
@@ -613,12 +613,12 @@ input[type="checkbox"] {
 }
 
 .snackbar-success {
-  background-color: #4caf50; /* Verde pentru succes */
+  background-color: #4caf50;
   color: white;
 }
 
 .snackbar-error {
-  background-color: #f44336; /* Roșu pentru eroare */
+  background-color: #f44336;
   color: white;
 }
 
@@ -633,32 +633,32 @@ input[type="checkbox"] {
 }
 .forgot-password a {
   color: #fec0fa;
-  text-decoration: none; /* Elimină sublinierea implicită */
+  text-decoration: none;
   font-weight: 500;
   cursor: pointer;
   transition: color 0.3s ease, text-decoration 0.3s ease;
 }
 
 .forgot-password a:hover {
-  color: #ffa3f9; /* Culoare mai închisă la hover */
-  text-decoration: underline; /* Adaugă sublinierea când treci cu mouse-ul */
-  text-decoration-color: #f62ccd; /* Culoare a sublinierii pentru un efect mai plăcut */
+  color: #ffa3f9;
+  text-decoration: underline;
+  text-decoration-color: #f62ccd;
 }
 
 .forgot-password a:active {
-  color: #003366; /* Culoare mai închisă când este apăsat */
+  color: #003366;
 }
 
 .glass-card {
   position: relative;
   z-index: 2;
-  background: rgba(255, 255, 255, 0.05); /* ultra transparent */
-  backdrop-filter: blur(18px); /* blur mai mare */
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(18px);
   border-radius: 20px;
   padding: 50px 35px;
   max-width: 400px;
   width: 90%;
-  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1); /* glow subtil alb */
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
   text-align: center;
   animation: bounceFadeIn 0.8s ease forwards;
 }

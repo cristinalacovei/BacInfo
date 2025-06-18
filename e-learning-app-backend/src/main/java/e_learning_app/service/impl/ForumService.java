@@ -50,7 +50,7 @@ public class ForumService {
         return answerRepository.save(answer);
     }
     public PublicQuestion getQuestionById(UUID id) {
-        return questionRepository.findById(id).orElseThrow(); // sau Optional fallback
+        return questionRepository.findById(id).orElseThrow();
     }
 
 

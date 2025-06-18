@@ -1,0 +1,65 @@
+<div class="forum-wrapper">
+  <section class="ask-form">
+    <h2 class="section-title">📢 Pune o întrebare</h2>
+    <form [formGroup]="questionForm" (ngSubmit)="submitQuestion()">
+      <quill-editor
+        formControlName="questionText"
+        [modules]="editorConfig"
+        placeholder="Scrie întrebarea ta..."
+      ></quill-editor>
+      <button type="submit" [disabled]="questionForm.invalid">
+        ✅ Postează
+      </button>
+    </form>
+  </section>
+
+  <div class="forum-controls">
+    <button (click)="toggleSortOrder()">
+      🔃 Sortează: {{ sortAsc ? "Crescător ↑" : "Descrescător ↓" }}
+    </button>
+  </div>
+
+  <section
+    *ngFor="let question of allQuestions"
+    class="question-card"
+    (click)="goToQuestion(question.id)"
+  >
+    <header class="question-meta">
+      <span class="author">
+        👤 {{ question.author.firstName }} {{ question.author.lastName }}
+        <small>({{ question.author.userRole | titlecase }})</small>
+      </span>
+      <span class="date">🕒 {{ question.createdAt | date : "short" }}</span>
+
+      <button
+        *ngIf="isAdmin"
+        class="delete-button"
+        title="Șterge"
+        (click)="confirmDelete(question.id, $event)"
+      >
+        🗑
+      </button>
+    </header>
+
+    <div class="question-content">
+      <div
+        class="question-text preview"
+        [innerHTML]="question.questionText"
+      ></div>
+      <div class="response-count">
+        💬 {{ question.answers?.length || 0 }}
+        {{ question.answers?.length === 1 ? "răspuns" : "răspunsuri" }}
+      </div>
+    </div>
+  </section>
+
+  <div class="pagination-controls">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">
+      ⬅ Anterior
+    </button>
+    <span>Pagina {{ currentPage }} din {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+      Următor ➡
+    </button>
+  </div>
+</div>

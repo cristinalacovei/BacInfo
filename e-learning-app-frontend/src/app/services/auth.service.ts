@@ -19,9 +19,8 @@ interface DecodedToken {
 export class AuthService {
   private readonly baseUrl = environment.apiUrl;
 
-  // 🔥 Corectăm inițializarea isLoggedInSubject
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.checkToken());
-  isLoggedIn$ = this.isLoggedInSubject.asObservable(); // UI ascultă schimbările
+  isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -55,7 +54,7 @@ export class AuthService {
         tap((token: string) => {
           localStorage.setItem('token', token);
           localStorage.setItem('username', username);
-          this.isLoggedInSubject.next(true); // 🔥 UI-ul se va actualiza automat
+          this.isLoggedInSubject.next(true);
         })
       );
   }
@@ -94,11 +93,11 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
-    this.isLoggedInSubject.next(false); // 🔥 UI-ul va reacționa instant la deconectare
+    this.isLoggedInSubject.next(false);
   }
 
   isLoggedIn(): boolean {
-    return this.isLoggedInSubject.value; // ✅ Se bazează pe BehaviorSubject
+    return this.isLoggedInSubject.value;
   }
 
   getIsLoggedIn(): Observable<boolean> {

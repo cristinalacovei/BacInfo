@@ -1,41 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-interface Lesson {
-  id: string;
-  title: string;
-  description: string;
-  content?: string;
-  classLevel: number;
-  testId?: string;
-}
-interface TestEntity {
-  id: string;
-  classLevel: number;
-  questions?: Question[];
-}
-
-interface Question {
-  id: string;
-  questionText: string;
-  questionType: 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE';
-  answers?: Answer[];
-}
-
-interface Answer {
-  id: string;
-  answerText: string;
-  isCorrect: boolean;
-}
+import { environment } from '../environments/environment';
+import { Lesson } from '../types/lesson.types';
+import { TestEntity } from '../types/test.types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LectiiService {
-  private apiUrl = 'http://localhost:8080/api/lessons'; // Endpoint pentru lecții
-  private lessonContentUrl = 'http://localhost:8080/api/lesson-content'; // Endpoint pentru conținut
-  private baseUrl = 'http://localhost:8080'; // URL-ul backend-ului tău
+  private apiUrl = 'http://localhost:8080/api/lessons';
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

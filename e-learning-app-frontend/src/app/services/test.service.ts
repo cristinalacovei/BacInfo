@@ -1,33 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-interface TestEntity {
-  id: string;
-  classLevel: number;
-  questions: any[];
-  lesson: Lesson;
-}
-
-interface NewTestPayload {
-  classLevel: number;
-  lesson: { id: string };
-  questions: any[];
-}
-
-interface Lesson {
-  id: string;
-  title: string;
-  description: string;
-  content?: string;
-  classLevel: number;
-}
+import { TestEntity } from '../types/test.types';
+import { NewTestPayload } from '../types/test.types';
 
 @Injectable({
-  providedIn: 'root', // 🔥 Asigură-te că este specificat
+  providedIn: 'root',
 })
 export class TestService {
-  private apiUrl = 'http://localhost:8080/api/tests'; // Endpoint backend pentru teste
+  private apiUrl = 'http://localhost:8080/api/tests';
 
   constructor(private http: HttpClient) {}
 

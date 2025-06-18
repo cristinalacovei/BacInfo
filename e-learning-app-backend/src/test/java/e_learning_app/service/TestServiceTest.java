@@ -108,7 +108,7 @@ public class TestServiceTest {
         UUID testId = UUID.randomUUID();
         UUID lessonId = UUID.randomUUID();
 
-        Lesson lesson = mock(Lesson.class);  // <-- Mock corect
+        Lesson lesson = mock(Lesson.class);
         when(lesson.getId()).thenReturn(lessonId);
 
         TestEntity test = mock(TestEntity.class);

@@ -16,10 +16,10 @@ import java.util.List;
 public class TestEntity extends BaseEntity {
 
     @Column(name = "class_level", nullable = false)
-    private int classLevel; // Test pentru un an de studiu
+    private int classLevel;
 
     @OneToMany(mappedBy = "test", cascade = CascadeType.ALL)
-    @JsonManagedReference // ✅ Evită serializarea infinită
+    @JsonManagedReference
     private List<Question> questions;
 
     @OneToOne

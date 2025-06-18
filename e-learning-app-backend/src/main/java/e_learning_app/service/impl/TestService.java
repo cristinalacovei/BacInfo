@@ -50,7 +50,7 @@ public class TestService {
 
     public Optional<TestEntity> updateTest(UUID id, TestEntity updatedTest) {
         return testRepository.findById(id).map(existingTest -> {
-            existingTest.setQuestions(updatedTest.getQuestions()); // ✅ Actualizează întrebările
+            existingTest.setQuestions(updatedTest.getQuestions());
             return testRepository.save(existingTest);
         });
     }

@@ -8,9 +8,9 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthService } from '../../services/auth.service';
-import { User } from '../../types/user.types';
-import { UserValidatorService } from '../../services/user-validators.service';
+import { AuthService } from '../../../services/auth.service';
+import { User } from '../../../types/user.types';
+import { UserValidatorService } from '../../../services/user-validators.service';
 import { map, Observable } from 'rxjs';
 
 @Component({
@@ -22,8 +22,6 @@ import { map, Observable } from 'rxjs';
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   signupForm!: FormGroup;
-  errorMessage: string | null = null;
-  successMessage: string | null = null;
   isLoggedIn = false;
   username: string | null = null;
 
@@ -41,14 +39,18 @@ export class LoginComponent implements OnInit {
       this.username = this.authService.getUsername();
     }
 
+    this.initForms();
+  }
+
+  private initForms(): void {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
 
     this.signupForm = this.fb.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       username: [
         '',
         [Validators.required, Validators.minLength(3)],
@@ -56,12 +58,11 @@ export class LoginComponent implements OnInit {
       ],
       emailAddress: ['', [Validators.required, Validators.email]],
       userRole: ['STUDENT', Validators.required],
-
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
-  usernameValidator(
+  private usernameValidator(
     control: AbstractControl
   ): Observable<ValidationErrors | null> {
     return this.authService
@@ -73,110 +74,57 @@ export class LoginComponent implements OnInit {
       );
   }
 
-  loginWithGoogle() {
-    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
-  }
-
-  signup(): void {
-    if (this.signupForm.invalid) {
-      return;
-    }
-
-    const signupData: User = {
-      id: '',
-      firstName: this.signupForm.value.firstName,
-      lastName: this.signupForm.value.lastName,
-      username: this.signupForm.value.username,
-      emailAddress: this.signupForm.value.emailAddress,
-      password: this.signupForm.value.password,
-      userRole: this.signupForm.value.userRole,
-      profileImageUrl: '', // Default image URL
-    };
-
-    this.authService.signup(signupData).subscribe({
-      next: () => {
-        this.snackBar.open('User registered successfully!', 'Close', {
-          duration: 3000,
-          panelClass: ['snackbar-success'],
-        });
-        this.signupForm.reset();
-        this.router.navigate(['/products']);
-      },
-      error: (error) => {
-        console.error('Signup failed', error);
-        let errorMessage = 'An error occurred during signup. Please try again.';
-
-        if (error.status === 409) {
-          // Backend has returned a conflict error
-          errorMessage = 'Email already exists.';
-        }
-
-        this.snackBar.open(errorMessage, 'Close', {
-          duration: 3000,
-          panelClass: ['snackbar-error'],
-        });
-      },
-    });
-  }
-
-  get usernameControl() {
-    return this.loginForm.get('username');
-  }
-
-  get password() {
-    return this.loginForm.get('password');
-  }
-
-  get signupFirstName() {
-    return this.signupForm.get('firstName');
-  }
-
-  get signupLastName() {
-    return this.signupForm.get('lastName');
-  }
-
-  get signupUsername() {
-    return this.signupForm.get('username');
-  }
-
-  get signupEmail() {
-    return this.signupForm.get('emailAddress');
-  }
-
-  get signupPassword() {
-    return this.signupForm.get('password');
-  }
-
   login(): void {
-    if (this.loginForm.invalid) {
-      return;
-    }
+    if (this.loginForm.invalid) return;
 
     const { username, password } = this.loginForm.value;
-
     this.authService.login(username, password).subscribe({
       next: (token) => {
         localStorage.setItem('token', token);
-        this.username = username;
         this.authService.setIsLoggedIn(true);
-        this.snackBar.open('Login successful!', 'Close', {
-          duration: 3000,
-          panelClass: ['snackbar-success'],
-        });
+        this.username = username;
+        this.showSnackbar('Login successful!', 'snackbar-success');
         this.router.navigate(['/home']);
       },
       error: (error) => {
         console.error('Login failed', error);
-        const errorMessage =
+        const message =
           error.status === 401
             ? 'Invalid username or password. Please try again.'
             : 'An error occurred. Please try again.';
-        this.snackBar.open(errorMessage, 'Close', {
-          duration: 3000,
-          panelClass: ['snackbar-error'],
-        });
+        this.showSnackbar(message, 'snackbar-error');
       },
     });
+  }
+
+  signup(): void {
+    if (this.signupForm.invalid) return;
+
+    const user: User = {
+      id: '',
+      ...this.signupForm.value,
+      profileImageUrl: '',
+    };
+
+    this.authService.signup(user).subscribe({
+      next: () => {
+        this.showSnackbar('User registered successfully!', 'snackbar-success');
+        this.signupForm.reset();
+        this.router.navigate(['/login']);
+      },
+      error: (error) => {
+        console.error('Signup failed', error);
+        const message =
+          error.status === 409
+            ? 'Email already exists.'
+            : 'An error occurred during signup. Please try again.';
+        this.showSnackbar(message, 'snackbar-error');
+      },
+    });
+  }
+
+  loginWithGoogle(): void {
+    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
   }
 
   logout(): void {
@@ -191,7 +139,27 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  goToForgotPassword() {
+  goToForgotPassword(): void {
     this.router.navigate(['/forgot-password']);
+  }
+
+  private showSnackbar(message: string, panelClass: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      panelClass: [panelClass],
+    });
+  }
+
+  // Getters for controls used in templates
+  get usernameControl(): AbstractControl | null {
+    return this.loginForm.get('username');
+  }
+
+  get password(): AbstractControl | null {
+    return this.loginForm.get('password');
+  }
+
+  get signupUsername(): AbstractControl | null {
+    return this.signupForm.get('username');
   }
 }

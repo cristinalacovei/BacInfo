@@ -10,6 +10,7 @@ import java.util.UUID;
 public interface NotificareRepository extends JpaRepository<NotificareEntity, UUID> {
     List<NotificareEntity> findByUserIdAndCititaFalse(UUID userId);
     List<NotificareEntity> findByUserIdAndTimestampAfter(UUID userId, Date after);
+    List<NotificareEntity> findByUserId(UUID userId);
 
 }
 
