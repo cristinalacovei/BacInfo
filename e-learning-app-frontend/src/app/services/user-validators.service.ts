@@ -23,7 +23,7 @@ export class UserValidatorService {
           params: { username: control.value },
         })
         .pipe(
-          debounceTime(500), // Așteaptă 500ms după ce utilizatorul termină de scris
+          debounceTime(500),
           map((isAvailable) => (isAvailable ? null : { usernameTaken: true })),
           catchError(() => of(null))
         );

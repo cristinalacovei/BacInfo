@@ -52,7 +52,7 @@ export class AdminUserDetailComponent implements OnInit {
     this.lectiiService.getLatestProgress(this.userId).subscribe((data) => {
       this.progress = data;
 
-      // ⚠️ După ce avem progresul, luăm toate lecțiile pentru a extrage titlurile
+      //  După ce avem progresul, luăm toate lecțiile pentru a extrage titlurile
       this.lectiiService.getLectii().subscribe((lectii) => {
         lectii.forEach((lectie) => {
           this.lessonTitles[lectie.id] = lectie.title;

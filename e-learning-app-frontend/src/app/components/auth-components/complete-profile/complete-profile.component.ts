@@ -43,7 +43,7 @@ export class CompleteProfileComponent implements OnInit {
       if (this.token) {
         localStorage.setItem('token', this.token);
         this.authService.setToken(this.token);
-        this.email = this.authService.getEmailFromToken(this.token); // implementat corect în serviciu
+        this.email = this.authService.getEmailFromToken(this.token);
       }
     });
   }

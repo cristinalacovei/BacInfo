@@ -4,7 +4,7 @@ export interface TestEntity {
   id: string;
   classLevel: number;
   questions: any[];
-  lesson: Lesson;
+  lesson?: Lesson;
 }
 
 export interface NewTestPayload {
