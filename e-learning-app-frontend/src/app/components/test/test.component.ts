@@ -190,7 +190,7 @@ export class TestComponent implements OnInit {
     });
 
     console.log(
-      '🔍 DEBUG: Răspunsuri selectate trimise la backend:',
+      ' DEBUG: Răspunsuri selectate trimise la backend:',
       selectedAnswerIds
     );
 
@@ -208,25 +208,25 @@ export class TestComponent implements OnInit {
         this.incorrectAnswersSet = new Set(result.incorrectAnswerIds);
 
         console.log(
-          `📊 Scor primit de la backend: ${this.score}/${this.totalQuestions}`
+          ` Scor primit de la backend: ${this.score}/${this.totalQuestions}`
         );
 
         this.showResults = true;
 
         this.authService.getCurrentUser().subscribe((user) => {
           if (!user || !user.id) {
-            console.error('❌ Nu am putut obține userId-ul.');
+            console.error('Nu am putut obține userId-ul.');
             return;
           }
 
           const lessonId = this.test?.lesson?.id;
 
           if (!lessonId) {
-            console.warn('⚠️ Lesson ID este null sau undefined în test!');
+            console.warn('Lesson ID este null sau undefined în test!');
           }
 
           if (this.isGeneralTest) {
-            console.log('ℹ️ Test general – progresul nu se salvează.');
+            console.log('Test general - progresul nu se salvează.');
             return;
           }
 
@@ -240,7 +240,7 @@ export class TestComponent implements OnInit {
             })
             .subscribe(() => {
               console.log(
-                '✅ Progres salvat cu score (procent):',
+                ' Progres salvat cu score (procent):',
                 scorePercentage
               );
             });
@@ -250,7 +250,7 @@ export class TestComponent implements OnInit {
 
   toggleResults(): void {
     this.showResults = !this.showResults;
-    console.log(`🔍 Vizualizare rezultate: ${this.showResults}`);
+    console.log(`Vizualizare rezultate: ${this.showResults}`);
   }
 
   showIncompleteDialog(): void {
@@ -259,7 +259,7 @@ export class TestComponent implements OnInit {
       data: {
         title: 'Test incomplet',
         message:
-          '⚠️ Trebuie să răspunzi la toate întrebările înainte de a trimite testul!',
+          'Trebuie să răspunzi la toate întrebările înainte de a trimite testul!',
         singleButton: true,
       },
     });

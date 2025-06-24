@@ -45,7 +45,7 @@ export class AdminUserStatsComponent implements OnInit {
 
         this.lectiiService.getLectii().subscribe((lectii) => {
           lectii.forEach((lectie) => {
-            this.lessonTitles[lectie.id] = lectie.title;
+            this.lessonTitles[lectie.id!] = lectie.title;
           });
           this.loading = false;
         });

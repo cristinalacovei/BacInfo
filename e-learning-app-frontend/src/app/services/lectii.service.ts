@@ -46,4 +46,8 @@ export class LectiiService {
     console.log('Requesting test for lesson:', lesson);
     return this.http.get<TestEntity>(`${this.apiUrl}/${lesson.id}/test`);
   }
+
+  createLesson(lesson: Lesson): Observable<Lesson> {
+    return this.http.post<Lesson>(`${this.apiUrl}`, lesson);
+  }
 }

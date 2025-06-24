@@ -63,30 +63,21 @@ public class SecurityConfig {
 
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
-                        .requestMatchers("/api/lessons").permitAll()
-                        .requestMatchers("/api/lessons/class/").permitAll()
-                        .requestMatchers("/api/lesson-content").permitAll()
+                        .requestMatchers("/api/lessons").authenticated()
+                        .requestMatchers("/api/lessons/class/").authenticated()
                         .requestMatchers("/test-email").permitAll()
-                        .requestMatchers("/api/tests").permitAll()
-                        .requestMatchers("api/lessons/{lessonId}/test").permitAll()
-                        .requestMatchers("api/lessons/{lessonId}").permitAll()
-                        .requestMatchers("api/progress").permitAll()
-                        .requestMatchers("api/tests/{id}/lesson-id").permitAll()
-                        .requestMatchers("/api/questions/**").permitAll()
-                        .requestMatchers("/api/answers/**").permitAll()
-                        .requestMatchers("/api/forum/**").permitAll()
+                        .requestMatchers("/api/tests").authenticated()
+                        .requestMatchers("/api/lessons/{lessonId}/test").authenticated()
+                        .requestMatchers("/api/lessons/{lessonId}").authenticated()
+                        .requestMatchers("/api/progress").authenticated()
+                        .requestMatchers("/api/tests/{id}/lesson-id").authenticated()
+                        .requestMatchers("/api/questions/**").authenticated()
+                        .requestMatchers("/api/answers/**").authenticated()
+                        .requestMatchers("/api/forum/**").authenticated()
                         .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/topic/**").permitAll()
-                        .requestMatchers("/api/notificari/**").permitAll()
-                        .requestMatchers("/api/questions/random").permitAll()
-
-                        .requestMatchers(
-                                "/swagger-ui.html",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/v3/api-docs",
-                                "/swagger-resources/**"
-                        ).permitAll()
+                        .requestMatchers("/api/notificari/**").authenticated()
+                        .requestMatchers("/api/questions/random").authenticated()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2

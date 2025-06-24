@@ -1,7 +1,11 @@
 <div class="forum-wrapper">
   <section class="ask-form">
     <h2 class="section-title">📢 Pune o întrebare</h2>
-    <form [formGroup]="questionForm" (ngSubmit)="submitQuestion()">
+    <form
+      *ngIf="questionForm"
+      [formGroup]="questionForm"
+      (ngSubmit)="submitQuestion()"
+    >
       <quill-editor
         formControlName="questionText"
         [modules]="editorConfig"

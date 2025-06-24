@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
+import { ForumService } from '../../../services/forum.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 import { User } from '../../../types/user.types';
 
 @Component({
@@ -20,16 +22,6 @@ export class QuestionDetailComponent implements OnInit {
   modalImage: string | null = null;
   isAdmin: boolean = false;
 
-  onImageClick(event: Event): void {
-    const target = event.target as HTMLImageElement;
-    if (target.tagName === 'IMG') {
-      this.modalImage = target.src;
-    }
-  }
-
-  closeModal(): void {
-    this.modalImage = null;
-  }
   editorConfig = {
     toolbar: [
       ['bold', 'italic', 'underline'],
@@ -40,9 +32,10 @@ export class QuestionDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient,
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private forumService: ForumService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -66,15 +59,13 @@ export class QuestionDetailComponent implements OnInit {
   }
 
   loadData(): void {
-    this.http
-      .get(`http://localhost:8080/api/forum/questions/${this.questionId}`)
-      .subscribe((q) => (this.question = q));
+    this.forumService.getQuestionById(this.questionId).subscribe((q) => {
+      this.question = q;
+    });
 
-    this.http
-      .get<any[]>(
-        `http://localhost:8080/api/forum/questions/${this.questionId}/answers`
-      )
-      .subscribe((a) => (this.answers = a));
+    this.forumService.getAnswersForQuestion(this.questionId).subscribe((a) => {
+      this.answers = a;
+    });
   }
 
   submitAnswer(): void {
@@ -82,32 +73,45 @@ export class QuestionDetailComponent implements OnInit {
       const answer = this.answerForm.value;
       answer.author.id = this.currentUser.id;
 
-      this.http
-        .post(
-          `http://localhost:8080/api/forum/questions/${this.questionId}/answers`,
-          answer
-        )
-        .subscribe(() => {
-          this.answerForm.reset();
-          this.initForm();
-          this.loadData();
-        });
+      this.forumService.postAnswer(this.questionId, answer).subscribe(() => {
+        this.answerForm.reset();
+        this.initForm();
+        this.loadData();
 
-      setTimeout(() => {
-        const last = document.querySelector('.answer:last-child');
-        if (last) {
-          last.classList.add('animate');
-        }
-      }, 50);
+        setTimeout(() => {
+          const last = document.querySelector('.answer:last-child');
+          if (last) last.classList.add('animate');
+        }, 50);
+      });
     }
   }
+
   deleteAnswer(answerId: string): void {
-    if (confirm('Sigur vrei să ștergi acest răspuns?')) {
-      this.http
-        .delete(`http://localhost:8080/api/forum/answers/${answerId}`)
-        .subscribe(() => {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Confirmare ștergere',
+        message: 'Sigur vrei să ștergi acest răspuns?',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.forumService.deleteAnswer(answerId).subscribe(() => {
           this.answers = this.answers.filter((a) => a.id !== answerId);
         });
+      }
+    });
+  }
+
+  onImageClick(event: Event): void {
+    const target = event.target as HTMLImageElement;
+    if (target.tagName === 'IMG') {
+      this.modalImage = target.src;
     }
+  }
+
+  closeModal(): void {
+    this.modalImage = null;
   }
 }

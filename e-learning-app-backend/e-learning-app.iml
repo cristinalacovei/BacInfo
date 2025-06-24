@@ -5,4 +5,17 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" generated="true" />
     </content>
   </component>
+  <component name="FacetManager">
+    <facet type="jpa" name="JPA">
+      <configuration>
+        <setting name="validation-enabled" value="true" />
+        <setting name="provider-name" value="Hibernate" />
+        <datasource-mapping>
+          <factory-entry name="e-learning-app" value="84a9b8f8-9a0b-450f-833b-d3561a602798" />
+          <factory-entry name="entityManagerFactory" value="84a9b8f8-9a0b-450f-833b-d3561a602798" />
+        </datasource-mapping>
+        <naming-strategy-map />
+      </configuration>
+    </facet>
+  </component>
 </module>

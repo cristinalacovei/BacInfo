@@ -14,7 +14,7 @@ export class AdminUserDetailComponent implements OnInit {
   userData: any;
   progress: any[] = [];
   lessonTitles: { [id: string]: string } = {};
-  scoreThreshold = 0; // pentru slider
+  scoreThreshold = 0;
   sortBy: 'score' | 'title' = 'title';
   sortOrder: 'asc' | 'desc' = 'asc';
 
@@ -55,7 +55,7 @@ export class AdminUserDetailComponent implements OnInit {
       //  După ce avem progresul, luăm toate lecțiile pentru a extrage titlurile
       this.lectiiService.getLectii().subscribe((lectii) => {
         lectii.forEach((lectie) => {
-          this.lessonTitles[lectie.id] = lectie.title;
+          this.lessonTitles[lectie.id!] = lectie.title;
         });
       });
     });

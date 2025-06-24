@@ -75,17 +75,17 @@ public class AnswerService {
             correctAnswerIds.addAll(selectedCorrectIds);
             incorrectAnswerIds.addAll(selectedIncorrectIds);
 
-            System.out.println("🟢 Întrebare ID: " + questionId);
-            System.out.println("✅ Răspunsuri corecte: " + correctAnswers);
-            System.out.println("🟩 Răspunsuri corecte selectate: " + selectedCorrectIds);
-            System.out.println("🟥 Răspunsuri greșite selectate: " + selectedIncorrectIds);
+            System.out.println(" Întrebare ID: " + questionId);
+            System.out.println(" Răspunsuri corecte: " + correctAnswers);
+            System.out.println(" Răspunsuri corecte selectate: " + selectedCorrectIds);
+            System.out.println(" Răspunsuri greșite selectate: " + selectedIncorrectIds);
 
             if (selectedCorrectIds.size() == correctAnswers.size() && selectedIncorrectIds.isEmpty()) {
                 correctQuestions++;
             }
         }
 
-        System.out.println("🎯 Întrebări răspunse corect: " + correctQuestions);
+        System.out.println(" Întrebări răspunse corect: " + correctQuestions);
 
 
         return Map.of(

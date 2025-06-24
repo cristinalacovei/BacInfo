@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LectiiService } from '../../../services/lectii.service';
 
 @Component({
   selector: 'app-editor',
@@ -34,7 +35,11 @@ export class EditorComponent implements OnInit {
     ],
   };
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {}
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private LectiiService: LectiiService
+  ) {}
 
   ngOnInit(): void {
     this.lessonForm = this.fb.group({
@@ -59,24 +64,25 @@ export class EditorComponent implements OnInit {
         );
         console.log(' Backup salvat local (lessonDraft)');
       }
-    }, 60 * 1000);
+    }, 30 * 1000);
   }
 
   saveLesson(): void {
     if (this.lessonForm.valid) {
       this.savedLesson = this.lessonForm.value;
-      this.http
-        .post('http://localhost:8080/api/lessons', this.savedLesson)
-        .subscribe(
-          (response) => {
-            console.log('Lecția a fost salvată cu succes!', response);
-            localStorage.removeItem('lessonDraft'); // 🧹 curăță backupul
-            this.lessonForm.reset();
-          },
-          (error) => {
-            console.error('Eroare la salvarea lecției:', error);
-          }
-        );
+
+      if (!this.savedLesson) return;
+
+      this.LectiiService.createLesson(this.savedLesson).subscribe(
+        (response) => {
+          console.log(' Lecția a fost salvată cu succes!', response);
+          localStorage.removeItem('lessonDraft');
+          this.lessonForm.reset();
+        },
+        (error) => {
+          console.error('❌ Eroare la salvarea lecției:', error);
+        }
+      );
     }
   }
 }

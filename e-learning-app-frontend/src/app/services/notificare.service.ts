@@ -8,6 +8,10 @@ import { environment } from '../environments/environment';
 export class NotificareService {
   constructor(private http: HttpClient, private ws: WebSocketService) {}
 
+  subscribeToWebSocket(callback: (notif: any) => void) {
+    this.ws.connect('/topic/notificari').subscribe(callback);
+  }
+
   getNotificari(userId: string): Observable<any[]> {
     return this.http.get<any[]>(
       `${environment.apiUrl}/api/notificari/toate/${userId}`
@@ -32,10 +36,6 @@ export class NotificareService {
       `${environment.apiUrl}/api/notificari/citeste-tot/${userId}`,
       {}
     );
-  }
-
-  subscribeToWebSocket(callback: (notif: any) => void) {
-    this.ws.connect('/topic/notificari').subscribe(callback);
   }
 
   stergeNotificare(id: string): Observable<void> {

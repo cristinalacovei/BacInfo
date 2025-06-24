@@ -20,12 +20,15 @@
   </p>
 
   <mat-progress-bar
+    *ngIf="!isAdmin"
     class="progres-subtext"
     mode="determinate"
     [value]="getProgresTotal()"
   ></mat-progress-bar>
 
-  <div class="progres-procentaj">{{ getProgresTotal() }}% completat</div>
+  <div *ngIf="!isAdmin" class="progres-procentaj">
+    {{ getProgresTotal() }}% completat
+  </div>
 
   <div *ngFor="let an of ani">
     <button (click)="selecteazaAn(an.nivel)" class="btn-clasa">
@@ -44,7 +47,7 @@
 
             <ng-container *ngIf="!isAdmin">
               <div
-                *ngIf="progressMap.get(lectie.id) as progress"
+                *ngIf="progressMap.get(lectie.id!) as progress"
                 class="progress-badge completat"
                 [ngClass]="{
                   'scor-verde': progress.score >= 80,
@@ -60,7 +63,7 @@
               </div>
 
               <div
-                *ngIf="!progressMap.get(lectie.id)"
+                *ngIf="!progressMap.get(lectie.id!)"
                 class="progress-badge incomplet"
               >
                 <span class="emoji">🕓</span>
@@ -81,7 +84,7 @@
           <button
             mat-button
             class="btn-sterge"
-            (click)="stergeLectie(lectie.id, an.nume)"
+            (click)="stergeLectie(lectie.id!, an.nume)"
             *ngIf="isAdmin"
           >
             🗑️

@@ -5,14 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatCard } from '@angular/material/card';
 import { AuthService } from '../../services/auth.service';
-
-interface Lesson {
-  id: string;
-  title: string;
-  description: string;
-  classLevel: number;
-}
-
+import { Lesson } from '../../types/lesson.types';
 @Component({
   selector: 'app-lectii',
   standalone: false,
@@ -120,7 +113,7 @@ export class LectiiComponent implements OnInit {
     for (const lectii of Object.values(this.lectiiPerAn)) {
       for (const lectie of lectii) {
         total++;
-        const progress = this.progressMap.get(lectie.id);
+        const progress = this.progressMap.get(lectie.id!);
         if (progress && progress.score !== null) {
           completate++;
         }
@@ -137,7 +130,7 @@ export class LectiiComponent implements OnInit {
     for (const lectii of Object.values(this.lectiiPerAn)) {
       for (const lectie of lectii) {
         total++;
-        const progress = this.progressMap.get(lectie.id);
+        const progress = this.progressMap.get(lectie.id!);
         if (progress && progress.score !== null) {
           completate++;
         }

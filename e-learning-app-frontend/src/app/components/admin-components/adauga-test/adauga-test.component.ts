@@ -69,9 +69,9 @@ export class AdaugaTestComponent implements OnInit {
           this.backupKey,
           JSON.stringify(this.testForm.value)
         );
-        console.log('📦 Backup autosalvat local.');
+        console.log(' Backup autosalvat local.');
       }
-    }, 60000);
+    }, 30000);
   }
 
   get questions(): FormArray {
@@ -169,7 +169,7 @@ export class AdaugaTestComponent implements OnInit {
   submitTest() {
     if (this.testForm.invalid || this.questions.length === 0) {
       this.snackBar.open(
-        '❌ Completează toate întrebările și răspunsurile înainte de salvare.',
+        ' Completează toate întrebările și răspunsurile înainte de salvare.',
         'Închide',
         {
           duration: 4000,
@@ -180,7 +180,7 @@ export class AdaugaTestComponent implements OnInit {
       );
       this.markFormTouched();
       localStorage.removeItem(this.backupKey);
-      console.log('📦 Backup eliminat din localStorage.');
+      console.log(' Backup eliminat din localStorage.');
       return;
     }
 
@@ -189,7 +189,7 @@ export class AdaugaTestComponent implements OnInit {
       const hasCorrect = q.answers.some((a: any) => a.isCorrect);
       if (!hasCorrect) {
         this.snackBar.open(
-          `❌ Adaugă cel puțin un răspuns corect la întrebarea ${i + 1}.`,
+          `Adaugă cel puțin un răspuns corect la întrebarea ${i + 1}.`,
           'Închide',
           {
             duration: 4000,
@@ -211,7 +211,7 @@ export class AdaugaTestComponent implements OnInit {
     this.testService.createTest(payload).subscribe({
       next: () => {
         this.snackBar
-          .open('✅ Testul a fost adăugat cu succes!', 'Închide', {
+          .open(' Testul a fost adăugat cu succes!', 'Închide', {
             duration: 3000,
             horizontalPosition: 'center',
             verticalPosition: 'bottom',
@@ -224,7 +224,7 @@ export class AdaugaTestComponent implements OnInit {
       },
       error: () => {
         this.snackBar.open(
-          '❌ Eroare la salvarea testului. Încearcă din nou.',
+          ' Eroare la salvarea testului. Încearcă din nou.',
           'Închide',
           {
             duration: 4000,
