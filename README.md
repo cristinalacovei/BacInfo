@@ -74,6 +74,28 @@
 - Register a new user or log in with Google.
 - Explore lessons, take quizzes, and manage content based on your role.
 
+## Screenshots
+
+### 🏠 Home Page
+![Home Page](assets/home-page.png)
+
+### 📖 About Page
+![About Page](assets/about-page.png)
+
+### 🔐 Login Page
+![Login Page](assets/login-page.png)
+
+### 📚 Lessons Page
+![Lessons Page](assets/lessons-page.png)
+
+### 📚 Lesson Page
+![Lesson Page](assets/lesson-page.png)
+
+### 📚 Test Page
+![Test Page](assets/test-page.png)
+
+### 💬 Forum Page
+![Forum Page](assets/forum-page.png)
 
 ## Author
 
